@@ -38,6 +38,7 @@ import org.primefaces.selenium.internal.ScrollElementIntoViewClickListener;
 public class WebDriverProvider {
 
     private static final ThreadLocal<List<WebDriver>> WEB_DRIVERS = ThreadLocal.withInitial(ArrayList::new);
+    private static final ThreadLocal<WebDriver> WEB_DRIVER_BEFORE_EACH = new ThreadLocal<>();
     private static final List<WebDriver> WEB_DRIVER_POOL = new ArrayList<>();
 
     private static final int CREATE_WEBDRIVER_RETRIES = 3;
@@ -47,36 +48,54 @@ public class WebDriverProvider {
     }
 
     public static void resetWebDrivers() {
-        WEB_DRIVERS.get().forEach(webDriver -> webDriver.manage().deleteAllCookies());
-        WEB_DRIVERS.get().forEach(PrimeSelenium::clearConsole);
+        resetWebDriver(WEB_DRIVER_BEFORE_EACH.get());
+        WEB_DRIVERS.get().forEach(WebDriverProvider::resetWebDriver);
         synchronized (WEB_DRIVER_POOL) {
             WEB_DRIVER_POOL.addAll(WEB_DRIVERS.get());
             WEB_DRIVERS.remove();
         }
     }
+    
+    private static void resetWebDriver(WebDriver webDriver) {
+        if(webDriver != null) {
+            webDriver.manage().deleteAllCookies();
+            PrimeSelenium.clearConsole(webDriver);
+        }
+    }
 
     public static void closeAllWebDrivers() {
-        WEB_DRIVERS.get().forEach(WebDriver::quit);
+        closeWebDriver(WEB_DRIVER_BEFORE_EACH.get());
+        WEB_DRIVERS.get().forEach(WebDriverProvider::closeWebDriver);
         WEB_DRIVERS.remove();
-        WEB_DRIVER_POOL.forEach(WebDriver::quit);
+        WEB_DRIVER_POOL.forEach(WebDriverProvider::closeWebDriver);
         WEB_DRIVER_POOL.clear();
     }
     
-    public static WebDriver getWebDriver() {
-        WebDriver driver = null;
-        synchronized (WEB_DRIVER_POOL) {
-            if (!WEB_DRIVER_POOL.isEmpty()) {
-                driver = WEB_DRIVER_POOL.remove(0);
-            }
+    private static void closeWebDriver(WebDriver webDriver) {
+        if(webDriver != null) {
+            webDriver.quit();
         }
-        if (driver == null) {
-            driver = createNewWebDriver();
+    }
+
+    public static WebDriver getWebDriver() {
+        WebDriver driver = WEB_DRIVER_BEFORE_EACH.get();
+        if (driver != null) {
+            WEB_DRIVER_BEFORE_EACH.remove();
+        } else {
+            synchronized (WEB_DRIVER_POOL) {
+                if (!WEB_DRIVER_POOL.isEmpty()) {
+                    driver = WEB_DRIVER_POOL.remove(0);
+                }
+            }
+            if (driver == null) {
+                driver = createNewWebDriver();
+            }
         }
         WEB_DRIVERS.get().add(driver);
         return driver;
     }
-    
-   public static WebDriver getWebDriverInitializationBeforeAll() {
+
+    public static WebDriver getWebDriverInitializationBeforeAll() {
         synchronized (WEB_DRIVER_POOL) {
             if (WEB_DRIVER_POOL.isEmpty()) {
                 WEB_DRIVER_POOL.add(createNewWebDriver());
@@ -84,25 +103,24 @@ public class WebDriverProvider {
             return WEB_DRIVER_POOL.get(0);
         }
     }
-   
-   public static WebDriver getWebDriverInitializationBeforeEach() {
-       if (WEB_DRIVERS.get().isEmpty()) {
-           WebDriver driver = null;
-           synchronized (WEB_DRIVER_POOL) {
-               if (!WEB_DRIVER_POOL.isEmpty()) {
-                   driver = WEB_DRIVER_POOL.remove(0);
-               }
-           }
-           if (driver == null) {
-               driver = createNewWebDriver();
-           }
-           WEB_DRIVERS.get().add(driver);
-           return driver;
-       } else {
-           return WEB_DRIVERS.get().get(0);
-       }
-   }
 
+    public static WebDriver getWebDriverInitializationBeforeEach() {
+        if (WEB_DRIVER_BEFORE_EACH.get() == null) {
+            WebDriver driver = null;
+            synchronized (WEB_DRIVER_POOL) {
+                if (!WEB_DRIVER_POOL.isEmpty()) {
+                    driver = WEB_DRIVER_POOL.remove(0);
+                }
+            }
+            if (driver == null) {
+                driver = createNewWebDriver();
+            }
+            WEB_DRIVER_BEFORE_EACH.set(driver);
+            return driver;
+        } else {
+            return WEB_DRIVER_BEFORE_EACH.get();
+        }
+    }
 
     private static WebDriver createNewWebDriver() {
         WebDriver driver = null;
