@@ -73,27 +73,27 @@ public abstract class Spinner extends InputText {
             value = "\"\"";
         }
 
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value.toString() + ")");
+        executeScript(getWidgetByIdScript() + ".setValue(" + value.toString() + ")");
     }
 
     /**
      * Increments this spinner by one SpinnerCfg.step
      */
     public void increment() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".spin(1);");
+        executeScript(getWidgetByIdScript() + ".spin(1);");
     }
 
     /**
      * Decrements this spinner by one SpinnerCfg.step
      */
     public void decrement() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".spin(-1);");
+        executeScript(getWidgetByIdScript() + ".spin(-1);");
     }
 
     /**
      * Fire the change event for the spinner
      */
     public void change() {
-        PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".input.trigger('change');");
+        executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".input.trigger('change');");
     }
 }

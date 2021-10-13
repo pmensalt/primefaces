@@ -51,7 +51,7 @@ public abstract class CascadeSelect extends AbstractInputComponent {
      * @return true if using AJAX for itemSelect
      */
     public boolean isItemSelectAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "itemSelect");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "itemSelect");
     }
 
     /**
@@ -72,8 +72,8 @@ public abstract class CascadeSelect extends AbstractInputComponent {
     public void show() {
         WebElement panel = getPanel();
         if (isEnabled() && !panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
+            executeScript(getWidgetByIdScript() + ".show();");
+            waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
         }
     }
 
@@ -83,8 +83,8 @@ public abstract class CascadeSelect extends AbstractInputComponent {
     public void hide() {
         WebElement panel = getPanel();
         if (isEnabled() && panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
+            executeScript(getWidgetByIdScript() + ".hide();");
+            waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         }
     }
 
@@ -157,7 +157,7 @@ public abstract class CascadeSelect extends AbstractInputComponent {
 
     protected void click(WebElement element) {
         if (!PrimeSelenium.hasCssClass(element, "ui-cascadeselect-item-group") && (isOnchangeAjaxified() || isItemSelectAjaxified())) {
-            PrimeSelenium.guardAjax(element).click();
+            guardAjax(element).click();
         }
         else {
             element.click();

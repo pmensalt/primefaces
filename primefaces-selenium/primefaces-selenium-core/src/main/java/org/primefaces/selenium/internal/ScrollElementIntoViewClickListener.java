@@ -52,6 +52,6 @@ public class ScrollElementIntoViewClickListener extends AbstractWebDriverEventLi
         // See:
         // https://developer.mozilla.org/de/docs/Web/API/Element/scrollIntoView
         // https://www.w3.org/TR/webdriver/#dfn-scrolls-into-view
-        PrimeSelenium.executeScript("arguments[0].scrollIntoView(" + option + ")", element);
+        PrimeSelenium.executeScript(driver, "arguments[0].scrollIntoView(" + option + ")", element);
     }
 }

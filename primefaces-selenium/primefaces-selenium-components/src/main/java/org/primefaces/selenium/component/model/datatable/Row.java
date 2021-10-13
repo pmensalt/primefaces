@@ -25,14 +25,17 @@ package org.primefaces.selenium.component.model.datatable;
 
 import java.util.List;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class Row {
 
+    private WebDriver driver;
     private WebElement webElement;
     private List<Cell> cells;
 
-    public Row(WebElement webElement, List<Cell> cells) {
+    public Row(WebDriver driver, WebElement webElement, List<Cell> cells) {
+        this.driver = driver;
         this.webElement = webElement;
         this.cells = cells;
     }
@@ -55,5 +58,9 @@ public class Row {
 
     public Cell getCell(int index) {
         return cells.get(index);
+    }
+    
+    public WebDriver getWebDriver() {
+        return driver;
     }
 }

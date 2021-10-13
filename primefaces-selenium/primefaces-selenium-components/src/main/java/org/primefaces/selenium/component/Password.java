@@ -46,15 +46,15 @@ public abstract class Password extends InputText {
      * Brings up the panel with the password strength indicator.
      */
     public void showFeedback() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getFeedbackPanel()));
+        executeScript(getWidgetByIdScript() + ".show();");
+        waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getFeedbackPanel()));
     }
 
     /**
      * Hides the panel with the password strength indicator.
      */
     public void hideFeedback() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+        executeScript(getWidgetByIdScript() + ".hide();");
     }
 
 }

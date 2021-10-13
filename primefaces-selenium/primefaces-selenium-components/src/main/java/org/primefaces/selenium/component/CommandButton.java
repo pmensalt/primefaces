@@ -37,17 +37,17 @@ public abstract class CommandButton extends AbstractComponent {
     @Override
     public void click() {
         WebElement button = getRoot();
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(button));
-        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
+        waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(button));
+        waitGui().until(ExpectedConditions.elementToBeClickable(button));
 
         if (button.getAttribute("data-pfconfirmcommand") != null) {
             // Confirm Dialog/Popup we don't want to guard for AJAX
         }
         else if (isAjaxified("onclick")) {
-            button = PrimeSelenium.guardAjax(button);
+            button = guardAjax(button);
         }
         else if ("submit".equals(button.getAttribute("type"))) {
-            button = PrimeSelenium.guardHttp(button);
+            button = guardHttp(button);
         }
 
         button.click();

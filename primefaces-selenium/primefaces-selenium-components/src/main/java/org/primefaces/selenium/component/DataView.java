@@ -87,10 +87,10 @@ public abstract class DataView extends AbstractPageableData {
         for (WebElement layoutButton: layoutButtons) {
             WebElement layoutButtonInputHidden = layoutButton.findElement(By.tagName("input"));
             if (layout == Layout.LIST && "list".equals(layoutButtonInputHidden.getAttribute("value"))) {
-                PrimeSelenium.guardAjax(layoutButton).click();
+                guardAjax(layoutButton).click();
             }
             else if (layout == Layout.GRID && "grid".equals(layoutButtonInputHidden.getAttribute("value"))) {
-                PrimeSelenium.guardAjax(layoutButton).click();
+                guardAjax(layoutButton).click();
             }
         }
     }

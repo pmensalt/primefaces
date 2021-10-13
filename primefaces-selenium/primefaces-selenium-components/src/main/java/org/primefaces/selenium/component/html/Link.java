@@ -37,7 +37,7 @@ public abstract class Link extends AbstractComponent {
             getRoot().click();
         }
         else {
-            PrimeSelenium.guardHttp(getRoot()).click();
+            guardHttp(getRoot()).click();
         }
     }
 

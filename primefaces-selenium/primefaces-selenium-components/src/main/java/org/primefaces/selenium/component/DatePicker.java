@@ -49,7 +49,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     @Override
     public void click() {
         input.click();
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
+        waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
     }
 
     @Override
@@ -67,7 +67,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return true if AJAX enabled false if not
      */
     public boolean isDateSelectAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "dateSelect");
     }
 
     /**
@@ -76,7 +76,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return true if AJAX enabled false if not
      */
     public boolean isViewChangeAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "viewChange");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "viewChange");
     }
 
     /**
@@ -85,7 +85,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return true if AJAX enabled false if not
      */
     public boolean isCloseAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "close");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "close");
     }
 
     /**
@@ -95,9 +95,9 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public WebElement getNextMonthLink() {
         WebElement link = showPanel().findElement(By.className("ui-datepicker-next"));
-        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
+        waitGui().until(ExpectedConditions.elementToBeClickable(link));
         if (isViewChangeAjaxified()) {
-            link = PrimeSelenium.guardAjax(link);
+            link = guardAjax(link);
         }
         return link;
     }
@@ -109,9 +109,9 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public WebElement getPreviousMonthLink() {
         WebElement link = showPanel().findElement(By.className("ui-datepicker-prev"));
-        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
+        waitGui().until(ExpectedConditions.elementToBeClickable(link));
         if (isViewChangeAjaxified()) {
-            link = PrimeSelenium.guardAjax(link);
+            link = guardAjax(link);
         }
         return link;
     }
@@ -124,9 +124,9 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public WebElement selectDay(String day) {
         WebElement link = showPanel().findElement(By.linkText(day));
-        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
+        waitGui().until(ExpectedConditions.elementToBeClickable(link));
         if (isDateSelectAjaxified()) {
-            link = PrimeSelenium.guardAjax(link);
+            link = guardAjax(link);
         }
         link.click();
         return link;
@@ -139,7 +139,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public WebElement getClearButton() {
         WebElement button = showPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-clear-button"));
-        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
+        waitGui().until(ExpectedConditions.elementToBeClickable(button));
         return button;
     }
 
@@ -150,7 +150,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public WebElement getTodayButton() {
         WebElement button = showPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-today-button"));
-        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
+        waitGui().until(ExpectedConditions.elementToBeClickable(button));
         return button;
     }
 
@@ -159,7 +159,7 @@ public abstract class DatePicker extends AbstractInputComponent {
             return null;
         }
 
-        Number epoch = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getTime();");
+        Number epoch = executeScript("return " + getWidgetByIdScript() + ".getDate().getTime();");
         // Move epoch into server-timezone
         LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(epoch.longValue()), ZoneId.systemDefault());
         return dateTime;
@@ -169,9 +169,9 @@ public abstract class DatePicker extends AbstractInputComponent {
         if (getWidgetDate() == null) {
             return null;
         }
-        Long dayOfMonth = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getDate();");
-        Long month = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getMonth();");
-        Long year = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getFullYear();");
+        Long dayOfMonth = executeScript("return " + getWidgetByIdScript() + ".getDate().getDate();");
+        Long month = executeScript("return " + getWidgetByIdScript() + ".getDate().getMonth();");
+        Long year = executeScript("return " + getWidgetByIdScript() + ".getDate().getFullYear();");
         return LocalDate.of(year.intValue(), month.intValue() + 1, dayOfMonth.intValue());
     }
 
@@ -189,7 +189,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     public String millisAsFormattedDate(long millis) {
-        return PrimeSelenium.executeScript(
+        return executeScript(
                     "return " + getWidgetByIdScript() + ".jq.data().primeDatePicker.formatDateTime(new Date(" + millis + "));");
     }
 
@@ -209,7 +209,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @param epoch epoch in milliseconds
      */
     public void setDate(long epoch) {
-        PrimeSelenium.executeScript(isDateSelectAjaxified(), getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
+        executeScript(isDateSelectAjaxified(), getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
     }
 
     /**
@@ -218,7 +218,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return the JS date value or null
      */
     public String getWidgetDate() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate();");
+        return executeScript("return " + getWidgetByIdScript() + ".getDate();");
     }
 
     /**
@@ -227,7 +227,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return true if lazy
      */
     public boolean isLazy() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript()
+        return executeScript("return " + getWidgetByIdScript()
                 + ".cfg.lazyDataModel === undefined ? false : " + getWidgetByIdScript() + ".cfg.lazyDataModel");
     }
 
@@ -237,7 +237,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @param epoch epoch in milliseconds
      */
     public void updateViewDate(long epoch) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.updateViewDate(null, new Date(" + epoch + "));");
+        executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.updateViewDate(null, new Date(" + epoch + "));");
     }
 
     /**
@@ -249,9 +249,9 @@ public abstract class DatePicker extends AbstractInputComponent {
         if (isEnabled()) {
             PrimeSelenium.wait(110); // due to an async setTimeout in hideOverlay
             if (!getPanel().isDisplayed()) {
-                PrimeSelenium.executeScript(getWidgetByIdScript() + ".show()");
+                executeScript(getWidgetByIdScript() + ".show()");
             }
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
+            waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
         }
         return getPanel();
     }
@@ -262,10 +262,10 @@ public abstract class DatePicker extends AbstractInputComponent {
     public void hidePanel() {
         if (isEnabled()) {
             if (getPanel().isDisplayed()) {
-                PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".hide();");
+                executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".hide();");
                 PrimeSelenium.wait(110); // due to an async setTimeout in hideOverlay
             }
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getPanel()));
+            waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getPanel()));
         }
     }
 
@@ -275,7 +275,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return the browser time zone offset in milliseconds
      */
     public long getTimezoneOffset() {
-        return (Long) PrimeSelenium.executeScript("return new Date().getTimezoneOffset();");
+        return (Long) executeScript("return new Date().getTimezoneOffset();");
     }
 
     /**

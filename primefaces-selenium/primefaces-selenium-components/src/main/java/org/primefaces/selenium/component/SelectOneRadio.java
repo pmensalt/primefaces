@@ -49,7 +49,7 @@ public abstract class SelectOneRadio extends AbstractComponent {
 
     public WebElement getRadioButton(int index) {
         WebElement radiobutton = getRadioButtons().get(index);
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(radiobutton));
+        waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(radiobutton));
         return radiobutton;
     }
 
@@ -69,7 +69,7 @@ public abstract class SelectOneRadio extends AbstractComponent {
         WebElement box = radiobutton.findElement(By.className("ui-radiobutton-box"));
         WebElement input = radiobutton.findElement(By.tagName("input"));
         if (isAjaxified(input, "onchange")) {
-            PrimeSelenium.guardAjax(box).click();
+            guardAjax(box).click();
         }
         else {
             box.click();
@@ -143,14 +143,14 @@ public abstract class SelectOneRadio extends AbstractComponent {
      * Disables the entire component.
      */
     public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
+        executeScript(getWidgetByIdScript() + ".disable();");
     }
 
     /**
      * Enables the entire component
      */
     public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
+        executeScript(getWidgetByIdScript() + ".enable();");
     }
 
     /**
@@ -159,7 +159,7 @@ public abstract class SelectOneRadio extends AbstractComponent {
      * @param index Index of the radio button option to disable.
      */
     public void disableOption(int index) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable(" + index + ");");
+        executeScript(getWidgetByIdScript() + ".disable(" + index + ");");
     }
 
     /**
@@ -168,6 +168,6 @@ public abstract class SelectOneRadio extends AbstractComponent {
      * @param index Index of the radio button option to enable.
      */
     public void enableOption(int index) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable(" + index + ");");
+        executeScript(getWidgetByIdScript() + ".enable(" + index + ");");
     }
 }

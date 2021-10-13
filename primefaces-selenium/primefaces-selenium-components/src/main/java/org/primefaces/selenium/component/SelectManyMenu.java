@@ -95,13 +95,13 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
                     Actions actions = new Actions(getWebDriver());
                     Action action = actions.keyDown(Keys.META).click(element).keyUp(Keys.META).build();
                     if (withGuardAjax) {
-                        action = PrimeSelenium.guardAjax(action);
+                        action = guardAjax(action);
                     }
                     action.perform();
                 }
                 else {
                     if (withGuardAjax) {
-                        element = PrimeSelenium.guardAjax(element);
+                        element = guardAjax(element);
                     }
                     element.click();
                 }

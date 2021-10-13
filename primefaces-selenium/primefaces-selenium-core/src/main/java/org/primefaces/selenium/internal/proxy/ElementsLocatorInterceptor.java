@@ -29,16 +29,20 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.primefaces.selenium.spi.PrimePageFragmentFactory;
 
 public class ElementsLocatorInterceptor implements InvocationHandler {
 
+    private final WebDriver webDriver;
     private final ElementLocator locator;
     private final Class<? extends WebElement> genericClass;
 
-    public ElementsLocatorInterceptor(ElementLocator locator, Class<? extends WebElement> genericClass) {
+    public ElementsLocatorInterceptor(WebDriver webDriver, ElementLocator locator,
+            Class<? extends WebElement> genericClass) {
+        this.webDriver =webDriver;
         this.locator = locator;
         this.genericClass = genericClass;
     }
@@ -51,8 +55,8 @@ public class ElementsLocatorInterceptor implements InvocationHandler {
             ArrayList<WebElement> fragments = new ArrayList<>();
 
             for (int i = 0; i < elements.size(); i++) {
-                WebElement element = elements.get(i);
-                WebElement fragment = PrimePageFragmentFactory.create(genericClass, element, new IndexedElementLocator(locator, i));
+                WebElement fragment =
+                        PrimePageFragmentFactory.create(webDriver, genericClass, new IndexedElementLocator(locator, i));
 
                 fragments.add(fragment);
             }
@@ -62,8 +66,7 @@ public class ElementsLocatorInterceptor implements InvocationHandler {
 
         try {
             return method.invoke(elements, objects);
-        }
-        catch (InvocationTargetException e) {
+        } catch (InvocationTargetException e) {
             // Unwrap the underlying exception
             throw e.getCause();
         }

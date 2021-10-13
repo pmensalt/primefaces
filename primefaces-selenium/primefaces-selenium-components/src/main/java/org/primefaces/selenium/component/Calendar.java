@@ -55,7 +55,7 @@ public abstract class Calendar extends AbstractInputComponent {
      * @return true if AJAX enabled false if not
      */
     public boolean isDateSelectAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "dateSelect");
     }
 
     /**
@@ -64,7 +64,7 @@ public abstract class Calendar extends AbstractInputComponent {
      * @return true if AJAX enabled false if not
      */
     public boolean isViewChangeAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "viewChange");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "viewChange");
     }
 
     /**
@@ -73,31 +73,31 @@ public abstract class Calendar extends AbstractInputComponent {
      * @return true if AJAX enabled false if not
      */
     public boolean isCloseAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "close");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "close");
     }
 
     public LocalDateTime getValue() {
-        Object date = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate()");
+        Object date = executeScript("return " + getWidgetByIdScript() + ".getDate()");
 
         if (date == null) {
             return null;
         }
 
-        long timeZoneOffset = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getTimezoneOffset()");
-        String utcTimeString = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().toUTCString();");
+        long timeZoneOffset = executeScript("return " + getWidgetByIdScript() + ".getDate().getTimezoneOffset()");
+        String utcTimeString = executeScript("return " + getWidgetByIdScript() + ".getDate().toUTCString();");
 
         // Parse time string and subtract the timezone offset
         return LocalDateTime.parse(utcTimeString, DateTimeFormatter.RFC_1123_DATE_TIME).minusMinutes(timeZoneOffset);
     }
 
     public LocalDate getValueAsLocalDate() {
-        Object date = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate()");
+        Object date = executeScript("return " + getWidgetByIdScript() + ".getDate()");
         if (date == null) {
             return null;
         }
-        Long dayOfMonth = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getDate();");
-        Long month = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getMonth();");
-        Long year = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getFullYear();");
+        Long dayOfMonth = executeScript("return " + getWidgetByIdScript() + ".getDate().getDate();");
+        Long month = executeScript("return " + getWidgetByIdScript() + ".getDate().getMonth();");
+        Long year = executeScript("return " + getWidgetByIdScript() + ".getDate().getFullYear();");
         return LocalDate.of(year.intValue(), month.intValue() + 1, dayOfMonth.intValue());
     }
 
@@ -118,7 +118,7 @@ public abstract class Calendar extends AbstractInputComponent {
     }
 
     public void setValue(long millis) {
-        if (PrimeSelenium.isSafari()) {
+        if (PrimeSelenium.isSafari(getWebDriver())) {
             // Safari not overwriting with command+a so use JS code
             setDate(millis);
         }
@@ -132,7 +132,7 @@ public abstract class Calendar extends AbstractInputComponent {
 
             // overwrite value
             if (isViewChangeAjaxified()) {
-                PrimeSelenium.guardAjax(input).sendKeys(formattedDate);
+                guardAjax(input).sendKeys(formattedDate);
             }
             else {
                 input.sendKeys(formattedDate);
@@ -140,7 +140,7 @@ public abstract class Calendar extends AbstractInputComponent {
 
             // force change event
             if (isOnchangeAjaxified()) {
-                PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
+                guardAjax(input).sendKeys(Keys.TAB);
             }
             else {
                 input.sendKeys(Keys.TAB);
@@ -164,7 +164,7 @@ public abstract class Calendar extends AbstractInputComponent {
      * @param epoch epoch in milliseconds
      */
     public void setDate(long epoch) {
-        PrimeSelenium.executeScript(isDateSelectAjaxified(), getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
+        executeScript(isDateSelectAjaxified(), getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
     }
 
     /**
@@ -173,16 +173,16 @@ public abstract class Calendar extends AbstractInputComponent {
      * @return the JS date value or null
      */
     public String getWidgetDate() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate();");
+        return executeScript("return " + getWidgetByIdScript() + ".getDate();");
     }
 
     public String millisAsFormattedDate(long millis) {
-        return PrimeSelenium.executeScript(
+        return executeScript(
                     "return $.datepicker.formatDate(" + getWidgetByIdScript() + ".cfg.dateFormat, new Date(" + millis + "));");
     }
 
     public long getTimezoneOffset() {
-        return (Long) PrimeSelenium.executeScript("return new Date().getTimezoneOffset();");
+        return (Long) executeScript("return new Date().getTimezoneOffset();");
     }
 
 }
