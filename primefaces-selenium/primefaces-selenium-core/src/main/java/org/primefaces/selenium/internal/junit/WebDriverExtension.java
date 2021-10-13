@@ -34,7 +34,7 @@ public class WebDriverExtension implements BeforeEachCallback, AfterEachCallback
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
-        WebDriverProvider.getWebDriverInitializationBeforeAll();
+//        WebDriverProvider.getWebDriverInitializationBeforeAll();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class WebDriverExtension implements BeforeEachCallback, AfterEachCallback
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
-        WebDriverProvider.getWebDriverInitializationBeforeEach();
+//        WebDriverProvider.getWebDriverInitializationBeforeEach();
     }
 
     @Override
