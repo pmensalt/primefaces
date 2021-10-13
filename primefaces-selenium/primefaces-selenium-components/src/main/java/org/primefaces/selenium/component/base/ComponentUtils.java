@@ -23,6 +23,7 @@
  */
 package org.primefaces.selenium.component.base;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
 
@@ -32,32 +33,32 @@ public final class ComponentUtils {
         // prevent instantiation
     }
 
-    public static boolean hasAjaxBehavior(WebElement element, String behavior) {
-        if (!hasBehavior(element, behavior)) {
+    public static boolean hasAjaxBehavior(WebDriver driver, WebElement element, String behavior) {
+        if (!hasBehavior(driver, element, behavior)) {
             return false;
         }
 
         String id = element.getAttribute("id");
-        String result = PrimeSelenium.executeScript("return " + getWidgetByIdScript(id) + ".getBehavior('" + behavior + "').toString();");
+        String result = PrimeSelenium.executeScript(driver, "return " + getWidgetByIdScript(id) + ".getBehavior('" + behavior + "').toString();");
         return isAjaxScript(result);
     }
 
-    public static boolean hasBehavior(WebElement element, String behavior) {
-        if (!isWidget(element)) {
+    public static boolean hasBehavior(WebDriver driver, WebElement element, String behavior) {
+        if (!isWidget(driver, element)) {
             return false;
         }
 
         String id = element.getAttribute("id");
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript(id) + ".hasBehavior('" + behavior + "');");
+        return PrimeSelenium.executeScript(driver, "return " + getWidgetByIdScript(id) + ".hasBehavior('" + behavior + "');");
     }
 
-    public static boolean isWidget(WebElement element) {
+    public static boolean isWidget(WebDriver driver, WebElement element) {
         String id = element.getAttribute("id");
         if (id == null || id.isEmpty()) {
             return false;
         }
 
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript(id) + " != null;");
+        return PrimeSelenium.executeScript(driver, "return " + getWidgetByIdScript(id) + " != null;");
     }
 
     public static boolean isAjaxScript(String script) {
@@ -68,9 +69,9 @@ public final class ComponentUtils {
         return script.contains("PrimeFaces.ab(") || script.contains("pf.ab(") || script.contains("mojarra.ab(") || script.contains("jsf.ajax.request");
     }
 
-    public static String getWidgetConfiguration(WebElement element) {
+    public static String getWidgetConfiguration(WebDriver driver, WebElement element) {
         String id = element.getAttribute("id");
-        return PrimeSelenium.executeScript("return JSON.stringify(" + getWidgetByIdScript(id) + ".cfg, function(key, value) {\n" +
+        return PrimeSelenium.executeScript(driver, "return JSON.stringify(" + getWidgetByIdScript(id) + ".cfg, function(key, value) {\n" +
                     "  if (typeof value === 'function') {\n" +
                     "    return value.toString();\n" +
                     "  } else if (value && value.constructor && value.constructor.name === 'RegExp') {\n" +
@@ -92,13 +93,13 @@ public final class ComponentUtils {
      * @param input the input component to send keys to
      * @param value the value to send to the input
      */
-    public static void sendKeys(WebElement input, CharSequence value) {
+    public static void sendKeys(WebDriver driver, WebElement input, CharSequence value) {
         if (input == null || value == null) {
             return;
         }
 
         // using classname here to prevent classloading issues
-        if (PrimeSelenium.isChrome()) {
+        if (PrimeSelenium.isChrome(driver)) {
             // focus the input
             input.click();
 

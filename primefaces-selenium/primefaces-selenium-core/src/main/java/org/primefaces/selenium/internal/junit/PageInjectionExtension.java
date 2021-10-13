@@ -47,11 +47,11 @@ public class PageInjectionExtension implements ParameterResolver, TestInstancePo
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
                 throws ParameterResolutionException {
 
-        WebDriver driver = WebDriverProvider.get(true);
+        WebDriver driver = WebDriverProvider.getWebDriver();
 
         AbstractPrimePage page = PrimePageFactory.create((Class<? extends AbstractPrimePage>) parameterContext.getParameter().getType(), driver);
 
-        PrimeSelenium.goTo(page);
+        page.goTo();
 
         return page;
     }
@@ -65,7 +65,7 @@ public class PageInjectionExtension implements ParameterResolver, TestInstancePo
                         && AbstractPrimePage.class.isAssignableFrom(field.getType())
                         && field.get(testInstance) == null) {
 
-                WebDriver driver = WebDriverProvider.get(true);
+                WebDriver driver = WebDriverProvider.getWebDriver();
 
                 AbstractPrimePage page = PrimePageFactory.create((Class<? extends AbstractPrimePage>) field.getType(), driver);
 

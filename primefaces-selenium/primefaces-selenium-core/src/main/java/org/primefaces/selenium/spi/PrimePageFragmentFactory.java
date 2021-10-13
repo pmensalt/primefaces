@@ -58,7 +58,7 @@ public class PrimePageFragmentFactory {
     private PrimePageFragmentFactory() {
     }
 
-    public static <T extends WebElement> T create(Class<T> fragment, WebElement element) {
+    public static <T extends WebElement> T create(WebDriver driver, Class<T> fragment,WebElement element) {
         ElementLocator el;
         if (element instanceof AbstractPrimePageFragment) {
             el = ((AbstractPrimePageFragment) element).getElementLocator();
@@ -77,18 +77,16 @@ public class PrimePageFragmentFactory {
             };
         }
 
-        return create(fragment, element, el);
+        return create(driver, fragment, el);
     }
 
-    public static <T extends WebElement> T create(Class<T> fragment, WebElement element, ElementLocator el) {
+    public static <T extends WebElement> T create(WebDriver driver, Class<T> fragment, ElementLocator el) {
         try {
             T proxy = proxy(fragment,
                     InvocationHandlerAdapter.of((Object p, Method method, Object[] args) -> {
-                        OnloadScripts.execute();
+                        OnloadScripts.execute(driver);
                         return method.invoke(el.findElement(), args);
                     }));
-
-            WebDriver driver = WebDriverProvider.get();
 
             if (proxy instanceof AbstractPrimePage) {
                 ((AbstractPrimePage) proxy).setWebDriver(driver);
@@ -138,7 +136,7 @@ public class PrimePageFragmentFactory {
 
         if (WebElement.class.isAssignableFrom(field.getType())) {
             value = proxy((Class<T>) field.getType(),
-                        MethodDelegation.to(new ElementLocatorInterceptor(el)));
+                        MethodDelegation.to(new ElementLocatorInterceptor(driver, el)));
 
             if (value instanceof AbstractPrimePage) {
                 ((AbstractPrimePage) value).setWebDriver(driver);
@@ -156,7 +154,7 @@ public class PrimePageFragmentFactory {
         if (List.class.isAssignableFrom(field.getType())) {
             Class<? extends WebElement> genericClass = extractGenericListType(field);
             if (genericClass != null) {
-                InvocationHandler handler = new ElementsLocatorInterceptor(el, genericClass);
+                InvocationHandler handler = new ElementsLocatorInterceptor(driver, el, genericClass);
 
                 value = Proxy.newProxyInstance(
                             ProxyUtils.class.getClassLoader(), new Class[] {List.class}, handler);

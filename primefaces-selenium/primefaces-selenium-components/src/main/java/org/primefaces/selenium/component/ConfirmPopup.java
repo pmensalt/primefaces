@@ -68,7 +68,7 @@ public abstract class ConfirmPopup extends AbstractComponent {
      * @return true if visible false if not
      */
     public boolean isVisible() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isVisible();");
+        return executeScript("return " + getWidgetByIdScript() + ".isVisible();");
     }
 
     /**
@@ -76,8 +76,8 @@ public abstract class ConfirmPopup extends AbstractComponent {
      */
     public void hidePopup() {
         if (isEnabled() && isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
+            executeScript(getWidgetByIdScript() + ".hide();");
+            waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
         }
     }
 

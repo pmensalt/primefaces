@@ -41,8 +41,8 @@ public abstract class DataTable extends AbstractTable<Row> {
         return getRowsWebElement().stream()
                 .filter(rowElt -> !PrimeSelenium.hasCssClass(rowElt, "ui-datatable-empty-message"))
                 .map(rowElt -> {
-                    List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
-                    return new Row(rowElt, cells);
+                    List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(getWebDriver(), cellElt)).collect(Collectors.toList());
+                    return new Row(getWebDriver(), rowElt, cells);
                 }).collect(Collectors.toList());
     }
 

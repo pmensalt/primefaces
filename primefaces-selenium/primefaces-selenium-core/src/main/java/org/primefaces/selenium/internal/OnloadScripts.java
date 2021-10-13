@@ -25,6 +25,7 @@ package org.primefaces.selenium.internal;
 
 import java.util.List;
 
+import org.openqa.selenium.WebDriver;
 import org.primefaces.selenium.PrimeSelenium;
 
 public class OnloadScripts {
@@ -33,18 +34,18 @@ public class OnloadScripts {
 
     }
 
-    public static void execute() {
-        if (isInstalled()) {
+    public static void execute(WebDriver driver) {
+        if (isInstalled(driver)) {
             return;
         }
 
         List<String> onloadScripts = ConfigProvider.getInstance().getOnloadScripts();
-        PrimeSelenium.executeScript("(function () { " + String.join(";", onloadScripts) + " })();");
+        PrimeSelenium.executeScript(driver, "(function () { " + String.join(";", onloadScripts) + " })();");
     }
 
-    private static boolean isInstalled() {
-        PrimeSelenium.waitDocumentLoad();
+    private static boolean isInstalled(WebDriver driver) {
+        PrimeSelenium.waitDocumentLoad(driver);
 
-        return PrimeSelenium.executeScript("return window.pfselenium != null;");
+        return PrimeSelenium.executeScript(driver, "return window.pfselenium != null;");
     }
 }

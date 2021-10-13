@@ -83,7 +83,7 @@ public final class PrimeExpectedConditions {
         return new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver webDriver) {
-                return (Boolean) PrimeSelenium.executeScript(
+                return (Boolean) PrimeSelenium.executeScript(webDriver,
                             "var elem = arguments[0],"
                                         + "    box = elem.getBoundingClientRect(),"
                                         + "    cx = box.left + box.width / 2,"

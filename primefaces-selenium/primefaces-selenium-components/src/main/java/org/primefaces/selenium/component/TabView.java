@@ -75,8 +75,8 @@ public abstract class TabView extends AbstractComponent {
         final JSONObject cfg = getWidgetConfiguration();
         final boolean isDynamic = cfg.has("dynamic") && cfg.getBoolean("dynamic");
 
-        if (isDynamic || ComponentUtils.hasAjaxBehavior(getRoot(), "tabChange")) {
-            PrimeSelenium.guardAjax(headers.get(index)).click();
+        if (isDynamic || ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "tabChange")) {
+            guardAjax(headers.get(index)).click();
         }
         else {
             headers.get(index).click();

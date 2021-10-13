@@ -26,14 +26,17 @@ package org.primefaces.selenium.component.model.datatable;
 import java.util.List;
 import java.util.Optional;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class Header {
 
+    private final WebDriver driver;
     private WebElement webElement;
     private List<HeaderCell> cells;
 
-    public Header(WebElement webElement, List<HeaderCell> cells) {
+    public Header(WebDriver driver, WebElement webElement, List<HeaderCell> cells) {
+        this.driver = driver;
         this.webElement = webElement;
         this.cells = cells;
     }
@@ -62,5 +65,9 @@ public class Header {
         return getCells().stream()
                     .filter(cell -> headerText.equals(cell.getColumnTitle().getText()))
                     .findFirst();
+    }
+    
+    public WebDriver getWebDriver() {
+        return driver;
     }
 }

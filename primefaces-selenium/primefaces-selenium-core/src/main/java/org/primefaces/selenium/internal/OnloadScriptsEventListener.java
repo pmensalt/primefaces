@@ -26,36 +26,37 @@ package org.primefaces.selenium.internal;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public class OnloadScriptsEventListener extends AbstractWebDriverEventListener {
 
     @Override
     public void afterNavigateTo(String url, WebDriver driver) {
-        OnloadScripts.execute();
+        OnloadScripts.execute(new EventFiringWebDriver(driver));
     }
 
     @Override
     public void afterNavigateBack(WebDriver driver) {
-        OnloadScripts.execute();
+        OnloadScripts.execute(new EventFiringWebDriver(driver));
     }
 
     @Override
     public void afterNavigateForward(WebDriver driver) {
-        OnloadScripts.execute();
+        OnloadScripts.execute(new EventFiringWebDriver(driver));
     }
 
     @Override
     public void afterNavigateRefresh(WebDriver driver) {
-        OnloadScripts.execute();
+        OnloadScripts.execute(new EventFiringWebDriver(driver));
     }
 
     @Override
     public void beforeClickOn(WebElement element, WebDriver driver) {
-        OnloadScripts.execute();
+        OnloadScripts.execute(new EventFiringWebDriver(driver));
     }
 
     @Override
     public void afterClickOn(WebElement element, WebDriver driver) {
-        OnloadScripts.execute();
+        OnloadScripts.execute(new EventFiringWebDriver(driver));
     }
 }

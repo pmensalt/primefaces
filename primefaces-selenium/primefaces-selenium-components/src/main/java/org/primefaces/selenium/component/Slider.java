@@ -38,17 +38,17 @@ public abstract class Slider extends AbstractInputComponent {
      * @return true if AJAX enabled false if not
      */
     public boolean isSlideEndAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "slideEnd");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "slideEnd");
     }
 
     public Number getValue() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
+        return executeScript("return " + getWidgetByIdScript() + ".getValue();");
     }
 
     public void setValue(Number value) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value + ");");
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".onSlide(null, { value: " + value + " });");
-        PrimeSelenium.executeScript(isSlideEndAjaxified(), getWidgetByIdScript() + ".onSlideEnd(null, { value: " + value + " });");
+        executeScript(getWidgetByIdScript() + ".setValue(" + value + ");");
+        executeScript(getWidgetByIdScript() + ".onSlide(null, { value: " + value + " });");
+        executeScript(isSlideEndAjaxified(), getWidgetByIdScript() + ".onSlideEnd(null, { value: " + value + " });");
     }
 
 }

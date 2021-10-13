@@ -24,6 +24,7 @@
 package org.primefaces.selenium.component.model.treetable;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.model.datatable.Cell;
@@ -34,8 +35,8 @@ import java.util.Optional;
 
 public class Row extends org.primefaces.selenium.component.model.datatable.Row {
 
-    public Row(WebElement webElement, List<Cell> cells) {
-        super(webElement, cells);
+    public Row(WebDriver driver, WebElement webElement, List<Cell> cells) {
+        super(driver, webElement, cells);
     }
 
     public boolean isToggleable() {
@@ -44,7 +45,7 @@ public class Row extends org.primefaces.selenium.component.model.datatable.Row {
 
     public void toggle() {
         if (isToggleable()) {
-            PrimeSelenium.guardAjax(getToggler()).click();
+            PrimeSelenium.guardAjax(getWebDriver(), getToggler()).click();
         }
     }
 

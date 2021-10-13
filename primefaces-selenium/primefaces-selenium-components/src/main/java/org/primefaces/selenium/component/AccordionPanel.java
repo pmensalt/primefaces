@@ -86,8 +86,8 @@ public abstract class AccordionPanel extends AbstractComponent {
      * @param index the index of the tab to expand
      */
     public void toggleTab(int index) {
-        if (ComponentUtils.hasAjaxBehavior(getRoot(), "tabChange")) {
-            PrimeSelenium.guardAjax(getHeaders().get(index)).click();
+        if (ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "tabChange")) {
+            guardAjax(getHeaders().get(index)).click();
         }
         else {
             getHeaders().get(index).click();

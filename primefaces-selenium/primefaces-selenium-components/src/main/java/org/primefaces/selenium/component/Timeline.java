@@ -42,7 +42,7 @@ public abstract class Timeline extends AbstractComponent {
     public void select(String cssClass) {
         WebElement element = findElement(By.className(cssClass));
         if (isSelectAjaxified()) {
-            PrimeSelenium.guardAjax(element).click();
+            guardAjax(element).click();
         }
         else {
             element.click();
@@ -55,7 +55,7 @@ public abstract class Timeline extends AbstractComponent {
      * @return true if using AJAX for rangechanged
      */
     public boolean isRangeChangedAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "rangechanged");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "rangechanged");
     }
 
     /**
@@ -64,14 +64,14 @@ public abstract class Timeline extends AbstractComponent {
      * @return true if using AJAX for select
      */
     public boolean isSelectAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "select");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "select");
     }
 
     /**
      * Force render the timeline component.
      */
     public void update() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".renderTimeline();");
+        executeScript(getWidgetByIdScript() + ".renderTimeline();");
     }
 
     /**
@@ -80,7 +80,7 @@ public abstract class Timeline extends AbstractComponent {
      * @return The number of event in the timeline.
      */
     public long getNumberOfEvents() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getNumberOfEvents();");
+        return executeScript("return " + getWidgetByIdScript() + ".getNumberOfEvents();");
     }
 
     /**
@@ -89,7 +89,7 @@ public abstract class Timeline extends AbstractComponent {
      * @param zoomFactor a number between 0 and 1
      */
     public void zoom(double zoomFactor) {
-        PrimeSelenium.executeScript(isRangeChangedAjaxified(), getWidgetByIdScript() + ".zoom(" + zoomFactor + ");");
+        executeScript(isRangeChangedAjaxified(), getWidgetByIdScript() + ".zoom(" + zoomFactor + ");");
     }
 
     /**
@@ -98,6 +98,6 @@ public abstract class Timeline extends AbstractComponent {
      * @param moveFactor a number between 0 and 1
      */
     public void move(double moveFactor) {
-        PrimeSelenium.executeScript(isRangeChangedAjaxified(), getWidgetByIdScript() + ".move(" + moveFactor + ");");
+        executeScript(isRangeChangedAjaxified(), getWidgetByIdScript() + ".move(" + moveFactor + ");");
     }
 }

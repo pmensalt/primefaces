@@ -49,7 +49,7 @@ public abstract class Rating extends AbstractInputComponent {
      * @return true if AJAX enabled false if not
      */
     public boolean isCancelAjaxified() {
-        return ComponentUtils.hasBehavior(this, "cancel") || isOnchangeAjaxified();
+        return ComponentUtils.hasBehavior(getWebDriver(), this, "cancel") || isOnchangeAjaxified();
     }
 
     /**
@@ -58,7 +58,7 @@ public abstract class Rating extends AbstractInputComponent {
      * @return true if AJAX enabled false if not
      */
     public boolean isRatingAjaxified() {
-        return ComponentUtils.hasBehavior(this, "rate") || isOnchangeAjaxified();
+        return ComponentUtils.hasBehavior(getWebDriver(), this, "rate") || isOnchangeAjaxified();
     }
 
     /**
@@ -76,7 +76,7 @@ public abstract class Rating extends AbstractInputComponent {
     public void cancel() {
         WebElement cancelIcon = getCancelIcon();
         if (isCancelAjaxified() || isRatingAjaxified()) {
-            PrimeSelenium.guardAjax(cancelIcon).click();
+            guardAjax(cancelIcon).click();
         }
         else {
             cancelIcon.click();
@@ -90,7 +90,7 @@ public abstract class Rating extends AbstractInputComponent {
      * @return The current rating value.
      */
     public Number getValue() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
+        return executeScript("return " + getWidgetByIdScript() + ".getValue();");
     }
 
     /**
@@ -99,14 +99,14 @@ public abstract class Rating extends AbstractInputComponent {
      * @param value New rating value to set (number of starts selected).
      */
     public void setValue(Number value) {
-        PrimeSelenium.executeScript(isRatingAjaxified(), getWidgetByIdScript() + ".setValue(" + value + ");");
+        executeScript(isRatingAjaxified(), getWidgetByIdScript() + ".setValue(" + value + ");");
     }
 
     /**
      * Resets the rating so that no stars are selected.
      */
     public void reset() {
-        PrimeSelenium.executeScript(isCancelAjaxified(), getWidgetByIdScript() + ".reset();");
+        executeScript(isCancelAjaxified(), getWidgetByIdScript() + ".reset();");
     }
 
     /**
@@ -115,7 +115,7 @@ public abstract class Rating extends AbstractInputComponent {
      * @return true if disabled
      */
     public boolean isDisabled() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isDisabled();");
+        return executeScript("return " + getWidgetByIdScript() + ".isDisabled();");
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class Rating extends AbstractInputComponent {
      * @return true if readonly
      */
     public boolean isReadOnly() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isReadOnly();");
+        return executeScript("return " + getWidgetByIdScript() + ".isReadOnly();");
     }
 
     @Override

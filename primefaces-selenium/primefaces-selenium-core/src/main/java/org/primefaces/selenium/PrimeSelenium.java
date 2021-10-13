@@ -24,6 +24,7 @@
 package org.primefaces.selenium;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.selenium.internal.ConfigProvider;
@@ -43,50 +44,43 @@ public final class PrimeSelenium {
         super();
     }
 
-    /**
-     * Gets the current Selenium WebDriver.
-     *
-     * @return the {@link WebDriver} currently being used
-     */
-    public static WebDriver getWebDriver() {
-        return WebDriverProvider.get();
-    }
 
     /**
      * Creates the PrimeFaces Selenium component for the selector.
-     *
+     * 
+     * @param driver the driver to use
      * @param fragmentClass the component class to create like InputText.class
      * @param by the selector to find the component by
      * @param <T> the type of component returned
      * @return the component
      */
-    public static <T extends WebElement> T createFragment(Class<T> fragmentClass, By by) {
-        WebElement element = getWebDriver().findElement(by);
-        return createFragment(fragmentClass, element);
+    public static <T extends WebElement> T createFragment(WebDriver driver, Class<T> fragmentClass, By by) {
+        WebElement element = driver.findElement(by);
+        return createFragment(driver, fragmentClass, element);
     }
 
     /**
      * Creates the PrimeFaces Selenium component for the element.
      *
+     * @param driver the driver to use
      * @param fragmentClass the component class to create like InputText.class
      * @param element the WebElement to bind this component class to
      * @param <T> the type of component returned
      * @return the component
      */
-    public static <T extends WebElement> T createFragment(Class<T> fragmentClass, WebElement element) {
-        return PrimePageFragmentFactory.create(fragmentClass, element);
+    public static <T extends WebElement> T createFragment(WebDriver driver, Class<T> fragmentClass, WebElement element) {
+        return PrimePageFragmentFactory.create(driver, fragmentClass, element);
     }
 
     /**
      * Goto a particular page.
      *
+     * @param driver the driver to use
      * @param pageClass the Page class to go to
      * @param <T> the {@link AbstractPrimePage} type
      * @return the {@link AbstractPrimePage} page created
      */
-    public static <T extends AbstractPrimePage> T goTo(Class<T> pageClass) {
-        WebDriver driver = WebDriverProvider.get();
-
+    public static <T extends AbstractPrimePage> T goTo(WebDriver driver, Class<T> pageClass) {
         T page = PrimePageFactory.create(pageClass, driver);
         driver.get(getUrl(page));
 
@@ -96,16 +90,17 @@ public final class PrimeSelenium {
     /**
      * Goto a particular page.
      *
+     * @param driver the driver to use
      * @param page the {@link AbstractPrimePage} to go to
      */
     public static void goTo(AbstractPrimePage page) {
-        WebDriver driver = WebDriverProvider.get();
+        WebDriver driver = page.getWebDriver();
         driver.get(getUrl(page));
-        if (isSafari()) {
+        if (page.isSafari()) {
             /*
              * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
              */
-            wait(500);
+            page.wait(500);
         }
     }
 
@@ -181,12 +176,13 @@ public final class PrimeSelenium {
     /**
      * Is the Element present on the page?
      *
+     * @param driver the driver to use
      * @param by the selector
      * @return true if present
      */
-    public static boolean isElementPresent(By by) {
+    public static boolean isElementPresent(WebDriver driver, By by) {
         try {
-            getWebDriver().findElement(by);
+            driver.findElement(by);
             return true;
         }
         catch (NoSuchElementException | StaleElementReferenceException e) {
@@ -213,12 +209,13 @@ public final class PrimeSelenium {
     /**
      * Is the Element displayed on the page?
      *
+     * @param driver the driver to use
      * @param by the selector
      * @return true if displayed
      */
-    public static boolean isElementDisplayed(By by) {
+    public static boolean isElementDisplayed(WebDriver driver, By by) {
         try {
-            return getWebDriver().findElement(by).isDisplayed();
+            return driver.findElement(by).isDisplayed();
         }
         catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
@@ -243,12 +240,13 @@ public final class PrimeSelenium {
     /**
      * Is the Element enabled on the page?
      *
+     * @param driver the driver to use
      * @param by the selector
      * @return true if enabled
      */
-    public static boolean isElementEnabled(By by) {
+    public static boolean isElementEnabled(WebDriver driver, By by) {
         try {
-            return getWebDriver().findElement(by).isEnabled();
+            return driver.findElement(by).isEnabled();
         }
         catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
@@ -283,62 +281,68 @@ public final class PrimeSelenium {
     /**
      * Guard the HTTP request which means wait until it has completed before returning.
      *
+     * @param driver the driver to use
      * @param target the target to guard
      * @param <T> the type
      * @return the type
      */
-    public static <T> T guardHttp(T target) {
-        return Guard.http(target);
+    public static <T> T guardHttp(WebDriver driver, T target) {
+        return Guard.http(driver, target);
     }
 
     /**
      * Guard the AJAX request which means wait until it has completed before returning.
      *
+     * @param driver the driver to use
+     * @param driver the driver to use
      * @param target the element to guard
      * @param <T> the type of element
      * @return the element
      */
-    public static <T> T guardAjax(T target) {
-        return Guard.ajax(target);
+    public static <T> T guardAjax(WebDriver driver, T target) {
+        return Guard.ajax(driver,target);
     }
 
     /**
      * Guard the AJAX request which means wait until it has completed before returning. This introduces a delay because some client side activity uses
      * "setTimeout" Javascript to delay the execution of AJAX.
      *
+     * @param driver the driver to use
      * @param target the element to guard
      * @param delayInMilliseconds how long to delay before expecting an AJAX event
      * @param <T> the element type
      * @return the element
      */
-    public static <T> T guardAjax(T target, int delayInMilliseconds) {
-        return Guard.ajax(target, delayInMilliseconds);
+    public static <T> T guardAjax(WebDriver driver, T target, int delayInMilliseconds) {
+        return Guard.ajax(driver,target, delayInMilliseconds);
     }
 
     /**
      * Guard the widget script which fires an AJAX request and means wait until it has completed before returning.
      *
+     * @param driver the driver to use
      * @param script the script to execute
      * @param args any arguments to the script
      * @param <T> the return type
      * @return the result of running the JavaScript
      */
-    public static <T> T guardAjax(String script, Object... args) {
-        return Guard.ajax(script, args);
+    public static <T> T guardAjax(WebDriver driver, String script, Object... args) {
+        return Guard.ajax(driver,script, args);
     }
 
     /**
      * Executes JavaScript in the browser.
      *
+     * @param driver the driver to use
      * @param script the script to execute
      * @param args any arguments to the script
      * @param <T> the return type
      * @return the result of running the JavaScript
      */
-    public static <T> T executeScript(String script, Object... args) {
-        JavascriptExecutor executor = (JavascriptExecutor) getWebDriver();
+    public static <T> T executeScript(WebDriver driver, String script, Object... args) {
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
         T t = (T) executor.executeScript(script, args);
-        if (isSafari()) {
+        if (isSafari(driver)) {
             /*
              * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
              */
@@ -350,18 +354,19 @@ public final class PrimeSelenium {
     /**
      * Executes JavaScript in the browser and will wait if the request is an AJAX request.
      *
+     * @param driver the driver to use
      * @param isAjaxified true if this is an AJAX request, false if regular script
      * @param script the script to execute
      * @param args any arguments to the script
      * @param <T> the return type
      * @return the result of running the JavaScript
      */
-    public static <T> T executeScript(boolean isAjaxified, String script, Object... args) {
+    public static <T> T executeScript(WebDriver driver, boolean isAjaxified, String script, Object... args) {
         if (isAjaxified) {
-            return guardAjax(script, args);
+            return guardAjax(driver, script, args);
         }
         else {
-            return executeScript(script, args);
+            return executeScript(driver, script, args);
         }
     }
 
@@ -369,11 +374,11 @@ public final class PrimeSelenium {
      * Wait will ignore instances of NotFoundException that are encountered (thrown) by default in the 'until' condition, and immediately propagate all others.
      * You can add more to the ignore list by calling ignoring(exceptions to add).
      *
+     * @param driver the driver to use
      * @return the {@link WebDriverWait}
      */
-    public static WebDriverWait waitGui() {
+    public static WebDriverWait waitGui(WebDriver driver) {
         ConfigProvider config = ConfigProvider.getInstance();
-        WebDriver driver = WebDriverProvider.get();
         WebDriverWait wait = new WebDriverWait(driver, config.getTimeoutGui(), 100);
         return wait;
     }
@@ -381,11 +386,11 @@ public final class PrimeSelenium {
     /**
      * Wait until the document is loaded.
      *
+     * @param driver the driver to use
      * @return the {@link WebDriverWait}
      */
-    public static WebDriverWait waitDocumentLoad() {
+    public static WebDriverWait waitDocumentLoad(WebDriver driver) {
         ConfigProvider config = ConfigProvider.getInstance();
-        WebDriver driver = WebDriverProvider.get();
 
         WebDriverWait wait = new WebDriverWait(driver, config.getTimeoutDocumentLoad(), 100);
         wait.until(PrimeExpectedConditions.documentLoaded());
@@ -394,39 +399,52 @@ public final class PrimeSelenium {
     }
 
     /**
+     * @param driver the driver to use
      * Globally disable all CSS and jQuery animations.
      */
-    public static void disableAnimations() {
-        executeScript("if (window.PrimeFaces) { $(function() { PrimeFaces.utils.disableAnimations(); }); }");
+    public static void disableAnimations(WebDriver driver) {
+        executeScript(driver, "if (window.PrimeFaces) { $(function() { PrimeFaces.utils.disableAnimations(); }); }");
     }
 
     /**
+     * @param driver the driver to use
      * Globally enable all CSS and jQuery animations.
      */
-    public static void enableAnimations() {
-        executeScript("if (window.PrimeFaces) { $(function() { PrimeFaces.utils.enableAnimations(); }); }");
+    public static void enableAnimations(WebDriver driver) {
+        executeScript(driver, "if (window.PrimeFaces) { $(function() { PrimeFaces.utils.enableAnimations(); }); }");
     }
 
     /**
      * Sets a value to a hidden input.
      *
+     * @param driver the driver to use
      * @param input the WebElement input to set
      * @param value the value to set
      * @see <a href="https://stackoverflow.com/questions/11858366/how-to-type-some-text-in-hidden-field-in-selenium-webdriver-using-java">Stack Overflow</a>
      */
-    public static void setHiddenInput(WebElement input, String value) {
-        executeScript(" document.getElementById('" + input.getAttribute("id") + "').value='" + value + "'");
+    public static void setHiddenInput(WebDriver driver, WebElement input, String value) {
+        executeScript(driver, " document.getElementById('" + input.getAttribute("id") + "').value='" + value + "'");
+    }
+    
+    /**
+     * Clears the browser console.
+     * @param driver the webdrive to use
+     */
+    public static void clearConsole(WebDriver driver) {
+        // https://stackoverflow.com/questions/51404360/how-to-clear-console-errors-using-selenium
+        PrimeSelenium.executeScript(driver, "console.clear();");
     }
 
     /**
      * Clears the input field of text.
      *
+     * @param driver the driver to use
      * @param input the WebElement input to set
      * @param isAjaxified true if using AJAX
      * @see <a href="https://stackoverflow.com/a/64067604/502366">Safari Hack</a>
      */
-    public static void clearInput(WebElement input, boolean isAjaxified) {
-        if (PrimeSelenium.isSafari()) {
+    public static void clearInput(WebDriver driver, WebElement input, boolean isAjaxified) {
+        if (isSafari(driver)) {
             // Safari hack https://stackoverflow.com/a/64067604/502366
             String inputText = input.getAttribute("value");
             if (inputText != null && inputText.length() > 0) {
@@ -435,7 +453,7 @@ public final class PrimeSelenium {
                     clearText[i] = Keys.BACK_SPACE;
                 }
                 if (isAjaxified) {
-                    guardAjax(input).sendKeys(clearText);
+                    guardAjax(driver, input).sendKeys(clearText);
                 }
                 else {
                     input.sendKeys(clearText);
@@ -447,7 +465,7 @@ public final class PrimeSelenium {
             Keys command = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
             input.sendKeys(Keys.chord(command, "a"));
             if (isAjaxified) {
-                guardAjax(input).sendKeys(Keys.BACK_SPACE);
+                guardAjax(driver, input).sendKeys(Keys.BACK_SPACE);
             }
             else {
                 input.sendKeys(Keys.BACK_SPACE);
@@ -458,30 +476,33 @@ public final class PrimeSelenium {
     /**
      * Is the current WebDriver a Chrome driver?
      *
+     * @param driver the driver to use
      * @return true if Chrome, false if any other browser
      */
-    public static boolean isChrome() {
-        Capabilities cap = ((EventFiringWebDriver) getWebDriver()).getCapabilities();
+    public static boolean isChrome(WebDriver driver) {
+        Capabilities cap = ((EventFiringWebDriver) driver).getCapabilities();
         return "Chrome".equalsIgnoreCase(cap.getBrowserName());
     }
 
     /**
      * Is the current WebDriver a Firefox driver?
      *
+     * @param driver the driver to use
      * @return true if Firefox, false if any other browser
      */
-    public static boolean isFirefox() {
-        Capabilities cap = ((EventFiringWebDriver) getWebDriver()).getCapabilities();
+    public static boolean isFirefox(WebDriver driver) {
+        Capabilities cap = ((EventFiringWebDriver) driver).getCapabilities();
         return "Firefox".equalsIgnoreCase(cap.getBrowserName());
     }
 
     /**
      * Is the current WebDriver a Safari driver?
      *
+     * @param driver the driver to use
      * @return true if Safari, false if any other browser
      */
-    public static boolean isSafari() {
-        Capabilities cap = ((EventFiringWebDriver) getWebDriver()).getCapabilities();
+    public static boolean isSafari(WebDriver driver) {
+        Capabilities cap = ((EventFiringWebDriver) driver).getCapabilities();
         return "Safari".equalsIgnoreCase(cap.getBrowserName());
     }
 

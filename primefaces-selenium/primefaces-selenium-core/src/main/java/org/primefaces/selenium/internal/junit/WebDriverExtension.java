@@ -24,24 +24,32 @@
 package org.primefaces.selenium.internal.junit;
 
 import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.openqa.selenium.WebDriver;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
-public class WebDriverExtension implements BeforeAllCallback, AfterAllCallback {
+public class WebDriverExtension implements BeforeEachCallback, AfterEachCallback, BeforeAllCallback, AfterAllCallback {
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
-        WebDriverProvider.get(true);
+        WebDriverProvider.getWebDriverInitializationBeforeAll();
     }
 
     @Override
     public void afterAll(ExtensionContext context) throws Exception {
-        WebDriver webDriver = WebDriverProvider.get();
-        if (webDriver != null) {
-            webDriver.quit();
-        }
-        WebDriverProvider.set(null);
+        WebDriverProvider.closeAllWebDrivers();
     }
+
+    @Override
+    public void beforeEach(ExtensionContext context) throws Exception {
+        WebDriverProvider.getWebDriverInitializationBeforeEach();
+    }
+
+    @Override
+    public void afterEach(ExtensionContext context) throws Exception {
+        WebDriverProvider.resetWebDrivers();
+    }
+
 }

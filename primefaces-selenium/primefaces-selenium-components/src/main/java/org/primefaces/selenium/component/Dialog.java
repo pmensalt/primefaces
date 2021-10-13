@@ -54,7 +54,7 @@ public abstract class Dialog extends AbstractComponent {
      * @return true if visible false if not
      */
     public boolean isVisible() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isVisible();");
+        return executeScript("return " + getWidgetByIdScript() + ".isVisible();");
     }
 
     /**
@@ -62,8 +62,8 @@ public abstract class Dialog extends AbstractComponent {
      */
     public void show() {
         if (isEnabled() && !isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(this));
+            executeScript(getWidgetByIdScript() + ".show();");
+            waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(this));
         }
     }
 
@@ -72,8 +72,8 @@ public abstract class Dialog extends AbstractComponent {
      */
     public void hide() {
         if (isEnabled() && isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
+            executeScript(getWidgetByIdScript() + ".hide();");
+            waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
         }
     }
 

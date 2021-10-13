@@ -75,7 +75,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * @return true if using AJAX for clear
      */
     public boolean isClearAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "clear");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "clear");
     }
 
     /**
@@ -84,7 +84,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * @return true if using AJAX for itemSelect
      */
     public boolean isItemSelectAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "itemSelect");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "itemSelect");
     }
 
     /**
@@ -93,7 +93,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * @return true if using AJAX for itemUnselect
      */
     public boolean isItemUnselectAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "itemUnselect");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "itemUnselect");
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * @return true if using AJAX for query
      */
     public boolean isQueryAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "query");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "query");
     }
 
     /**
@@ -134,7 +134,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
     public void setValue(String value) {
         int delay = setValueWithoutTab(value);
         if (delay > 0) {
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.animationNotActive());
+            waitGui().until(PrimeExpectedConditions.animationNotActive());
         }
         sendTabKey();
     }
@@ -148,7 +148,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
     public int setValueWithoutTab(Serializable value) {
         WebElement input = getInput();
         input.clear();
-        ComponentUtils.sendKeys(input, value.toString());
+        ComponentUtils.sendKeys(getWebDriver(), input, value.toString());
         int delay = getDelay();
         PrimeSelenium.wait(delay * 2);
         return delay;
@@ -159,7 +159,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      */
     public void sendTabKey() {
         if (isOnchangeAjaxified()) {
-            PrimeSelenium.guardAjax(getInput()).sendKeys(Keys.TAB);
+            guardAjax(getInput()).sendKeys(Keys.TAB);
         }
         else {
             getInput().sendKeys(Keys.TAB);
@@ -171,14 +171,14 @@ public abstract class AutoComplete extends AbstractInputComponent {
      */
     @Override
     public void clear() {
-        PrimeSelenium.clearInput(getInput(), isClearAjaxified());
+        clearInput(getInput(), isClearAjaxified());
     }
 
     /**
      * Waits until the AutoComplete-Panel containing the suggestions shows up. (eg after typing)
      */
     public void wait4Panel() {
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
+        waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
     }
 
     /**
@@ -187,7 +187,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
     public void show() {
         WebElement panel = getPanel();
         if (isEnabled() && !panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            executeScript(getWidgetByIdScript() + ".show();");
             wait4Panel();
         }
     }
@@ -198,8 +198,8 @@ public abstract class AutoComplete extends AbstractInputComponent {
     public void hide() {
         WebElement panel = getPanel();
         if (isEnabled() && panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
+            executeScript(getWidgetByIdScript() + ".hide();");
+            waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         }
     }
 
@@ -207,14 +207,14 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * Activates search behavior
      */
     public void activate() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".activate();");
+        executeScript(getWidgetByIdScript() + ".activate();");
     }
 
     /**
      * Deactivates search behavior
      */
     public void deactivate() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".deactivate();");
+        executeScript(getWidgetByIdScript() + ".deactivate();");
     }
 
     /**
@@ -223,7 +223,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * @param item the item to add to the tokens
      */
     public void addItem(String item) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".addItem('" + item + "');");
+        executeScript(getWidgetByIdScript() + ".addItem('" + item + "');");
     }
 
     /**
@@ -232,7 +232,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * @param item the item to remove from the tokens
      */
     public void removeItem(String item) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".removeItem('" + item + "');");
+        executeScript(getWidgetByIdScript() + ".removeItem('" + item + "');");
     }
 
     /**
@@ -242,7 +242,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      */
     public void search(String value) {
         // search always uses AJAX no matter what
-        PrimeSelenium.executeScript(true, getWidgetByIdScript() + ".search(arguments[0]);", value);
+        executeScript(true, getWidgetByIdScript() + ".search(arguments[0]);", value);
         wait4Panel();
     }
 

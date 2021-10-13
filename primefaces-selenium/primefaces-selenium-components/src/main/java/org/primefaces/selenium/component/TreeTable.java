@@ -40,8 +40,8 @@ public abstract class TreeTable extends AbstractTable<Row> {
 
     public List<Row> getRows() {
         return getRowsWebElement().stream().map(rowElt -> {
-            List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
-            return new Row(rowElt, cells);
+            List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(getWebDriver(), cellElt)).collect(Collectors.toList());
+            return new Row(getWebDriver(), rowElt, cells);
         }).collect(Collectors.toList());
     }
 

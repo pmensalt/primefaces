@@ -38,7 +38,7 @@ public abstract class OverlayPanel extends AbstractComponent {
      * @return true if visible false if not
      */
     public boolean isVisible() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isVisible();");
+        return executeScript("return " + getWidgetByIdScript() + ".isVisible();");
     }
 
     /**
@@ -54,21 +54,21 @@ public abstract class OverlayPanel extends AbstractComponent {
      * Toggle the overlay visibility.
      */
     public void toggle() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggle();");
+        executeScript(getWidgetByIdScript() + ".toggle();");
     }
 
     /**
      * Makes this overlay modal.
      */
     public void enableModality() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enableModality();");
+        executeScript(getWidgetByIdScript() + ".enableModality();");
     }
 
     /**
      * Makes this overlay non-modal.
      */
     public void disableModality() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disableModality();");
+        executeScript(getWidgetByIdScript() + ".disableModality();");
     }
 
     /**
@@ -76,7 +76,7 @@ public abstract class OverlayPanel extends AbstractComponent {
      */
     public void show() {
         if (isEnabled() && !isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            executeScript(getWidgetByIdScript() + ".show();");
             waitForDisplay();
         }
     }
@@ -86,8 +86,8 @@ public abstract class OverlayPanel extends AbstractComponent {
      */
     public void hide() {
         if (isEnabled() && isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
+            executeScript(getWidgetByIdScript() + ".hide();");
+            waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
         }
     }
 
@@ -96,7 +96,7 @@ public abstract class OverlayPanel extends AbstractComponent {
      */
     public void waitForDisplay() {
         PrimeSelenium.wait(getShowDelay());
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(this));
+        waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(this));
     }
 
 }

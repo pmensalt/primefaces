@@ -51,19 +51,14 @@ import java.util.stream.Collectors;
 @ExtendWith(PageInjectionExtension.class)
 public abstract class AbstractPrimePageTest {
 
-    @BeforeEach
-    public void beforeEach() {
-        clearConsole();
-    }
-
     protected void assertPresent(WebElement element) {
         if (!PrimeSelenium.isElementPresent(element)) {
             Assertions.fail("Element should be present!");
         }
     }
 
-    protected void assertPresent(By by) {
-        if (!PrimeSelenium.isElementPresent(by)) {
+    protected void assertPresent(WebDriver driver, By by) {
+        if (!PrimeSelenium.isElementPresent(driver, by)) {
             Assertions.fail("Element should be present!");
         }
     }
@@ -74,8 +69,8 @@ public abstract class AbstractPrimePageTest {
         }
     }
 
-    protected void assertNotPresent(By by) {
-        if (PrimeSelenium.isElementPresent(by)) {
+    protected void assertNotPresent(WebDriver driver, By by) {
+        if (PrimeSelenium.isElementPresent(driver, by)) {
             Assertions.fail("Element should not be present!");
         }
     }
@@ -86,8 +81,8 @@ public abstract class AbstractPrimePageTest {
         }
     }
 
-    protected void assertDisplayed(By by) {
-        if (!PrimeSelenium.isElementDisplayed(by)) {
+    protected void assertDisplayed(WebDriver driver, By by) {
+        if (!PrimeSelenium.isElementDisplayed(driver,by)) {
             Assertions.fail("Element should be displayed!");
         }
     }
@@ -98,8 +93,8 @@ public abstract class AbstractPrimePageTest {
         }
     }
 
-    protected void assertNotDisplayed(By by) {
-        if (PrimeSelenium.isElementDisplayed(by)) {
+    protected void assertNotDisplayed(WebDriver driver, By by) {
+        if (PrimeSelenium.isElementDisplayed(driver,by)) {
             Assertions.fail("Element should not be displayed!");
         }
     }
@@ -110,8 +105,8 @@ public abstract class AbstractPrimePageTest {
         }
     }
 
-    protected void assertEnabled(By by) {
-        if (!PrimeSelenium.isElementEnabled(by)) {
+    protected void assertEnabled(WebDriver driver, By by) {
+        if (!PrimeSelenium.isElementEnabled(driver,by)) {
             Assertions.fail("Element should be enabled!");
         }
     }
@@ -122,8 +117,8 @@ public abstract class AbstractPrimePageTest {
         }
     }
 
-    protected void assertNotEnabled(By by) {
-        if (PrimeSelenium.isElementEnabled(by)) {
+    protected void assertNotEnabled(WebDriver driver, By by) {
+        if (PrimeSelenium.isElementEnabled(driver,by)) {
             Assertions.fail("Element should not be enabled!");
         }
     }
@@ -134,8 +129,8 @@ public abstract class AbstractPrimePageTest {
         }
     }
 
-    protected void assertDisabled(By by) {
-        if (PrimeSelenium.isElementEnabled(by)) {
+    protected void assertDisabled(WebDriver driver, By by) {
+        if (PrimeSelenium.isElementEnabled(driver,by)) {
             Assertions.fail("Element should be disabled!");
         }
     }
@@ -146,14 +141,14 @@ public abstract class AbstractPrimePageTest {
         }
     }
 
-    protected void assertNotDisabled(By by) {
-        if (!PrimeSelenium.isElementEnabled(by)) {
+    protected void assertNotDisabled(WebDriver driver, By by) {
+        if (!PrimeSelenium.isElementEnabled(driver, by)) {
             Assertions.fail("Element should not be disabled!");
         }
     }
 
-    protected void assertIsAt(AbstractPrimePage page) {
-        assertIsAt(page.getLocation());
+    protected void assertIsAt(WebDriver driver, AbstractPrimePage page) {
+        assertIsAt(driver, page.getLocation());
     }
 
     protected void assertClickable(WebElement element) {
@@ -168,7 +163,7 @@ public abstract class AbstractPrimePageTest {
         }
     }
 
-    protected void assertIsAt(Class<? extends AbstractPrimePage> pageClass) {
+    protected void assertIsAt(WebDriver driver, Class<? extends AbstractPrimePage> pageClass) {
         String location;
         try {
             location = PrimeSelenium.getUrl((AbstractPrimePage) pageClass.getDeclaredConstructor().newInstance());
@@ -177,14 +172,15 @@ public abstract class AbstractPrimePageTest {
             throw new RuntimeException(e);
         }
 
-        assertIsAt(location);
+        assertIsAt(driver,location);
     }
 
     /**
      * Checks the browse console and asserts there are no SEVERE level messages.
+     * @param driver the webdrive to use
      */
-    protected void assertNoJavascriptErrors() {
-        LogEntries logEntries = getLogsForType(LogType.BROWSER);
+    protected void assertNoJavascriptErrors(WebDriver driver) {
+        LogEntries logEntries = getLogsForType(driver, LogType.BROWSER);
         if (logEntries == null) {
             return;
         }
@@ -195,19 +191,21 @@ public abstract class AbstractPrimePageTest {
     }
 
     /**
+     * @param driver the webdrive to use
      * Clears the browser console.
      */
-    protected void clearConsole() {
+    protected void clearConsole(WebDriver driver) {
         // https://stackoverflow.com/questions/51404360/how-to-clear-console-errors-using-selenium
-        PrimeSelenium.executeScript("console.clear();");
-        getLogsForType(LogType.BROWSER);
+        PrimeSelenium.clearConsole(driver);
+        getLogsForType(driver,LogType.BROWSER);
     }
 
     /**
      * Dumps to System.out or System.err any messages found in the browser console.
+     *@param driver the webdrive to use
      */
-    protected void printConsole() {
-        LogEntries logEntries = getLogsForType(LogType.BROWSER);
+    protected void printConsole(WebDriver driver) {
+        LogEntries logEntries = getLogsForType(driver,LogType.BROWSER);
         if (logEntries == null) {
             return;
         }
@@ -224,15 +222,16 @@ public abstract class AbstractPrimePageTest {
     /**
      * Utility method for checking the browser console for a specific type of message.
      *
+     *@param driver the webdrive to use
      * @param type the {@link LogType} you are searching for
      * @return either NULL if not available or the {@link LogEntries}
      */
-    protected LogEntries getLogsForType(String type) {
-        if (!isConsoleSupported()) {
+    protected LogEntries getLogsForType(WebDriver driver,String type) {
+        if (!isConsoleSupported(driver)) {
             return null;
         }
 
-        Logs logs = getWebDriver().manage().logs();
+        Logs logs = driver.manage().logs();
         if (logs == null) {
             return null;
         }
@@ -243,22 +242,18 @@ public abstract class AbstractPrimePageTest {
         return logs.get(type);
     }
 
-    private boolean isConsoleSupported() {
+    private boolean isConsoleSupported(WebDriver driver) {
         // Firefox does not support https://github.com/mozilla/geckodriver/issues/284
         // Safari does not support https://github.com/SeleniumHQ/selenium/issues/7580
-        return !PrimeSelenium.isFirefox() && !PrimeSelenium.isSafari();
+        return !PrimeSelenium.isFirefox(driver) && !PrimeSelenium.isSafari(driver);
     }
 
-    protected void assertIsAt(String relativePath) {
-        Assertions.assertTrue(getWebDriver().getCurrentUrl().contains(relativePath));
+    protected void assertIsAt(WebDriver driver,String relativePath) {
+        Assertions.assertTrue(driver.getCurrentUrl().contains(relativePath));
     }
 
-    protected <T extends AbstractPrimePage> T goTo(Class<T> pageClass) {
-        return PrimeSelenium.goTo(pageClass);
-    }
-
-    protected WebDriver getWebDriver() {
-        return WebDriverProvider.get();
+    protected <T extends AbstractPrimePage> T goTo(WebDriver driver, Class<T> pageClass) {
+        return PrimeSelenium.goTo(driver, pageClass);
     }
 
     /**
