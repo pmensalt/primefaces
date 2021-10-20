@@ -24,7 +24,6 @@
 package org.primefaces.selenium.component;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.html.Link;
 
 /**
