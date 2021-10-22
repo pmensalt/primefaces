@@ -27,7 +27,6 @@ import java.io.Serializable;
 
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
 

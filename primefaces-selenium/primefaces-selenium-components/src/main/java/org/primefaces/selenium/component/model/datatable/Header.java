@@ -66,7 +66,7 @@ public class Header {
                     .filter(cell -> headerText.equals(cell.getColumnTitle().getText()))
                     .findFirst();
     }
-    
+
     public WebDriver getWebDriver() {
         return driver;
     }

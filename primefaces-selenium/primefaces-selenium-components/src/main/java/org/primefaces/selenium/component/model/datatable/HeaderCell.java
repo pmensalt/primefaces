@@ -131,7 +131,7 @@ public class HeaderCell extends Cell {
         }
 
         if (triggerKey != null) {
-            PrimeSelenium. guardAjax(getWebDriver(), columnFilter).sendKeys(triggerKey);
+            PrimeSelenium.guardAjax(getWebDriver(), columnFilter).sendKeys(triggerKey);
         }
         else if (filterDelay > 0) {
             try {
