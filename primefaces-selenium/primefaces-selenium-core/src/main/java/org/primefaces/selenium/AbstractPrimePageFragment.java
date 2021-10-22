@@ -202,7 +202,7 @@ public abstract class AbstractPrimePageFragment implements WebElement, WrapsElem
      * @return the result of running the JavaScript
      */
     public <T> T executeScript(boolean isAjaxified, String script, Object... args) {
-        return PrimeSelenium.executeScript(webdriver, isAjaxified, script, args);
+        return PrimeSelenium.executeScript(webDriver, isAjaxified, script, args);
     }
 
     /**
