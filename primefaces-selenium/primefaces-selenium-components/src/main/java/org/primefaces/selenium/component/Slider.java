@@ -23,7 +23,6 @@
  */
 package org.primefaces.selenium.component;
 
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
 

@@ -24,7 +24,6 @@
 package org.primefaces.selenium.component;
 
 import org.openqa.selenium.By;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractTable;
 import org.primefaces.selenium.component.model.datatable.Cell;
 import org.primefaces.selenium.component.model.datatable.Row;

@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.component.model.Tab;

@@ -59,7 +59,7 @@ public class Row {
     public Cell getCell(int index) {
         return cells.get(index);
     }
-    
+
     public WebDriver getWebDriver() {
         return driver;
     }

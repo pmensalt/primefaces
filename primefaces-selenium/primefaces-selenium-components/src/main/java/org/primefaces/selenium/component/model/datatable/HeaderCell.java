@@ -108,7 +108,7 @@ public class HeaderCell extends Cell {
             case "keypress":
             case "input":
                 if (filterDelay == 0) {
-                    columnFilter = PrimeSelenium.guardAjax(getWebDriver(),columnFilter);
+                    columnFilter = PrimeSelenium.guardAjax(getWebDriver(), columnFilter);
                 }
                 break;
             case "enter":
@@ -123,7 +123,7 @@ public class HeaderCell extends Cell {
         }
 
         if (filterValue != null) {
-            ComponentUtils.sendKeys(getWebDriver(),columnFilter, filterValue);
+            ComponentUtils.sendKeys(getWebDriver(), columnFilter, filterValue);
         }
         else {
             // null filter press backspace to trigger the re-filtering
@@ -131,7 +131,7 @@ public class HeaderCell extends Cell {
         }
 
         if (triggerKey != null) {
-            PrimeSelenium. guardAjax(getWebDriver(),columnFilter).sendKeys(triggerKey);
+            PrimeSelenium. guardAjax(getWebDriver(), columnFilter).sendKeys(triggerKey);
         }
         else if (filterDelay > 0) {
             try {
