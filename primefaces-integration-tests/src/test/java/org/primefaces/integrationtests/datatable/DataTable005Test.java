@@ -24,26 +24,44 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.json.JSONObject;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.spi.WebDriverProvider;
 
 import java.util.stream.Stream;
 
 public class DataTable005Test extends AbstractDataTableTest {
+
+    private WebDriver driver;
+
+    @BeforeEach
+    public void beforeEach() {
+        driver = WebDriverProvider.getWebDriver();
+    }
+
+    @BeforeEach
+    public void afterEach() {
+        WebDriverProvider.resetWebDrivers();
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        WebDriverProvider.closeAllWebDrivers();
+    }
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
@@ -51,20 +69,20 @@ public class DataTable005Test extends AbstractDataTableTest {
     @DisplayName("DataTable: selection - multiple")
     public void testSelectionMultiple(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        driver.get(PrimeSelenium.getUrl(xhtml));
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 
         // Act
         dataTable.getCell(0, 0).getWebElement().click();
-        Actions actions = new Actions(getWebDriver());
+        Actions actions = new Actions(driver);
         actions.keyDown(Keys.META).click(dataTable.getCell(2, 0).getWebElement()).keyUp(Keys.META).perform();
         actions.keyDown(Keys.SHIFT).click(dataTable.getCell(4, 0).getWebElement()).keyUp(Keys.SHIFT).perform();
         getButton().click();
 
         // Assert
         dataTable = getDataTable();
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(driver, dataTable.getWidgetConfiguration());
         assertMessage("Selected ProgrammingLanguage(s)", "1,3,4,5");
 
         // Act
@@ -73,7 +91,7 @@ public class DataTable005Test extends AbstractDataTableTest {
 
         // Assert - selection must not be lost after update
         dataTable = getDataTable();
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(driver, dataTable.getWidgetConfiguration());
         assertMessage("Selected ProgrammingLanguage(s)", "1,3,4,5");
     }
 
@@ -83,20 +101,20 @@ public class DataTable005Test extends AbstractDataTableTest {
     @DisplayName("DataTable: GitHub #7368 Selection with filtering")
     public void testSelectionWithFilter(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        driver.get(PrimeSelenium.getUrl(xhtml));
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 
         // Act
         dataTable.getCell(0, 0).getWebElement().click();
-        Actions actions = new Actions(getWebDriver());
+        Actions actions = new Actions(driver);
         actions.keyDown(Keys.META).click(dataTable.getCell(2, 0).getWebElement()).keyUp(Keys.META).perform();
         actions.keyDown(Keys.SHIFT).click(dataTable.getCell(4, 0).getWebElement()).keyUp(Keys.SHIFT).perform();
         getButton().click();
 
         // Assert
         dataTable = getDataTable();
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(driver, dataTable.getWidgetConfiguration());
         assertMessage("Selected ProgrammingLanguage(s)", "1,3,4,5");
 
         // Act - filter
@@ -106,7 +124,7 @@ public class DataTable005Test extends AbstractDataTableTest {
 
         // Assert - selection must not be lost after filter and update
         dataTable = getDataTable();
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(driver, dataTable.getWidgetConfiguration());
         assertMessage("Selected ProgrammingLanguage(s)", "1,3,4,5");
 
         // Act - clear filter
@@ -116,7 +134,7 @@ public class DataTable005Test extends AbstractDataTableTest {
 
         // Assert - selection must not be lost after filter and update
         dataTable = getDataTable();
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(driver, dataTable.getWidgetConfiguration());
         assertMessage("Selected ProgrammingLanguage(s)", "1,3,4,5");
     }
 
@@ -125,8 +143,8 @@ public class DataTable005Test extends AbstractDataTableTest {
         Assertions.assertTrue(getMessages().getMessage(0).getDetail().contains(detail));
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(WebDriver driver, JSONObject cfg) {
+        assertNoJavascriptErrors(driver);
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("selectionMode"));
     }
@@ -138,18 +156,18 @@ public class DataTable005Test extends AbstractDataTableTest {
     }
 
     private Messages getMessages() {
-        return PrimeSelenium.createFragment(Messages.class, By.id("form:msgs"));
+        return PrimeSelenium.createFragment(driver, Messages.class, By.id("form:msgs"));
     }
 
     private DataTable getDataTable() {
-        return PrimeSelenium.createFragment(DataTable.class, By.id("form:datatable"));
+        return PrimeSelenium.createFragment(driver, DataTable.class, By.id("form:datatable"));
     }
 
     private CommandButton getButton() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:button"));
+        return PrimeSelenium.createFragment(driver, CommandButton.class, By.id("form:button"));
     }
 
     private CommandButton getButtonUpdate() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonUpdate"));
+        return PrimeSelenium.createFragment(driver, CommandButton.class, By.id("form:buttonUpdate"));
     }
 }

@@ -24,18 +24,22 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.json.JSONObject;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.datatable.Row;
+import org.primefaces.selenium.spi.WebDriverProvider;
 
 import java.util.Comparator;
 import java.util.List;
@@ -44,18 +48,35 @@ import java.util.stream.Stream;
 
 public class DataTable002Test extends AbstractDataTableTest {
 
+    private WebDriver driver;
+
+    @BeforeEach
+    public void beforeEach() {
+        driver = WebDriverProvider.getWebDriver();
+    }
+
+    @BeforeEach
+    public void afterEach() {
+        WebDriverProvider.resetWebDrivers();
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        WebDriverProvider.closeAllWebDrivers();
+    }
+
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(1)
     @DisplayName("DataTable: Lazy: Basic & Paginator")
     public void testLazyAndPaginator(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        driver.get(PrimeSelenium.getUrl(xhtml));
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 
         // Act
-        //page.button.click();
+        // driver.button.click();
 
         // Assert
         List<Row> rows = dataTable.getRows();
@@ -66,9 +87,9 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertEquals("1", firstRow.getCell(0).getText());
         Assertions.assertEquals("Language 1", firstRow.getCell(1).getText());
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(driver, dataTable.getWidgetConfiguration());
 
-        // Act - second page
+        // Act - second driver
         dataTable.selectPage(2);
 
         // Assert
@@ -80,9 +101,9 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertEquals("11", firstRow.getCell(0).getText());
         Assertions.assertEquals("Language 11", firstRow.getCell(1).getText());
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(driver, dataTable.getWidgetConfiguration());
 
-        // Act - last page
+        // Act - last driver
         dataTable.selectPage(8);
 
         // Assert
@@ -90,7 +111,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertNotNull(rows);
         Assertions.assertEquals(5, rows.size());
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(driver, dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -99,12 +120,14 @@ public class DataTable002Test extends AbstractDataTableTest {
     @DisplayName("DataTable: Lazy: single sort")
     public void testLazySortSingle(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        driver.get(PrimeSelenium.getUrl(xhtml));
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
-        List<ProgrammingLanguage> langsAsc = model.getLangs().stream().sorted(Comparator.comparing(ProgrammingLanguage::getName)).collect(Collectors.toList());
-        List<ProgrammingLanguage> langsDesc = model.getLangs().stream().sorted(Comparator.comparing(ProgrammingLanguage::getName).reversed())
-                    .collect(Collectors.toList());
+        List<ProgrammingLanguage> langsAsc = model.getLangs().stream()
+                .sorted(Comparator.comparing(ProgrammingLanguage::getName)).collect(Collectors.toList());
+        List<ProgrammingLanguage> langsDesc =
+                model.getLangs().stream().sorted(Comparator.comparing(ProgrammingLanguage::getName).reversed())
+                        .collect(Collectors.toList());
 
         // Act - ascending
         dataTable.selectPage(1);
@@ -131,7 +154,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertEquals(langsDesc.get(1).getName(), rows.get(1).getCell(1).getText());
         Assertions.assertEquals(langsDesc.get(9).getName(), rows.get(9).getCell(1).getText());
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(driver, dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -140,13 +163,13 @@ public class DataTable002Test extends AbstractDataTableTest {
     @DisplayName("DataTable: Lazy: filter")
     public void testLazyFilter(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        driver.get(PrimeSelenium.getUrl(xhtml));
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
         List<ProgrammingLanguage> langsFiltered = model.getLangs().stream()
-                    .filter(l -> l.getFirstAppeared() >= 1998)
-                    .sorted(Comparator.comparingInt(ProgrammingLanguage::getFirstAppeared))
-                    .collect(Collectors.toList());
+                .filter(l -> l.getFirstAppeared() >= 1998)
+                .sorted(Comparator.comparingInt(ProgrammingLanguage::getFirstAppeared))
+                .collect(Collectors.toList());
 
         // Act
         dataTable.selectPage(1);
@@ -156,10 +179,10 @@ public class DataTable002Test extends AbstractDataTableTest {
         // Assert
         List<Row> rows = dataTable.getRows();
         Assertions.assertNotNull(rows);
-        Assertions.assertEquals(10, rows.size()); //one page
+        Assertions.assertEquals(10, rows.size()); // one driver
         Assertions.assertEquals(langsFiltered.get(0).getName(), rows.get(0).getCell(1).getText());
         Assertions.assertEquals(langsFiltered.get(1).getName(), rows.get(1).getCell(1).getText());
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(driver, dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -168,12 +191,12 @@ public class DataTable002Test extends AbstractDataTableTest {
     @DisplayName("DataTable: Lazy: rowSelect-event")
     public void testLazyRowSelect(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        driver.get(PrimeSelenium.getUrl(xhtml));
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 
         // Act
-        page.guardAjax(dataTable.getCell(3, 0).getWebElement()).click();
+        PrimeSelenium.guardAjax(driver, dataTable.getCell(3, 0).getWebElement()).click();
 
         // Assert
         Assertions.assertEquals(1, getMessages().getAllMessages().size());
@@ -181,7 +204,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         String row3ProgLang = dataTable.getRow(3).getCell(0).getText() + " - " + dataTable.getCell(3, 1).getText();
         Assertions.assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(driver, dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -190,7 +213,7 @@ public class DataTable002Test extends AbstractDataTableTest {
     @DisplayName("DataTable: Lazy: rowSelect-event with filter applied before")
     public void testLazyRowSelectWithFilterApplied(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        driver.get(PrimeSelenium.getUrl(xhtml));
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
         dataTable.selectPage(1);
@@ -198,7 +221,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         dataTable.filter("First Appeared", "1998");
 
         // Act
-        page.guardAjax(dataTable.getCell(3, 0).getWebElement()).click();
+        PrimeSelenium.guardAjax(driver, dataTable.getCell(3, 0).getWebElement()).click();
 
         // Assert
         Assertions.assertEquals(1, getMessages().getAllMessages().size());
@@ -206,7 +229,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         String row3ProgLang = dataTable.getRow(3).getCell(0).getText() + " - " + dataTable.getCell(3, 1).getText();
         Assertions.assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(driver, dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -215,7 +238,7 @@ public class DataTable002Test extends AbstractDataTableTest {
     @DisplayName("DataTable: Lazy: selection with filter applied before")
     public void testLazySelectionWithFilterApplied(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        driver.get(PrimeSelenium.getUrl(xhtml));
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
         dataTable.selectPage(1);
@@ -223,7 +246,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         dataTable.filter("First Appeared", "1998");
 
         // Act
-        page.guardAjax(dataTable.getCell(3, 0).getWebElement()).click();
+        PrimeSelenium.guardAjax(driver, dataTable.getCell(3, 0).getWebElement()).click();
         getButtonSubmit().click();
 
         // Assert
@@ -232,52 +255,54 @@ public class DataTable002Test extends AbstractDataTableTest {
         String row3ProgLang = getDataTable().getRow(3).getCell(0).getText();
         Assertions.assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
 
-        assertConfiguration(page, getDataTable().getWidgetConfiguration());
+        assertConfiguration(driver, getDataTable().getWidgetConfiguration());
     }
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(7)
-    @DisplayName("DataTable: Lazy: delete rows from last page - https://github.com/primefaces/primefaces/issues/1921")
+    @DisplayName("DataTable: Lazy: delete rows from last driver - https://github.com/primefaces/primefaces/issues/1921")
     public void testLazyRowDeleteFromLastPage(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        driver.get(PrimeSelenium.getUrl(xhtml));
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
         dataTable.selectPage(dataTable.getPaginator().getPages().size());
 
         // Act & Assert
-        for (int row=5; row>1; row--) {
+        for (int row = 5; row > 1; row--) {
             Assertions.assertEquals(row, getDataTable().getRows().size());
-            page.guardAjax(getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+            PrimeSelenium.guardAjax(driver, getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button")))
+                    .click();
             Assertions.assertEquals(8, getDataTable().getPaginator().getActivePage().getNumber());
         }
 
-        // Act & Assert - delete last row on page 8
-        page.guardAjax(getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+        // Act & Assert - delete last row on driver 8
+        PrimeSelenium.guardAjax(driver, getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
         Assertions.assertEquals(7, getDataTable().getPaginator().getActivePage().getNumber());
         Assertions.assertEquals(10, getDataTable().getRows().size());
 
-        // Act & Assert - select first row on page 7
-        page.guardAjax(getDataTable().getCell(0, 0).getWebElement()).click();
+        // Act & Assert - select first row on driver 7
+        PrimeSelenium.guardAjax(driver, getDataTable().getCell(0, 0).getWebElement()).click();
         Assertions.assertEquals(1, getMessages().getAllMessages().size());
         Assertions.assertEquals("ProgrammingLanguage Selected", getMessages().getMessage(0).getSummary());
-        String row0ProgLang = getDataTable().getRow(0).getCell(0).getText() + " - " + getDataTable().getCell(0, 1).getText();
+        String row0ProgLang =
+                getDataTable().getRow(0).getCell(0).getText() + " - " + getDataTable().getCell(0, 1).getText();
         Assertions.assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());
 
-        // Act & Assert - delete first row on page 7
-        page.guardAjax(getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+        // Act & Assert - delete first row on driver 7
+        PrimeSelenium.guardAjax(driver, getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
         Assertions.assertEquals(1, getMessages().getAllMessages().size());
         Assertions.assertEquals("ProgrammingLanguage Deleted", getMessages().getMessage(0).getSummary());
         Assertions.assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());
         Assertions.assertEquals(7, getDataTable().getPaginator().getActivePage().getNumber());
         Assertions.assertEquals(9, getDataTable().getRows().size());
 
-        assertConfiguration(page, getDataTable().getWidgetConfiguration());
+        assertConfiguration(driver, getDataTable().getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(WebDriver driver, JSONObject cfg) {
+        assertNoJavascriptErrors(driver);
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("paginator"));
     }
@@ -289,14 +314,14 @@ public class DataTable002Test extends AbstractDataTableTest {
     }
 
     private DataTable getDataTable() {
-        return PrimeSelenium.createFragment(DataTable.class, By.id("form:datatable"));
+        return PrimeSelenium.createFragment(driver, DataTable.class, By.id("form:datatable"));
     }
 
     private Messages getMessages() {
-        return PrimeSelenium.createFragment(Messages.class, By.id("form:msgs"));
+        return PrimeSelenium.createFragment(driver, Messages.class, By.id("form:msgs"));
     }
 
     private CommandButton getButtonSubmit() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonSubmit"));
+        return PrimeSelenium.createFragment(driver, CommandButton.class, By.id("form:buttonSubmit"));
     }
 }
