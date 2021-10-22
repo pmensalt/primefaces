@@ -65,11 +65,11 @@ public class DataTable017Test extends AbstractDataTableTest {
         Assertions.assertEquals("3", dataTable.getCell(2, 0).getWebElement().getAttribute("rowspan"));
         Assertions.assertEquals("INTERPRETED", dataTable.getCell(2, 0).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("groupColumnIndexes"));
     }

@@ -62,7 +62,7 @@ public class TabView001Test extends AbstractPrimePageTest {
         tabView.toggleTab(2);
 
         // Assert - part 2
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         Assertions.assertEquals(2, tabView.getSelectedTab().getIndex());
         Assertions.assertEquals("Tab3", tabView.getSelectedTab().getTitle());
     }

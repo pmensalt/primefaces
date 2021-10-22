@@ -54,7 +54,7 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
 
         // Assert - part 1
         Assertions.assertEquals("Volkswagen", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
 
         // Act
         selectOneMenu.toggleDropdown();
@@ -71,7 +71,7 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
         options= selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
         Assertions.assertEquals(8, options.size());
 
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
@@ -93,11 +93,11 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
         Assertions.assertEquals("Mercedes", options.get(2).getText());
         Assertions.assertEquals("Chry<sler", options.get(4).getText());
 
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("SelectOneMenu Config = " + cfg);
         Assertions.assertTrue(cfg.has("appendTo"));
     }

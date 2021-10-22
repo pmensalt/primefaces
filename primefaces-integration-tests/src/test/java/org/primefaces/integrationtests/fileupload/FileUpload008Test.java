@@ -50,9 +50,9 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -68,9 +68,9 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         fileUpload.setValue(file1, file2);
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1, file2);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         fileUpload.setValue(file1, file2);
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1, file2);
 
         // Act
@@ -95,9 +95,9 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         fileUpload.setValue(file3, file4);
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1, file2, file3, file4);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         fileUpload.setValue(file1, file2);
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1, file2);
 
         // Act
@@ -125,7 +125,7 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         fileUpload.setValue(file3, file4);
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1, file2, file3, file4);
 
         // Act
@@ -136,9 +136,9 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(fileLimitMsg), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1, file2, file3, file4);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -159,9 +159,9 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(invalidSizeMsg), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -182,12 +182,12 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(invalidTypeMsg), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
-    private void assertConfiguration(FileUpload fileUpload) {
+    private void assertConfiguration(Page page, FileUpload fileUpload) {
         JSONObject cfg = fileUpload.getWidgetConfiguration();
         System.out.println("FileInput Config = " + cfg);
         Assertions.assertFalse(cfg.has("skinSimple"));

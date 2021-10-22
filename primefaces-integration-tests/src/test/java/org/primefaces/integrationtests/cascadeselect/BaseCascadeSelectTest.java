@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.cascadeselect;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebElement;
+import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CascadeSelect;
 import org.primefaces.selenium.component.Messages;
@@ -46,8 +47,8 @@ abstract public class BaseCascadeSelectTest extends AbstractPrimePageTest {
         Assertions.assertEquals(detail, message.getDetail());
     }
 
-    protected void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    protected void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("CascadeSelect Config = " + cfg);
         Assertions.assertTrue(cfg.has("appendTo"));
         Assertions.assertTrue(cfg.has("behaviors"));

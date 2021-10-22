@@ -57,16 +57,16 @@ public class DataTable003Test extends AbstractDataTableTest {
         WebElement eltSortName = dataTable.getHeader().getCell(1).getWebElement();
 
         // 1) sort by firstAppeared desc
-        PrimeSelenium.guardAjax(eltSortFirstAppeared).click();
-        PrimeSelenium.guardAjax(eltSortFirstAppeared).click();
+        page.guardAjax(eltSortFirstAppeared).click();
+        page.guardAjax(eltSortFirstAppeared).click();
         assertHeaderSorted(eltSortFirstAppeared, "DESC", 0);
 
         // 2) additional sort by name asc
         Action actionMetaPlusSortClick = actions.keyDown(Keys.META).click(eltSortName).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionMetaPlusSortClick).perform();
+        page.guardAjax(actionMetaPlusSortClick).perform();
 
         // Assert
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
         assertHeaderSorted(eltSortFirstAppeared, "DESC", 1);
         assertHeaderSorted(eltSortName, "ASC", 2);
 
@@ -88,17 +88,17 @@ public class DataTable003Test extends AbstractDataTableTest {
         WebElement eltSortName = dataTable.getHeader().getCell(1).getWebElement();
 
         // 1) sort by firstAppeared desc
-        PrimeSelenium.guardAjax(eltSortFirstAppeared).click();
-        PrimeSelenium.guardAjax(eltSortFirstAppeared).click();
+        page.guardAjax(eltSortFirstAppeared).click();
+        page.guardAjax(eltSortFirstAppeared).click();
         assertHeaderSorted(eltSortFirstAppeared, "DESC", 0);
 
         // 2) additional sort by name desc
         Action actionMetaPlusSortClick = actions.keyDown(Keys.META).click(eltSortName).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionMetaPlusSortClick).perform();
-        PrimeSelenium.guardAjax(actionMetaPlusSortClick).perform();
+        page.guardAjax(actionMetaPlusSortClick).perform();
+        page.guardAjax(actionMetaPlusSortClick).perform();
 
         // Assert
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
         assertHeaderSorted(eltSortFirstAppeared, "DESC", 1);
         assertHeaderSorted(eltSortName, "DESC", 2);
 
@@ -107,8 +107,8 @@ public class DataTable003Test extends AbstractDataTableTest {
         assertRows(dataTable, langsSorted);
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.getBoolean("multiSort"));
         Assertions.assertFalse(cfg.getBoolean("allowUnsorting"));

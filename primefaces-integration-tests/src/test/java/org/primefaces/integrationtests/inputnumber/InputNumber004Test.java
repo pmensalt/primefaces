@@ -53,7 +53,7 @@ public class InputNumber004Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("87", inputNumber.getValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration(), "0", "0", "999999");
+        assertConfiguration(page, inputNumber.getWidgetConfiguration(), "0", "0", "999999");
     }
 
     @Test
@@ -117,7 +117,7 @@ public class InputNumber004Test extends AbstractPrimePageTest {
         Assertions.assertEquals("", inputNumber.getValue());
 
         // NOTE: because its now NULL the default decimal places is set back to 2 because its no longer an Integer
-        assertConfiguration(inputNumber.getWidgetConfiguration(), "2", "0.0000001", "999999");
+        assertConfiguration(page, inputNumber.getWidgetConfiguration(), "2", "0.0000001", "999999");
     }
 
     @Test
@@ -134,7 +134,7 @@ public class InputNumber004Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("31.90", inputNumber.getValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration(), "2", "0.0000001", "999999.99");
+        assertConfiguration(page, inputNumber.getWidgetConfiguration(), "2", "0.0000001", "999999.99");
     }
 
     @Test
@@ -179,8 +179,8 @@ public class InputNumber004Test extends AbstractPrimePageTest {
         }
     }
 
-    private void assertConfiguration(JSONObject cfg, String decimalPlaces, String minValue, String maxValue) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg, String decimalPlaces, String minValue, String maxValue) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("InputNumber Config = " + cfg);
         Assertions.assertEquals(decimalPlaces, cfg.get("decimalPlaces"));
         Assertions.assertEquals(minValue, cfg.get("minimumValue"));

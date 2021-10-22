@@ -48,7 +48,7 @@ public class InputText001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("hello!", inputText.getValue());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(page, inputText.getWidgetConfiguration());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class InputText001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("hello safari!", inputText.getValue());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(page, inputText.getWidgetConfiguration());
     }
 
     @Test
@@ -89,7 +89,7 @@ public class InputText001Test extends AbstractPrimePageTest {
         Assertions.assertEquals("safari", inputText.getValue());
         Assertions.assertFalse(inputText.isEnabled());
         assertCss(inputText, "ui-state-disabled");
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(page, inputText.getWidgetConfiguration());
     }
 
     @Test
@@ -109,11 +109,11 @@ public class InputText001Test extends AbstractPrimePageTest {
         assertClickable(inputText);
         Assertions.assertTrue(inputText.isEnabled());
         Assertions.assertEquals("testing re-enabled", inputText.getValue());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(page, inputText.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("InputText Config = " + cfg);
         Assertions.assertFalse(cfg.has("maxlength"));
     }

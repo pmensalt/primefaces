@@ -52,7 +52,7 @@ public class Spinner001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("1", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(page, spinner.getWidgetConfiguration());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class Spinner001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("-2", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(page, spinner.getWidgetConfiguration());
     }
 
     @Test
@@ -82,12 +82,12 @@ public class Spinner001Test extends AbstractPrimePageTest {
         Assertions.assertEquals("", spinner.getValue());
 
         // Act
-        ComponentUtils.sendKeys(spinner.getInput(), "abc");
+        ComponentUtils.sendKeys(page.getWebDriver(), spinner.getInput(), "abc");
         page.button.click();
 
         // Assert
         Assertions.assertEquals("", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(page, spinner.getWidgetConfiguration());
     }
 
     @Test
@@ -104,7 +104,7 @@ public class Spinner001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("34", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(page, spinner.getWidgetConfiguration());
     }
 
     @Test
@@ -121,11 +121,11 @@ public class Spinner001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("1,456", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(page, spinner.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("Spinner Config = " + cfg);
         Assertions.assertEquals(1, cfg.getInt("step"));
         Assertions.assertEquals(".", cfg.get("decimalSeparator"));
@@ -140,7 +140,7 @@ public class Spinner001Test extends AbstractPrimePageTest {
 
     public void sendKeys(Spinner spinner, CharSequence value) {
         WebElement input = spinner.getInput();
-        ComponentUtils.sendKeys(input, value);
+        ComponentUtils.sendKeys(spinner.getWebDriver(), input, value);
     }
 
     public static class Page extends AbstractPrimePage {

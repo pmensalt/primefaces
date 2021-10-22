@@ -59,7 +59,8 @@ public class DataTable009Test extends AbstractDataTableTest {
         Assertions.assertEquals("Java", page.messages.getMessage(0).getDetail());
         Assertions.assertEquals("FilteredValue(s)", page.messages.getMessage(1).getSummary());
 //        Assertions.assertEquals("Java,JavaScript", page.messages.getMessage(1).getDetail());
-        Assertions.assertEquals("null", page.messages.getMessage(1).getDetail()); //filtered values are the old filtered values from last time
+        Assertions.assertEquals("null", page.messages.getMessage(1).getDetail()); // filtered values are the old
+                                                                                  // filtered values from last time
 
         // Act
         page.buttonReportFilteredProgLanguages.click();
@@ -76,7 +77,9 @@ public class DataTable009Test extends AbstractDataTableTest {
         Assertions.assertEquals("JavaScript", page.messages.getMessage(0).getDetail());
         Assertions.assertEquals("FilteredValue(s)", page.messages.getMessage(1).getSummary());
 //        Assertions.assertEquals("JavaScript", page.messages.getMessage(1).getDetail());
-        Assertions.assertEquals("Java,JavaScript", page.messages.getMessage(1).getDetail()); //filtered values are the old filtered values from last time
+        Assertions.assertEquals("Java,JavaScript", page.messages.getMessage(1).getDetail()); // filtered values are the
+                                                                                             // old filtered values from
+                                                                                             // last time
 
         // Act
         page.buttonReportFilteredProgLanguages.click();
@@ -85,7 +88,7 @@ public class DataTable009Test extends AbstractDataTableTest {
         Assertions.assertEquals("FilteredValue(s)", page.messages.getMessage(0).getSummary());
         Assertions.assertEquals("JavaScript", page.messages.getMessage(0).getDetail());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -107,7 +110,8 @@ public class DataTable009Test extends AbstractDataTableTest {
         Assertions.assertEquals("2000", page.messages.getMessage(0).getDetail());
         Assertions.assertEquals("FilteredValue(s)", page.messages.getMessage(1).getSummary());
 //        Assertions.assertEquals("C#", page.messages.getMessage(1).getDetail());
-        Assertions.assertEquals("null", page.messages.getMessage(1).getDetail()); //filtered values are the old filtered values from last time
+        Assertions.assertEquals("null", page.messages.getMessage(1).getDetail()); // filtered values are the old
+                                                                                  // filtered values from last time
 
         // Act
         page.buttonReportFilteredProgLanguages.click();
@@ -121,22 +125,23 @@ public class DataTable009Test extends AbstractDataTableTest {
         page.firstAppearedFilter.select("1995");
 
         // Assert
-        validateFirstAppeared(dataTable, page.firstAppearedFilter,"1995");
+        validateFirstAppeared(dataTable, page.firstAppearedFilter, "1995");
         Assertions.assertEquals("FilterValue for firstAppeared", page.messages.getMessage(0).getSummary());
         Assertions.assertEquals("1995", page.messages.getMessage(0).getDetail());
         Assertions.assertEquals("FilteredValue(s)", page.messages.getMessage(1).getSummary());
 //        Assertions.assertEquals("Java,JavaScript", page.messages.getMessage(1).getDetail());
-        Assertions.assertEquals("C#", page.messages.getMessage(1).getDetail()); //filtered values are the old filtered values from last time
+        Assertions.assertEquals("C#", page.messages.getMessage(1).getDetail()); // filtered values are the old filtered
+                                                                                // values from last time
 
         // Act
         page.buttonReportFilteredProgLanguages.click();
 
         // Assert
-        validateFirstAppeared(dataTable, page.firstAppearedFilter,"1995");
+        validateFirstAppeared(dataTable, page.firstAppearedFilter, "1995");
         Assertions.assertEquals("FilteredValue(s)", page.messages.getMessage(0).getSummary());
         Assertions.assertEquals("Java,JavaScript", page.messages.getMessage(0).getDetail());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -155,7 +160,7 @@ public class DataTable009Test extends AbstractDataTableTest {
 
         // Assert
         Assertions.assertEquals("C#", dataTable.getRow(0).getCell(1).getText());
-        SelectOneMenu firstAppeared = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:0:firstAppeared"));
+        SelectOneMenu firstAppeared = page.createFragment(SelectOneMenu.class, By.id("form:datatable:0:firstAppeared"));
         Assertions.assertEquals("2000", firstAppeared.getSelectedLabel());
 
         // Act
@@ -165,27 +170,28 @@ public class DataTable009Test extends AbstractDataTableTest {
 
         // Assert
         Assertions.assertEquals("C#", dataTable.getRow(0).getCell(1).getText());
-        firstAppeared = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:0:firstAppeared"));
+        firstAppeared = page.createFragment(SelectOneMenu.class, By.id("form:datatable:0:firstAppeared"));
         Assertions.assertEquals("2020", firstAppeared.getSelectedLabel());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
-
-    private void validateFirstAppeared(DataTable dataTable, SelectOneMenu firstAppearedFilter, String firstAppearedExpected) {
+    private void validateFirstAppeared(DataTable dataTable, SelectOneMenu firstAppearedFilter,
+            String firstAppearedExpected) {
         Assertions.assertEquals(firstAppearedExpected, firstAppearedFilter.getSelectedLabel());
 
         int rowNumber = 0;
         for (Row row : dataTable.getRows()) {
-        	Assertions.assertNotNull(row);
-            SelectOneMenu firstAppeared = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:" + rowNumber + ":firstAppeared"));
+            Assertions.assertNotNull(row);
+            SelectOneMenu firstAppeared = PrimeSelenium.createFragment(dataTable.getWebDriver(), SelectOneMenu.class,
+                    By.id("form:datatable:" + rowNumber + ":firstAppeared"));
             Assertions.assertEquals(firstAppearedExpected, firstAppeared.getSelectedLabel());
             rowNumber++;
         }
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("filter"));
     }

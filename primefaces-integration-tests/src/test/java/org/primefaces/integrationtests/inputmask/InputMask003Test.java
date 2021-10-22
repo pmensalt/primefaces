@@ -49,7 +49,7 @@ public class InputMask003Test extends AbstractInputMaskTest {
 
         // Assert
         Assertions.assertEquals("", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration(), "aa-999-A999");
+        assertConfiguration(page, inputMask.getWidgetConfiguration(), "aa-999-A999");
     }
 
     @Test
@@ -66,7 +66,7 @@ public class InputMask003Test extends AbstractInputMaskTest {
 
         // Assert
         Assertions.assertEquals("ab-123-C456", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration(), "aa-999-A999");
+        assertConfiguration(page, inputMask.getWidgetConfiguration(), "aa-999-A999");
     }
 
     @Test
@@ -83,7 +83,7 @@ public class InputMask003Test extends AbstractInputMaskTest {
 
         // Assert
         Assertions.assertEquals("(123) 456-7890", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration(), AbstractInputMaskTest.OPTIONAL_MASK);
+        assertConfiguration(page, inputMask.getWidgetConfiguration(), AbstractInputMaskTest.OPTIONAL_MASK);
     }
 
     @Test
@@ -100,11 +100,11 @@ public class InputMask003Test extends AbstractInputMaskTest {
 
         // Assert
         Assertions.assertEquals("(123) 456-7890 x12345", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration(), AbstractInputMaskTest.OPTIONAL_MASK);
+        assertConfiguration(page, inputMask.getWidgetConfiguration(), AbstractInputMaskTest.OPTIONAL_MASK);
     }
 
-    private void assertConfiguration(JSONObject cfg, String mask) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg, String mask) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("InputMask Config = " + cfg);
         Assertions.assertEquals(mask, cfg.getString("mask"));
         Assertions.assertFalse(cfg.has(AbstractInputMaskTest.AUTO_CLEAR));

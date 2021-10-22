@@ -66,7 +66,7 @@ public class DataTable007LazyTest extends AbstractDataTableTest {
         Assertions.assertEquals("99", row.getCell(0).getText());
         Assertions.assertEquals("New Language added", page.messages.getMessage(0).getSummary());
         Assertions.assertEquals("Smalltalk", page.messages.getMessage(0).getDetail());
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class DataTable007LazyTest extends AbstractDataTableTest {
         row.getCell(1).getWebElement().findElement(By.tagName("input")).sendKeys("xyz");
         row.getCell(2).getWebElement().findElement(By.tagName("input")).clear();
         row.getCell(2).getWebElement().findElement(By.tagName("input")).sendKeys("2000");
-        PrimeSelenium.guardAjax(row.getCell(3).getWebElement().findElement(By.className("ui-row-editor-close"))).click();
+        page.guardAjax(row.getCell(3).getWebElement().findElement(By.className("ui-row-editor-close"))).click();
 
         // Assert
         row = dataTable.getRow(1);
@@ -102,7 +102,7 @@ public class DataTable007LazyTest extends AbstractDataTableTest {
         row.getCell(1).getWebElement().findElement(By.tagName("input")).sendKeys("abc");
         row.getCell(2).getWebElement().findElement(By.tagName("input")).clear();
         row.getCell(2).getWebElement().findElement(By.tagName("input")).sendKeys("2020");
-        PrimeSelenium.guardAjax(row.getCell(3).getWebElement().findElement(By.className("ui-row-editor-check"))).click();
+        page.guardAjax(row.getCell(3).getWebElement().findElement(By.className("ui-row-editor-check"))).click();
 
         // Assert
         row = dataTable.getRow(2);
@@ -121,11 +121,11 @@ public class DataTable007LazyTest extends AbstractDataTableTest {
         Assertions.assertEquals("abc", row.getCell(1).getText());
         Assertions.assertEquals("2020", row.getCell(2).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("editable"));
     }

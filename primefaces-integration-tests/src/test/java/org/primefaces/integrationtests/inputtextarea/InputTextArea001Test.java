@@ -48,7 +48,7 @@ public class InputTextArea001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("hello!", inputText.getValue());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(page, inputText.getWidgetConfiguration());
     }
 
     @Test
@@ -64,11 +64,11 @@ public class InputTextArea001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("hello safari!", inputText.getValue());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(page, inputText.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("InputTextarea Config = " + cfg);
         Assertions.assertFalse(cfg.has("maxlength"));
         Assertions.assertTrue(cfg.getBoolean("autoResize"));

@@ -53,11 +53,11 @@ public class DatePicker006Test extends AbstractDatePickerTest {
 
         // Assert
         Assertions.assertEquals(value.toString(), page.messages.getMessage(0).getDetail());
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(page, datePicker.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DatePicker Config = " + cfg);
         Assertions.assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
         Assertions.assertEquals("single", cfg.getString("selectionMode"));

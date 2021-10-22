@@ -36,7 +36,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
 
@@ -56,8 +55,8 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         WebElement panel = datePicker.showPanel(); // focus to bring up panel
 
         // Assert Panel
-        assertDate(panel, "February", "1978");
-        assertTime(panel, "11", "55", "19");
+        assertDate(page, panel, "February", "1978");
+        assertTime(page, panel, "11", "55", "19");
         datePicker.hidePanel();
 
         // Assert Submit Value
@@ -66,7 +65,7 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         Assertions.assertEquals(value, newValue);
         // #6459 showTime="true" automatically detected because of LocalDateTime
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
-        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(page, datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test
@@ -83,8 +82,8 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         WebElement panel = datePicker.showPanel(); // focus to bring up panel
 
         // Assert Panel
-        assertDate(panel, "February", "1978");
-        assertTime(panel, "11", "55", "19");
+        assertDate(page, panel, "February", "1978");
+        assertTime(page, panel, "11", "55", "19");
         datePicker.hidePanel();
 
         // Assert Submit Value
@@ -93,7 +92,7 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         Assertions.assertEquals(value, newValue);
         // #6459 showTime="true" automatically detected because of LocalDateTime
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
-        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(page, datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test
@@ -110,8 +109,8 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         WebElement panel = datePicker.showPanel(); // focus to bring up panel
 
         // Assert Panel
-        assertDate(panel, "February", "1978");
-        assertTime(panel, "11", "55", null);
+        assertDate(page, panel, "February", "1978");
+        assertTime(page, panel, "11", "55", null);
         datePicker.hidePanel();
 
         // Assert Submit Value
@@ -119,7 +118,7 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         LocalDateTime newValue = datePicker.getValue();
         Assertions.assertEquals(value, newValue);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
-        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(page, datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test
@@ -134,8 +133,8 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         WebElement panel = datePicker.showPanel();
 
         // Assert Panel
-        assertDate(panel, "August", "2020");
-        assertTime(panel, "22", "20", "19");
+        assertDate(page, panel, "August", "2020");
+        assertTime(page, panel, "22", "20", "19");
         datePicker.hidePanel();
 
         // Act - click Clear button
@@ -144,9 +143,9 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         datePicker.getClearButton().click();
 
         // Assert - clear button reset to NOW
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
-        assertDate(panel, now.getMonth().name(), Objects.toString(now.getYear()));
-        assertTime(panel, Objects.toString(now.getHour()), null, null);
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
+        assertDate(page, panel, now.getMonth().name(), Objects.toString(now.getYear()));
+        assertTime(page, panel, Objects.toString(now.getHour()), null, null);
         Assertions.assertNull(datePicker.getValue());
     }
 
@@ -162,8 +161,8 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         WebElement panel = datePicker.showPanel();
 
         // Assert Panel
-        assertDate(panel, "August", "2020");
-        assertTime(panel, "22", "20", "19");
+        assertDate(page, panel, "August", "2020");
+        assertTime(page, panel, "22", "20", "19");
         datePicker.hidePanel();
 
         // Act - click Today button
@@ -172,8 +171,8 @@ public class DatePicker004Test extends AbstractDatePickerTest {
 
         // Assert - today button reset to NOW
         LocalDateTime now = LocalDateTime.now();
-        assertDate(panel, now.getMonth().name(), Objects.toString(now.getYear()));
-        assertTime(panel, "22", "20", "19");
+        assertDate(page, panel, now.getMonth().name(), Objects.toString(now.getYear()));
+        assertTime(page, panel, "22", "20", "19");
         Assertions.assertNotNull(datePicker.getValue());
     }
 
@@ -191,8 +190,8 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         WebElement panel = datePicker.showPanel(); // focus to bring up panel
 
         // Assert Panel
-        assertDate(panel, "March", "1979");
-        assertTime(panel, "13", "12", "11", "123");
+        assertDate(page, panel, "March", "1979");
+        assertTime(page, panel, "13", "12", "11", "123");
         datePicker.hidePanel();
 
         // Assert Submit Value
@@ -201,7 +200,7 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         Assertions.assertEquals(value, newValue);
         // #6459 showTime="true" automatically detected because of LocalDateTime
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss.SSS");
-        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(page, datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test
@@ -216,8 +215,8 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         WebElement panel = datePicker.showPanel();
 
         // Assert Panel
-        assertDate(panel, "June", "2021");
-        assertTime(panel, "23", "22", "21", "019");
+        assertDate(page, panel, "June", "2021");
+        assertTime(page, panel, "23", "22", "21", "019");
         datePicker.hidePanel();
 
         // Act - click Clear button
@@ -226,9 +225,9 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         datePicker.getClearButton().click();
 
         // Assert - clear button reset to NOW
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
-        assertDate(panel, now.getMonth().name(), Objects.toString(now.getYear()));
-        assertTime(panel, Objects.toString(now.getHour()), null, null);
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
+        assertDate(page, panel, now.getMonth().name(), Objects.toString(now.getYear()));
+        assertTime(page, panel, Objects.toString(now.getHour()), null, null);
         Assertions.assertNull(datePicker.getValue());
     }
 
@@ -244,8 +243,8 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         WebElement panel = datePicker.showPanel();
 
         // Assert Panel
-        assertDate(panel, "June", "2021");
-        assertTime(panel, "23", "22", "21", "019");
+        assertDate(page, panel, "June", "2021");
+        assertTime(page, panel, "23", "22", "21", "019");
         datePicker.hidePanel();
 
         // Act - click Today button
@@ -254,13 +253,13 @@ public class DatePicker004Test extends AbstractDatePickerTest {
 
         // Assert - today button reset to NOW
         LocalDateTime now = LocalDateTime.now();
-        assertDate(panel, now.getMonth().name(), Objects.toString(now.getYear()));
-        assertTime(panel, "23", "22", "21", "019");
+        assertDate(page, panel, now.getMonth().name(), Objects.toString(now.getYear()));
+        assertTime(page, panel, "23", "22", "21", "019");
         Assertions.assertNotNull(datePicker.getValue());
     }
 
-    private void assertConfiguration(JSONObject cfg, String defaultDate) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg, String defaultDate) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DatePicker Config = " + cfg);
         Assertions.assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
         Assertions.assertEquals(defaultDate, cfg.getString("defaultDate"));
