@@ -80,7 +80,7 @@ public class Tree001Test extends AbstractTreeTest {
         Assertions.assertFalse(firstOfFirst.getWebElement().isDisplayed());
         assertMessage(page.messages, 0, "Collapsed", "Documents");
 
-        assertConfiguration(page, tree.getWidgetConfiguration());
+        assertConfiguration(tree.getWidgetConfiguration());
     }
 
     @Test
@@ -115,7 +115,7 @@ public class Tree001Test extends AbstractTreeTest {
         Assertions.assertTrue(firstOfFirst.getWebElement().isDisplayed());
 
         // Act
-        page.guardAjax(page.buttonUpdate).click();
+        PrimeSelenium.guardAjax(page.buttonUpdate).click();
 
         // Assert
         children = tree.getChildren();
@@ -144,7 +144,7 @@ public class Tree001Test extends AbstractTreeTest {
         firstOfFirst = firstChildren.get(0);
         Assertions.assertTrue(firstOfFirst.getWebElement().isDisplayed());
 
-        assertConfiguration(page, tree.getWidgetConfiguration());
+        assertConfiguration(tree.getWidgetConfiguration());
     }
 
     @Test
@@ -158,7 +158,7 @@ public class Tree001Test extends AbstractTreeTest {
         // Act
         Actions actions = new Actions(page.getWebDriver());
         Action actionUnselect = actions.sendKeys(Keys.TAB, Keys.ARROW_DOWN, Keys.ARROW_RIGHT).build();
-        page.guardAjax(actionUnselect).perform();
+        PrimeSelenium.guardAjax(actionUnselect).perform();
 
         // Assert
         List<TreeNode> children = tree.getChildren();
@@ -177,7 +177,7 @@ public class Tree001Test extends AbstractTreeTest {
         Assertions.assertTrue(secondChildren.get(1).getWebElement().isDisplayed());
         Assertions.assertTrue(secondChildren.get(2).getWebElement().isDisplayed());
 
-        assertConfiguration(page, tree.getWidgetConfiguration());
+        assertConfiguration(tree.getWidgetConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

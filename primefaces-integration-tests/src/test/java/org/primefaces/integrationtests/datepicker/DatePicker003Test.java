@@ -65,11 +65,11 @@ public class DatePicker003Test extends AbstractDatePickerTest {
         Assertions.assertEquals(15, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
         Assertions.assertEquals(20, panel.findElements(By.cssSelector("td > a.ui-state-default")).size());
 
-        assertConfiguration(page, datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
         Assertions.assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
         Assertions.assertEquals("single", cfg.getString("selectionMode"));

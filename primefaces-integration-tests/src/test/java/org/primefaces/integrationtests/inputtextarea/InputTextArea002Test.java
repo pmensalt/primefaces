@@ -50,7 +50,7 @@ public class InputTextArea002Test extends AbstractPrimePageTest {
         InputTextarea.click();
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         Assertions.assertEquals("FillMe*", InputTextarea.getAssignedLabelText());
         Assertions.assertEquals("", InputTextarea.getValue());
         assertCss(InputTextarea, "ui-inputfield", "ui-InputTextarea", "ui-state-hover", "ui-state-focus");
@@ -71,7 +71,7 @@ public class InputTextArea002Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         Assertions.assertEquals("FillMe*", InputTextarea.getAssignedLabelText());
         Assertions.assertEquals("filled", InputTextarea.getValue());
         assertCss(InputTextarea, "ui-inputfield", "ui-InputTextarea", "ui-state-filled");
@@ -91,7 +91,7 @@ public class InputTextArea002Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         Assertions.assertEquals("", InputTextarea.getValue());
         Assertions.assertEquals(1, messages.getAllMessages().size());
         Msg msg = messages.getAllMessages().get(0);
@@ -113,7 +113,7 @@ public class InputTextArea002Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         Assertions.assertEquals("test", InputTextarea.getValue());
         Assertions.assertEquals(0, messages.getAllMessages().size());
     }

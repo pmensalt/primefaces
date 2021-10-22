@@ -34,6 +34,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
@@ -54,11 +55,11 @@ public class DatePicker008Test extends AbstractDatePickerTest {
         WebElement panel = datePicker.showPanel();
 
         // Assert
-        assertDate(page, panel, "July", "1985");
+        assertDate(panel, "July", "1985");
         LocalDate newValue = datePicker.getValueAsLocalDate();
         Assertions.assertEquals(value, newValue);
         assertMessage(page, "1985-07-04");
-        assertConfiguration(page, datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getWidgetConfiguration());
     }
 
     @Test
@@ -77,7 +78,7 @@ public class DatePicker008Test extends AbstractDatePickerTest {
 
         // Assert
         assertNotDisplayed(panel);
-        assertConfiguration(page, datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getWidgetConfiguration());
     }
 
     @Test
@@ -100,7 +101,7 @@ public class DatePicker008Test extends AbstractDatePickerTest {
         LocalDate newValue = datePicker.getValueAsLocalDate();
         Assertions.assertEquals(expectedDate, newValue);
         assertMessage(page, "1985-08-31");
-        assertConfiguration(page, datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getWidgetConfiguration());
     }
 
     @Test
@@ -123,7 +124,7 @@ public class DatePicker008Test extends AbstractDatePickerTest {
         LocalDate newValue = datePicker.getValueAsLocalDate();
         Assertions.assertEquals(expectedDate, newValue);
         assertMessage(page, "1985-06-08");
-        assertConfiguration(page, datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getWidgetConfiguration());
     }
 
     @Test
@@ -141,22 +142,22 @@ public class DatePicker008Test extends AbstractDatePickerTest {
         datePicker.showPanel();
 
         // Assert
-        assertDate(page, datePicker.getPanel(), "July", "1985");
+        assertDate(datePicker.getPanel(), "July", "1985");
         LocalDate newValue = datePicker.getValueAsLocalDate();
         Assertions.assertEquals(value, newValue);
         assertMessage(page, "1985-07-04");
-        assertConfiguration(page, datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getWidgetConfiguration());
     }
 
     private void assertMessage(Page page, String message) {
         Messages messages = page.messages;
-        page.waitGui().until(PrimeExpectedConditions.visibleInViewport(messages));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(messages));
         Msg msg = messages.getMessage(0);
         Assertions.assertEquals(message, msg.getDetail());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
         Assertions.assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
         Assertions.assertEquals("single", cfg.getString("selectionMode"));

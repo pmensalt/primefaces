@@ -50,7 +50,7 @@ public class FeedReader001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertTrue(rssArticles.size() > 3);
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     @Test
@@ -66,7 +66,7 @@ public class FeedReader001Test extends AbstractPrimePageTest {
         // Assert
         WebElement error = form.findElement(By.className("ui-feed-error"));
         Assertions.assertEquals("Error reading RSS Feed!!!", error.getText());
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     public static class Page extends AbstractPrimePage {

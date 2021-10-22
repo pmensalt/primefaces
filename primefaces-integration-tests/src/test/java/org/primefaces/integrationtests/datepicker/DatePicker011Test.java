@@ -55,7 +55,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: meta data model without behaviour")
     public void testMetaDataNoBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker0, page, DatePickerBehaviour._none);
-        assertConfiguration(page, page.datePicker0.getWidgetConfiguration(), DatePickerBehaviour._none, 3);
+        assertConfiguration(page.datePicker0.getWidgetConfiguration(), DatePickerBehaviour._none, 3);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: meta data model with dateSelect behaviour")
     public void testMetaDataDateSelectBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker1, page, DatePickerBehaviour.dateSelect);
-        assertConfiguration(page, page.datePicker1.getWidgetConfiguration(), DatePickerBehaviour.dateSelect, 3);
+        assertConfiguration(page.datePicker1.getWidgetConfiguration(), DatePickerBehaviour.dateSelect, 3);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: meta data model with viewChange behaviour")
     public void testMetaDataViewChangeBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker2, page, DatePickerBehaviour.viewChange);
-        assertConfiguration(page, page.datePicker2.getWidgetConfiguration(), DatePickerBehaviour.viewChange, 3);
+        assertConfiguration(page.datePicker2.getWidgetConfiguration(), DatePickerBehaviour.viewChange, 3);
     }
 
     @Test
@@ -79,7 +79,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: meta data model with close behaviour")
     public void testMetaDataCloseBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker3, page, DatePickerBehaviour.close);
-        assertConfiguration(page, page.datePicker3.getWidgetConfiguration(), DatePickerBehaviour.close, 3);
+        assertConfiguration(page.datePicker3.getWidgetConfiguration(), DatePickerBehaviour.close, 3);
     }
 
     @Test
@@ -143,7 +143,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: lazy meta data model without behaviour")
     public void testLazyMetaDataNoBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker4, page, DatePickerBehaviour._none);
-        assertConfiguration(page, page.datePicker4.getWidgetConfiguration(), DatePickerBehaviour._none, 0);
+        assertConfiguration(page.datePicker4.getWidgetConfiguration(), DatePickerBehaviour._none, 0);
     }
 
     @Test
@@ -151,7 +151,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: lazy meta data model with viewChange behaviour")
     public void testLazyMetaDataViewChangeBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker6, page, DatePickerBehaviour.viewChange);
-        assertConfiguration(page, page.datePicker6.getWidgetConfiguration(), DatePickerBehaviour.viewChange, 0);
+        assertConfiguration(page.datePicker6.getWidgetConfiguration(), DatePickerBehaviour.viewChange, 0);
     }
 
     @Test
@@ -206,7 +206,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.showPanel();
 
         // Assert
-        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
         switch (behaviour) {
             case viewChange:
                 break;
@@ -324,17 +324,17 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         switch (behaviour) {
             case viewChange:
                 if (datePicker.isViewChangeAjaxified()) {
-                    link = page.guardAjax(link);
+                    link = PrimeSelenium.guardAjax(link);
                 }
                 break;
             case dateSelect:
                 if (datePicker.isDateSelectAjaxified()) {
-                    link = page.guardAjax(link);
+                    link = PrimeSelenium.guardAjax(link);
                 }
                 break;
             case close:
                 if (datePicker.isCloseAjaxified()) {
-                    link = page.guardAjax(link);
+                    link = PrimeSelenium.guardAjax(link);
                 }
                 break;
             default:
@@ -371,7 +371,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.click();
 
         // Assert
-        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
         switch (behaviour) {
             case viewChange:
                 break;
@@ -385,17 +385,17 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         switch (behaviour) {
             case viewChange:
                 if (datePicker.isViewChangeAjaxified()) {
-                    button = page.guardAjax(button);
+                    button = PrimeSelenium.guardAjax(button);
                 }
                 break;
             case dateSelect:
                 if (datePicker.isDateSelectAjaxified()) {
-                    button = page.guardAjax(button);
+                    button = PrimeSelenium.guardAjax(button);
                 }
                 break;
             case close:
                 if (datePicker.isCloseAjaxified()) {
-                    button = page.guardAjax(button);
+                    button = PrimeSelenium.guardAjax(button);
                 }
                 break;
             default:
@@ -426,7 +426,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.showPanel();
 
         // Assert
-        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
         switch (behaviour) {
             case viewChange:
                 break;
@@ -455,11 +455,11 @@ public class DatePicker011Test extends AbstractDatePickerTest {
             page.outside.click();
         }
         else {
-            page.guardAjax(page.outsideClean).click();
+            PrimeSelenium.guardAjax(page.outsideClean).click();
         }
 
         // Act - 4th show panel
-        page.guardAjax(page.outsideClean).click();
+        PrimeSelenium.guardAjax(page.outsideClean).click();
         datePicker.showPanel();
 
         // Assert
@@ -473,7 +473,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     }
 
     private void assertMessage(Messages messages, DatePickerBehaviour behaviour) {
-        messages.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(messages));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(messages));
         List<Msg> msgs = messages.getMessagesBySeverity(Severity.INFO);
         Assertions.assertEquals(1, msgs.size());
         Assertions.assertTrue(msgs.get(0).getSummary().contains(behaviour.name()),
@@ -495,8 +495,8 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         }
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg, DatePickerBehaviour behaviour, int disabledDateCount) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg, DatePickerBehaviour behaviour, int disabledDateCount) {
+        assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
         Assertions.assertEquals("yy-mm-dd", cfg.getString("dateFormat"));
         Assertions.assertEquals(disabledDateCount, cfg.getJSONArray("disabledDates").length());

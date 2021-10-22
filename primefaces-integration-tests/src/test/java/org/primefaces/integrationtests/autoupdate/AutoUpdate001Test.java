@@ -46,7 +46,7 @@ public class AutoUpdate001Test extends AbstractPrimePageTest {
         page.buttonGlobal.click();
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         Assertions.assertEquals("global", page.displayGlobal.getText());
         Assertions.assertEquals("", page.displayEvent1.getText());
         Assertions.assertEquals("", page.displayEvent2.getText());
@@ -63,7 +63,7 @@ public class AutoUpdate001Test extends AbstractPrimePageTest {
         page.buttonEvent1.click();
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         Assertions.assertEquals("one", page.displayGlobal.getText());
         Assertions.assertEquals("one", page.displayEvent1.getText());
         Assertions.assertEquals("", page.displayEvent2.getText());
@@ -80,7 +80,7 @@ public class AutoUpdate001Test extends AbstractPrimePageTest {
         page.buttonEvent2.click();
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         Assertions.assertEquals("two", page.displayGlobal.getText());
         Assertions.assertEquals("", page.displayEvent1.getText());
         Assertions.assertEquals("two", page.displayEvent2.getText());

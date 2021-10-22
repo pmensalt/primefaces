@@ -28,7 +28,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 
@@ -46,12 +45,12 @@ public class AbstractTableTest extends AbstractPrimePageTest {
             default:
                 break;
         }
-        Assertions.assertTrue(
-                PrimeSelenium.hasCssClass(header.findElement(By.className("ui-sortable-column-icon")), directionClass));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(header.findElement(By.className("ui-sortable-column-icon")), directionClass));
         WebElement badge = header.findElement(By.className("ui-sortable-column-badge"));
         if (sortPriority > 0) {
             Assertions.assertEquals(sortPriority, Integer.parseInt(badge.getText()));
-        } else {
+        }
+        else {
             Assertions.assertEquals("", badge.getText());
         }
     }

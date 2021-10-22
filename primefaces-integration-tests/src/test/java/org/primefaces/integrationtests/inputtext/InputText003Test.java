@@ -53,7 +53,7 @@ public class InputText003Test extends AbstractPrimePageTest {
         Assertions.assertEquals("MaxLength Counter", inputText.getAssignedLabelText());
         Assertions.assertEquals("four", inputText.getValue());
         Assertions.assertEquals("6 characters remaining.", page.display.getText());
-        assertConfiguration(page, inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getWidgetConfiguration());
     }
 
     @Test
@@ -72,11 +72,11 @@ public class InputText003Test extends AbstractPrimePageTest {
         Assertions.assertEquals("MaxLength Counter", inputText.getAssignedLabelText());
         Assertions.assertEquals("1234567890", inputText.getValue());
         Assertions.assertEquals("0 characters remaining.", page.display.getText());
-        assertConfiguration(page, inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("InputText Config = " + cfg);
         Assertions.assertEquals(10, cfg.getInt("maxlength"));
     }

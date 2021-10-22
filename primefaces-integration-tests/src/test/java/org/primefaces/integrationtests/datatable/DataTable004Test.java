@@ -50,13 +50,13 @@ public class DataTable004Test extends AbstractDataTableTest {
         Assertions.assertNotNull(dataTable);
 
         // Act
-        page.guardAjax(dataTable.getCell(2, 0).getWebElement()).click();
+        PrimeSelenium.guardAjax(dataTable.getCell(2, 0).getWebElement()).click();
 
         // Assert
         assertMessage(page, "ProgrammingLanguage Selected", languages.get(2).getName());
 
         // Act - other row
-        page.guardAjax(dataTable.getCell(4, 0).getWebElement()).click();
+        PrimeSelenium.guardAjax(dataTable.getCell(4, 0).getWebElement()).click();
 
         // Assert
         assertMessage(page, "ProgrammingLanguage Selected", languages.get(4).getName());
@@ -72,7 +72,7 @@ public class DataTable004Test extends AbstractDataTableTest {
         // Act - unselect row
         Actions actions = new Actions(page.getWebDriver());
         Action actionMetaPlusRowClick = actions.keyDown(Keys.META).click(dataTable.getCell(4, 0).getWebElement()).keyUp(Keys.META).build();
-        page.guardAjax(actionMetaPlusRowClick).perform();
+        PrimeSelenium.guardAjax(actionMetaPlusRowClick).perform();
 
         // Assert
         assertMessage(page, "ProgrammingLanguage Unselected", languages.get(4).getName());
@@ -83,7 +83,7 @@ public class DataTable004Test extends AbstractDataTableTest {
         // Assert (no row selected)
         dataTable.getRows().forEach(r -> Assertions.assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
         assertMessage(page, "NO ProgrammingLanguage selected", "");
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -110,7 +110,7 @@ public class DataTable004Test extends AbstractDataTableTest {
         // Assert (no row selected)
         dataTable.getRows().forEach(r -> Assertions.assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
         Assertions.assertTrue(card.getText().contains("NO ProgrammingLanguage selected"));
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -143,7 +143,7 @@ public class DataTable004Test extends AbstractDataTableTest {
         // Assert (still no row selected)
         assertMessage(page, "NO ProgrammingLanguage selected", "");
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     private void assertMessage(Page page, String summary, String detail) {
@@ -151,8 +151,8 @@ public class DataTable004Test extends AbstractDataTableTest {
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains(detail));
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("selectionMode"));
     }

@@ -52,7 +52,7 @@ public class DataTable011Test extends AbstractDataTableTest {
         // Assert
         page.dataTable.getRows()
                     .forEach(row -> Assertions.assertNotEquals("1", row.getCell(0).getText()));
-        assertConfiguration(page, page.dataTable.getWidgetConfiguration());
+        assertConfiguration(page.dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -65,16 +65,16 @@ public class DataTable011Test extends AbstractDataTableTest {
 
         // Act
         dataTable.sort("Name");
-        page.guardAjax(dataTable.getCell(1, 3).getWebElement().findElement(By.tagName("button"))).click();
+        PrimeSelenium.guardAjax(dataTable.getCell(1, 3).getWebElement().findElement(By.tagName("button"))).click();
 
         // Assert
         page.dataTable.getRows()
                     .forEach(row -> Assertions.assertNotEquals("1", row.getCell(0).getText()));
-        assertConfiguration(page, page.dataTable.getWidgetConfiguration());
+        assertConfiguration(page.dataTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("paginator"));
     }

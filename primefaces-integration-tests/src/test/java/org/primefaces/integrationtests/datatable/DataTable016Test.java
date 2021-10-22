@@ -85,11 +85,11 @@ public class DataTable016Test extends AbstractDataTableTest {
 
         assertRows(rows, languages);
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("groupColumnIndexes"));
     }

@@ -49,7 +49,7 @@ public class CascadeSelect003Test extends BaseCascadeSelectTest {
 
         // Assert
         assertMessage(page.messages, 0, "Selected driver", "Charles");
-        assertConfiguration(page, cascadeSelect.getWidgetConfiguration());
+        assertConfiguration(cascadeSelect.getWidgetConfiguration());
 
         // Act
         page.button.click();
@@ -57,7 +57,7 @@ public class CascadeSelect003Test extends BaseCascadeSelectTest {
         // Assert
         assertMessage(page.messages, 0, "Selected driver", "Charles");
         Assertions.assertEquals("Charles", cascadeSelect.getSelectedLabel());
-        assertConfiguration(page, cascadeSelect.getWidgetConfiguration());
+        assertConfiguration(cascadeSelect.getWidgetConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

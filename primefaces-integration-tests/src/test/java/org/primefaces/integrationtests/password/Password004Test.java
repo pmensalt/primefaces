@@ -62,7 +62,7 @@ public class Password004Test extends AbstractPrimePageTest {
         Assertions.assertEquals("", pwd2.getValue());
         assertCss(pwd1, "ui-state-error");
         assertCss(pwd2, "ui-state-error");
-        assertConfiguration(page, pwd1.getWidgetConfiguration());
+        assertConfiguration(pwd1.getWidgetConfiguration());
     }
 
     @Test
@@ -89,7 +89,7 @@ public class Password004Test extends AbstractPrimePageTest {
         Assertions.assertEquals("", pwd2.getValue());
         assertCss(pwd1, "ui-state-error");
         assertCss(pwd2, "ui-state-error");
-        assertConfiguration(page, pwd1.getWidgetConfiguration());
+        assertConfiguration(pwd1.getWidgetConfiguration());
     }
 
     @Test
@@ -112,11 +112,11 @@ public class Password004Test extends AbstractPrimePageTest {
         Assertions.assertNull(message1);
         Assertions.assertEquals("", pwd1.getValue());
         Assertions.assertEquals("", pwd2.getValue());
-        assertConfiguration(page, pwd1.getWidgetConfiguration());
+        assertConfiguration(pwd1.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("Password Config = " + cfg);
         Assertions.assertTrue(cfg.has("widgetVar"));
     }

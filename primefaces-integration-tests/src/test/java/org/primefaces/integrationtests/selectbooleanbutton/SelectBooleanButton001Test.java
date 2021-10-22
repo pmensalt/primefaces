@@ -135,8 +135,8 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
         Assertions.assertTrue(selectBooleanButton.isSelected());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("SelectBooleanButton Config = " + cfg);
         Assertions.assertEquals("Yes", cfg.getString("onLabel"));
         Assertions.assertEquals("No", cfg.getString("offLabel"));
@@ -150,7 +150,7 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
         Msg message = page.messages.getMessage(0);
         Assertions.assertEquals(checked ? "Checked" : "Unchecked", message.getDetail());
         Assertions.assertEquals(checked ? "Yes" : "No", selectBooleanButton.getLabel());
-        assertConfiguration(page, selectBooleanButton.getWidgetConfiguration());
+        assertConfiguration(selectBooleanButton.getWidgetConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

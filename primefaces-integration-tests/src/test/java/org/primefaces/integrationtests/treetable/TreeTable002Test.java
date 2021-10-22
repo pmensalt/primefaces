@@ -69,7 +69,7 @@ public class TreeTable002Test extends AbstractTreeTableTest {
         treeTable.sort(1); //desc
         Actions actions = new Actions(page.getWebDriver());
         Action actionUnselect = actions.keyDown(Keys.META).click(treeTable.getHeader().getCell(0).getWebElement()).keyUp(Keys.META).build();
-        page.guardAjax(actionUnselect).perform();
+        PrimeSelenium.guardAjax(actionUnselect).perform();
         assertHeaderSorted(eltSortName, "ASC", 2);
         assertHeaderSorted(eltSortSize, "DESC", 1);
 
@@ -79,11 +79,11 @@ public class TreeTable002Test extends AbstractTreeTableTest {
         treeSorted.getChildren().get(0).setExpanded(true);
         assertRows(treeTable, treeSorted);
 
-        assertConfiguration(page, treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("TreeTable Config = " + cfg);
         Assertions.assertEquals("wgtTreeTable", cfg.getString("widgetVar"));
     }

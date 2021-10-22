@@ -49,17 +49,17 @@ public class Timeline002Test extends AbstractPrimePageTest {
 
         // Act
         timeline.select("vis-item-content");
-        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.messages));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.messages));
 
         // Assert
         Msg message = page.messages.getMessage(0);
         Assertions.assertEquals("Selected event:", message.getSummary());
         Assertions.assertEquals("164 B.C.", message.getDetail());
-        assertConfiguration(page, timeline.getWidgetConfiguration());
+        assertConfiguration(timeline.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("Timeline Config = " + cfg);
         Assertions.assertTrue(cfg.has("data"));
         JSONArray data = cfg.getJSONArray("data");

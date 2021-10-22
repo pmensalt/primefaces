@@ -82,18 +82,18 @@ public class AutoComplete002Test extends AbstractPrimePageTest {
 
         // Assert - Part 3
         Assertions.assertEquals("Driver No. 15", autoComplete.getValue());
-        assertConfiguration(page, autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getWidgetConfiguration());
 
         Msg message = page.messages.getMessage(0);
         Assertions.assertNotNull(message);
         Assertions.assertEquals("Driver", message.getSummary());
         Assertions.assertEquals("id: 15, name: Driver No. 15", message.getDetail());
 
-        assertConfiguration(page, autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("AutoComplete Config = " + cfg);
         Assertions.assertTrue(cfg.has("appendTo"));
         Assertions.assertTrue(cfg.has("completeEndpoint"));

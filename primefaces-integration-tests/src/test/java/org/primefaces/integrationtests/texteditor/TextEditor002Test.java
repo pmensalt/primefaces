@@ -46,7 +46,7 @@ public class TextEditor002Test extends AbstractPrimePageTest {
 
         // Assert
         // NOTE: if we get Javascript errors someone upgraded QuillJS but did not reapply the patch
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     public static class Page extends AbstractPrimePage {

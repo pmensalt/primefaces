@@ -53,7 +53,7 @@ public class TabView002Test extends AbstractPrimePageTest {
         tabView.toggleTab(1);
 
         // Assert - part 2
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         Assertions.assertEquals(1, tabView.getSelectedTab().getIndex());
         Assertions.assertEquals("Max", page.inputtext2.getValue());
 
@@ -61,7 +61,7 @@ public class TabView002Test extends AbstractPrimePageTest {
         tabView.toggleTab(2);
 
         // Assert - part 3
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         Assertions.assertEquals(2, tabView.getSelectedTab().getIndex());
         Assertions.assertEquals("Charles", page.inputtext3.getValue());
     }

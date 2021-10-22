@@ -57,14 +57,14 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         datePicker.setValue(value);
 
         // Assert Panel
-        assertDate(page, datePicker.showPanel(), "February", "1978");
+        assertDate(datePicker.showPanel(), "February", "1978");
 
         // Assert Submit Value
         page.button.click();
         LocalDate newValue = datePicker.getValueAsLocalDate();
         Assertions.assertEquals(value, newValue);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        assertConfiguration(page, datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         LocalDate newValue = datePicker.getValueAsLocalDate();
         Assertions.assertEquals(expectedDate, newValue);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        assertConfiguration(page, datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test
@@ -116,7 +116,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         LocalDate newValue = datePicker.getValueAsLocalDate();
         Assertions.assertEquals(expectedDate, newValue);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        assertConfiguration(page, datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test
@@ -128,14 +128,15 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         LocalDate selectedDate = LocalDate.now();
         if (selectedDate.getDayOfMonth() == 1) {
             selectedDate = selectedDate.plusMonths(1).minusDays(1);
-        } else {
+        }
+        else {
             selectedDate = selectedDate.minusDays(1);
         }
 
         // Act
         datePicker.setValue(selectedDate);
 
-        // Assert panel
+        //Assert panel
         String currentDayOfMonth = ((Integer) LocalDate.now().getDayOfMonth()).toString();
         assertDay(datePicker, currentDayOfMonth, "ui-state-highlight");
         String selectedDayOfMonth = ((Integer) selectedDate.getDayOfMonth()).toString();
@@ -158,7 +159,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         Assertions.assertFalse(datePicker.isEnabled());
         assertNotDisplayed(panel);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        assertConfiguration(page, datePicker.getWidgetConfiguration(), LocalDate.now().format(dateTimeFormatter));
+        assertConfiguration(datePicker.getWidgetConfiguration(), LocalDate.now().format(dateTimeFormatter));
     }
 
     @Test
@@ -178,7 +179,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         Assertions.assertTrue(datePicker.isEnabled());
         assertDisplayed(panel);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        assertConfiguration(page, datePicker.getWidgetConfiguration(), LocalDate.now().format(dateTimeFormatter));
+        assertConfiguration(datePicker.getWidgetConfiguration(), LocalDate.now().format(dateTimeFormatter));
     }
 
     @Test
@@ -188,7 +189,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         // Arrange
         DatePicker datePicker = page.datePicker;
         datePicker.clear();
-        ComponentUtils.sendKeys(page.getWebDriver(), datePicker.getInput(), "02/32/1900");
+        ComponentUtils.sendKeys(datePicker.getInput(), "02/32/1900");
 
         // Act
         page.button.click();
@@ -196,9 +197,8 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         // Assert
         Assertions.assertTrue(page.messages.isDisplayed());
         Assertions.assertEquals(1, page.messages.getAllMessages().size());
-        Assertions.assertTrue(
-                page.messages.getAllMessages().get(0).getDetail().contains("could not be understood as a date"));
-        assertNoJavascriptErrors(page.getWebDriver());
+        Assertions.assertTrue(page.messages.getAllMessages().get(0).getDetail().contains("could not be understood as a date"));
+        assertNoJavascriptErrors();
     }
 
     @Test
@@ -208,7 +208,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         // Arrange
         DatePicker datePicker = page.datePicker;
         datePicker.clear();
-        ComponentUtils.sendKeys(page.getWebDriver(), datePicker.getInput(), "02/28/1900");
+        ComponentUtils.sendKeys(datePicker.getInput(), "02/28/1900");
 
         // Act
         page.button.click();
@@ -216,20 +216,18 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         // Assert
         Assertions.assertFalse(page.messages.isDisplayed());
         Assertions.assertEquals(0, page.messages.getAllMessages().size());
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     private void assertDay(DatePicker datePicker, String day, String styleClass) {
         PrimeSelenium.wait(100);
         datePicker.showPanel();
-        datePicker.waitGui().until(
-                PrimeExpectedConditions.elementToBeClickable(datePicker.getPanel().findElement(By.linkText(day))));
-        Assertions
-                .assertTrue(PrimeSelenium.hasCssClass(datePicker.getPanel().findElement(By.linkText(day)), styleClass));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.elementToBeClickable(datePicker.getPanel().findElement(By.linkText(day))));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(datePicker.getPanel().findElement(By.linkText(day)), styleClass));
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg, String defaultDate) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg, String defaultDate) {
+        assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
         Assertions.assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
         Assertions.assertEquals(defaultDate, cfg.getString("defaultDate"));
