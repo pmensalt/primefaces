@@ -81,8 +81,8 @@ public class WebDriverProvider {
         WebDriver driver = WEB_DRIVER_BEFORE_EACH.get();
         if (driver != null) {
             WEB_DRIVER_BEFORE_EACH.remove();
-        } else 
-        {
+        } 
+        else {
             synchronized (WEB_DRIVER_POOL) {
                 if (!WEB_DRIVER_POOL.isEmpty()) {
                     driver = WEB_DRIVER_POOL.remove(0);
@@ -118,8 +118,8 @@ public class WebDriverProvider {
             }
             WEB_DRIVER_BEFORE_EACH.set(driver);
             return driver;
-        } else 
-        {
+        }
+        else {
             return WEB_DRIVER_BEFORE_EACH.get();
         }
     }
@@ -154,8 +154,8 @@ public class WebDriverProvider {
          */
         if (PrimeSelenium.isHeadless()) {
             driver.manage().window().setSize(new Dimension(1920, 1080));
-        } else 
-        {
+        }
+        else {
             driver.manage().window().setSize(new Dimension(1280, 1000));
         }
 
