@@ -24,14 +24,12 @@
 package org.primefaces.selenium;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.Guard;
 import org.primefaces.selenium.spi.PrimePageFactory;
 import org.primefaces.selenium.spi.PrimePageFragmentFactory;
-import org.primefaces.selenium.spi.WebDriverProvider;
 import org.primefaces.selenium.spi.DeploymentAdapter;
 
 public final class PrimeSelenium {
@@ -47,7 +45,7 @@ public final class PrimeSelenium {
 
     /**
      * Creates the PrimeFaces Selenium component for the selector.
-     * 
+     *
      * @param driver the driver to use
      * @param fragmentClass the component class to create like InputText.class
      * @param by the selector to find the component by
@@ -300,7 +298,7 @@ public final class PrimeSelenium {
      * @return the element
      */
     public static <T> T guardAjax(WebDriver driver, T target) {
-        return Guard.ajax(driver,target);
+        return Guard.ajax(driver, target);
     }
 
     /**
@@ -314,7 +312,7 @@ public final class PrimeSelenium {
      * @return the element
      */
     public static <T> T guardAjax(WebDriver driver, T target, int delayInMilliseconds) {
-        return Guard.ajax(driver,target, delayInMilliseconds);
+        return Guard.ajax(driver, target, delayInMilliseconds);
     }
 
     /**
@@ -327,7 +325,7 @@ public final class PrimeSelenium {
      * @return the result of running the JavaScript
      */
     public static <T> T guardAjax(WebDriver driver, String script, Object... args) {
-        return Guard.ajax(driver,script, args);
+        return Guard.ajax(driver, script, args);
     }
 
     /**
@@ -425,7 +423,7 @@ public final class PrimeSelenium {
     public static void setHiddenInput(WebDriver driver, WebElement input, String value) {
         executeScript(driver, " document.getElementById('" + input.getAttribute("id") + "').value='" + value + "'");
     }
-    
+
     /**
      * Clears the browser console.
      * @param driver the webdrive to use

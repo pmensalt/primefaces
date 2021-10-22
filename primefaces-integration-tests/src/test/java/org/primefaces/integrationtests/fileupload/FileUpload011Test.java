@@ -94,7 +94,8 @@ public class FileUpload011Test extends AbstractFileUploadTest {
               .sorted(Comparator.reverseOrder())
               .map(Path::toFile)
               .forEach(File::delete);
-        } catch (IOException ignore) {
+        }
+        catch (IOException ignore) {
         }
     }
 

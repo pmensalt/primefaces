@@ -58,7 +58,7 @@ public abstract class AbstractDataTableTest extends AbstractTableTest {
                     .limit(3)
                     .collect(Collectors.toList());
     }
-    
+
     public List<ProgrammingLanguage> filterById(final int id) {
         return languages.stream()
                     .sorted(Comparator.comparing(ProgrammingLanguage::getId))

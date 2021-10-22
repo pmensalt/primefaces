@@ -30,7 +30,6 @@ import javax.inject.Inject;
 import org.junit.jupiter.api.extension.*;
 import org.openqa.selenium.WebDriver;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.spi.PrimePageFactory;
 import org.primefaces.selenium.spi.WebDriverProvider;
 

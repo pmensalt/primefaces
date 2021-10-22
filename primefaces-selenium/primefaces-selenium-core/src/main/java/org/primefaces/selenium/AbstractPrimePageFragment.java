@@ -63,7 +63,7 @@ public abstract class AbstractPrimePageFragment implements WebElement, WrapsElem
     public String getId() {
         return getRoot().getAttribute("id");
     }
-    
+
     /**
      * Is the Element present on the page?
      *
@@ -202,7 +202,7 @@ public abstract class AbstractPrimePageFragment implements WebElement, WrapsElem
      * @return the result of running the JavaScript
      */
     public <T> T executeScript(boolean isAjaxified, String script, Object... args) {
-        return PrimeSelenium.executeScript(webDriver,isAjaxified, script, args);
+        return PrimeSelenium.executeScript(webdriver, isAjaxified, script, args);
     }
 
     /**
@@ -226,7 +226,7 @@ public abstract class AbstractPrimePageFragment implements WebElement, WrapsElem
     public void clearInput(WebElement input, boolean isAjaxified) {
         PrimeSelenium.clearInput(webDriver, input, isAjaxified);
     }
-    
+
     /**
      * Wait will ignore instances of NotFoundException that are encountered (thrown) by default in the 'until' condition, and immediately propagate all others.
      * You can add more to the ignore list by calling ignoring(exceptions to add).

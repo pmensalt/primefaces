@@ -41,7 +41,7 @@ public class ElementLocatorInterceptor {
     private final WebDriver driver;
     private final ElementLocator locator;
 
-    public ElementLocatorInterceptor(WebDriver driver,ElementLocator locator) {
+    public ElementLocatorInterceptor(WebDriver driver, ElementLocator locator) {
         this.driver = driver;
         this.locator = locator;
     }

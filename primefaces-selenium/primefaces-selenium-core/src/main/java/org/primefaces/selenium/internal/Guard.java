@@ -30,7 +30,6 @@ import net.bytebuddy.matcher.ElementMatchers;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.spi.WebDriverProvider;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
@@ -38,7 +37,6 @@ import java.util.Arrays;
 import java.util.List;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeExpectedConditions;
 
 public class Guard {
@@ -51,8 +49,7 @@ public class Guard {
         return custom(driver, target, 0, timeout, expectedConditions);
     }
 
-    public static <T> T custom(WebDriver driver, T target, int delay, int timeout,
-            ExpectedCondition... expectedConditions) {
+    public static <T> T custom(WebDriver driver, T target, int delay, int timeout, ExpectedCondition... expectedConditions) {
         OnloadScripts.execute(driver);
 
         return proxy(target, (Object p, Method method, Object[] args) -> {
@@ -68,7 +65,8 @@ public class Guard {
                 wait.until(ExpectedConditions.and(expectedConditions));
 
                 return result;
-            } catch (TimeoutException e) {
+            }
+            catch (TimeoutException e) {
                 throw new TimeoutException("Timeout while waiting for custom guard!", e);
             }
         });
@@ -91,7 +89,8 @@ public class Guard {
                         PrimeExpectedConditions.notSubmitting()));
 
                 return result;
-            } catch (TimeoutException e) {
+            }
+            catch (TimeoutException e) {
                 throw new TimeoutException("Timeout while waiting for document ready!", e);
             }
         });
@@ -109,7 +108,8 @@ public class Guard {
             waitUntilAjaxCompletes(driver);
 
             return result;
-        } catch (TimeoutException e) {
+        }
+        catch (TimeoutException e) {
             throw new TimeoutException("Timeout while waiting for AJAX complete!", e);
         }
     }
@@ -139,11 +139,14 @@ public class Guard {
                 // getAjaxDebugInfo(executor));
 
                 return result;
-            } catch (TimeoutException e) {
+            }
+            catch (TimeoutException e) {
                 throw new TimeoutException("Timeout while waiting for AJAX complete!", e);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 throw new TimeoutException("AJAX Guard delay was interrupted!", e);
-            } catch (InvocationTargetException e) {
+            }
+            catch (InvocationTargetException e) {
                 if (e.getCause() instanceof WebDriverException) {
                     throw e.getCause();
                 } else {
@@ -212,7 +215,8 @@ public class Guard {
                 // try default constructor first
                 Constructor<T> defaultCtor = proxyClass.getDeclaredConstructor();
                 return defaultCtor.newInstance();
-            } catch (NoSuchMethodException ex) {
+            }
+            catch (NoSuchMethodException ex) {
                 // ignore
             }
 
@@ -222,10 +226,12 @@ public class Guard {
                     Constructor<T> ctor = proxyClass.getDeclaredConstructor(WebElement.class);
                     return ctor.newInstance(((WrapsElement) target).getWrappedElement());
                 }
-            } catch (NoSuchMethodException ex) {
+            }
+            catch (NoSuchMethodException ex) {
                 // ignore
             }
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+        }
+        catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
 
