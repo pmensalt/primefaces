@@ -50,7 +50,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         schedule.update(); // widget method
 
         // Assert
-        assertConfiguration(schedule.getWidgetConfiguration(), "en");
+        assertConfiguration(page, schedule.getWidgetConfiguration(), "en");
     }
 
     @Test
@@ -65,7 +65,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, "Date selected");
-        assertConfiguration(schedule.getWidgetConfiguration(), "en");
+        assertConfiguration(page, schedule.getWidgetConfiguration(), "en");
     }
 
     @Test
@@ -80,7 +80,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, "Event selected");
-        assertConfiguration(schedule.getWidgetConfiguration(), "en");
+        assertConfiguration(page, schedule.getWidgetConfiguration(), "en");
     }
 
     @Test
@@ -107,7 +107,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         assertButton(schedule.getMonthButton(), "Mois");
         assertButton(schedule.getWeekButton(), "Semaine");
         assertButton(schedule.getDayButton(), "Jour");
-        assertConfiguration(schedule.getWidgetConfiguration(), "fr");
+        assertConfiguration(page, schedule.getWidgetConfiguration(), "fr");
     }
 
     private void assertButton(WebElement button, String text) {
@@ -121,8 +121,8 @@ public class Schedule001Test extends AbstractPrimePageTest {
         Assertions.assertTrue(msg.getSummary().contains(message));
     }
 
-    private void assertConfiguration(JSONObject cfg, String locale) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg, String locale) {
+        assertNoJavascriptErrors(page.getWebDriver());
         Assertions.assertEquals("form", cfg.getString("formId"));
         Assertions.assertEquals(locale, cfg.getString("locale"));
     }

@@ -53,7 +53,7 @@ public class Spinner004Test extends AbstractPrimePageTest {
         // Assert
         Assertions.assertEquals("€0.33", spinner.getValue());
         assertOutputLabel(page, "0.33");
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(page, spinner.getWidgetConfiguration());
     }
 
     @Test
@@ -71,11 +71,11 @@ public class Spinner004Test extends AbstractPrimePageTest {
         // Assert
         Assertions.assertEquals("€1456.78", spinner.getValue()); // TODO: this expected result seems odd to me
         assertOutputLabel(page, "1456.78");
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(page, spinner.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("Spinner Config = " + cfg);
         Assertions.assertEquals(0.33, cfg.getDouble("step"));
         Assertions.assertEquals(",", cfg.get("decimalSeparator"));
@@ -94,7 +94,7 @@ public class Spinner004Test extends AbstractPrimePageTest {
 
     public void sendKeys(Spinner spinner, CharSequence value) {
         WebElement input = spinner.getInput();
-        ComponentUtils.sendKeys(input, value);
+        ComponentUtils.sendKeys(spinner.getWebDriver(), input, value);
     }
 
     public static class Page extends AbstractPrimePage {

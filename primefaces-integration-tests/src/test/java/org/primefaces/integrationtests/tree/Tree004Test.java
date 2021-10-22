@@ -67,35 +67,35 @@ public class Tree004Test extends AbstractTreeTest {
         first.select();
 
         // Assert
-        PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
+        page.guardAjax(page.buttonShowSelectedNodes).click();
         assertMessage(page.messages, 0, "Selected nodes", "Documents");
 
         // Act Pt. 2
         Actions actions = new Actions(page.getWebDriver());
         Action actionSelect = actions.keyDown(Keys.META).click(children.get(2).getLabel()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionSelect).perform();
+        page.guardAjax(actionSelect).perform();
 
         // Assert Pt. 2
-        PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
+        page.guardAjax(page.buttonShowSelectedNodes).click();
         assertMessage(page.messages, 0, "Selected nodes", "Documents,Movies");
 
         // Act Pt. 3
         Action actionUnselect = actions.keyDown(Keys.META).click(first.getLabel()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionUnselect).perform();
+        page.guardAjax(actionUnselect).perform();
 
         // Assert Pt. 3
-        PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
+        page.guardAjax(page.buttonShowSelectedNodes).click();
         assertMessage(page.messages, 0, "Selected nodes", "Movies");
 
         // Act Pt. 4
         actionUnselect = actions.keyDown(Keys.META).click(children.get(2).getLabel()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionUnselect).perform();
+        page.guardAjax(actionUnselect).perform();
 
         // Assert Pt. 4
-        PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
+        page.guardAjax(page.buttonShowSelectedNodes).click();
         assertMessage(page.messages, 0, "No node selected!", "");
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(page, tree.getWidgetConfiguration());
     }
 
     @Test
@@ -118,17 +118,17 @@ public class Tree004Test extends AbstractTreeTest {
         first.select();
 
         // Assert
-        PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
+        page.guardAjax(page.buttonShowSelectedNodes).click();
         assertMessage(page.messages, 0, "Selected nodes", "Documents");
 
         // Act Pt. 2
         children.get(2).select();
 
         // Assert Pt. 2
-        PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
+        page.guardAjax(page.buttonShowSelectedNodes).click();
         assertMessage(page.messages, 0, "Selected nodes", "Movies");
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(page, tree.getWidgetConfiguration());
     }
 
     @Test
@@ -153,7 +153,7 @@ public class Tree004Test extends AbstractTreeTest {
 
         // Act
         WebElement filter = tree.findElement(By.cssSelector("input.ui-tree-filter"));
-        PrimeSelenium.guardAjax(filter).sendKeys("Pro");
+        page.guardAjax(filter).sendKeys("Pro");
 
         // Assert
         children = tree.getChildren();
@@ -172,7 +172,7 @@ public class Tree004Test extends AbstractTreeTest {
 
         // Act
         filter.clear();
-        PrimeSelenium.guardAjax(filter).sendKeys(Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
+        page.guardAjax(filter).sendKeys(Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
 
         // Assert
         children = tree.getChildren();
@@ -181,7 +181,7 @@ public class Tree004Test extends AbstractTreeTest {
         Assertions.assertEquals(true, children.get(1).getWebElement().isDisplayed());
         Assertions.assertEquals(true, children.get(2).getWebElement().isDisplayed());
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(page, tree.getWidgetConfiguration());
     }
 
     @Test
@@ -203,7 +203,7 @@ public class Tree004Test extends AbstractTreeTest {
 
         // Act
         WebElement filter = tree.findElement(By.cssSelector("input.ui-tree-filter"));
-        PrimeSelenium.guardAjax(filter).sendKeys("Pro");
+        page.guardAjax(filter).sendKeys("Pro");
         children = tree.getChildren();
         tree.getChildren().get(1).getChildren().get(1).select();
 
@@ -215,7 +215,7 @@ public class Tree004Test extends AbstractTreeTest {
 
         // Act Pt. 2
         filter.clear();
-        PrimeSelenium.guardAjax(filter).sendKeys(Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
+        page.guardAjax(filter).sendKeys(Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
 
         // Assert Pt. 2
         page.buttonShowSelectedNodes.click();
@@ -241,7 +241,7 @@ public class Tree004Test extends AbstractTreeTest {
         Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(1).getChildren().get(2).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-check"));
         Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(2).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-blank"));
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(page, tree.getWidgetConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

@@ -56,7 +56,7 @@ public class DatePicker009Test extends AbstractDatePickerTest {
         datePicker.click(); // focus to bring up panel
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         WebElement panel = datePicker.getPanel();
         Assertions.assertNotNull(panel);
         List<WebElement> elements = panel.findElements(By.cssSelector(".ui-datepicker-group"));

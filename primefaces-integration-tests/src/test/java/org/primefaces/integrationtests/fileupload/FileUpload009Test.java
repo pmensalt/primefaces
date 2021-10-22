@@ -52,9 +52,9 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         fileUpload.getAdvancedUploadButton().click();
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -75,9 +75,9 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         fileUpload.getAdvancedUploadButton().click();
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1, file2);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -98,7 +98,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         fileUpload.getAdvancedUploadButton().click();
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1, file2);
 
         // Act
@@ -112,9 +112,9 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         fileUpload.getAdvancedUploadButton().click();
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1, file2, file3, file4);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -135,9 +135,9 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -164,7 +164,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         fileUpload.getAdvancedUploadButton().click();
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1, file2, file3, file4);
 
         // Act
@@ -175,9 +175,9 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(fileLimitMsg), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1, file2, file3, file4);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -198,9 +198,9 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(invalidSizeMsg), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -221,12 +221,12 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(invalidTypeMsg), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
-    private void assertConfiguration(FileUpload fileUpload) {
+    private void assertConfiguration(AbstractPrimePage page, FileUpload fileUpload) {
         JSONObject cfg = fileUpload.getWidgetConfiguration();
         System.out.println("FileInput Config = " + cfg);
         Assertions.assertFalse(cfg.has("skinSimple"));

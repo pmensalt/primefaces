@@ -47,7 +47,7 @@ public class DataTable015Test extends AbstractDataTableTest {
         PrimeSelenium.goTo(page);
         DataTable dataTable = page.dataTable;
         Assertions.assertNotNull(dataTable);
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Act
         dataTable.selectPage(1);
@@ -61,12 +61,12 @@ public class DataTable015Test extends AbstractDataTableTest {
         // Act
         PrimeSelenium.goTo(otherPage);
         PrimeSelenium.goTo(page);
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Assert - sort and filter must not be lost after navigating to another page and back
         assertRows(dataTable, langsFiltered);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -75,10 +75,10 @@ public class DataTable015Test extends AbstractDataTableTest {
     public void multiViewStatePage(Page page, OtherPage otherPage) {
         // Arrange
         PrimeSelenium.goTo(page);
-        PrimeSelenium.guardAjax(page.buttonClearTableState).click();
+        page.guardAjax(page.buttonClearTableState).click();
         DataTable dataTable = page.dataTable;
         Assertions.assertNotNull(dataTable);
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Act
         dataTable.selectPage(2);
@@ -86,14 +86,14 @@ public class DataTable015Test extends AbstractDataTableTest {
         PrimeSelenium.goTo(page);
 
         // Assert - page must not be lost after navigating to another page and back
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
         Assertions.assertEquals(2, dataTable.getPaginator().getActivePage().getNumber());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("paginator"));
     }

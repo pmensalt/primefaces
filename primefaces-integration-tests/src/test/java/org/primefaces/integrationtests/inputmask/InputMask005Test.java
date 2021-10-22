@@ -49,7 +49,7 @@ public class InputMask005Test extends AbstractInputMaskTest {
         // Assert
         Assertions.assertEquals(1, page.msgs.getAllMessages().size());
         Assertions.assertEquals("test", page.msgs.getMessage(0).getSummary());
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
     }
 
     public static class Page extends AbstractPrimePage {

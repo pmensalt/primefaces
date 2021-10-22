@@ -58,7 +58,7 @@ public class DatePicker010Test extends AbstractDatePickerTest {
         Assertions.assertEquals(26 + 11, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
         Assertions.assertEquals(5, panel.findElements(By.cssSelector("td > a.ui-state-default")).size());
 
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(page, datePicker.getWidgetConfiguration());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class DatePicker010Test extends AbstractDatePickerTest {
         // Assert
         Assertions.assertEquals(LocalDate.of(2021, 5, 29), datePicker.getValue().toLocalDate());
 
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(page, datePicker.getWidgetConfiguration());
     }
 
     @Test
@@ -104,11 +104,11 @@ public class DatePicker010Test extends AbstractDatePickerTest {
         // Assert
         Assertions.assertEquals(LocalDate.of(2021, 5, 27), datePicker.getValue().toLocalDate());
 
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(page, datePicker.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DatePicker Config = " + cfg);
         Assertions.assertEquals("dd.mm.yy", cfg.getString("dateFormat"));
         Assertions.assertEquals("27.05.2021", cfg.getString("minDate"));

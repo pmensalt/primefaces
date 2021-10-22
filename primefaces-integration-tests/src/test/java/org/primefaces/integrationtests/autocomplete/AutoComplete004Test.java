@@ -51,7 +51,7 @@ public class AutoComplete004Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("Nintendo", page.output.getText());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(page, autoComplete.getWidgetConfiguration());
     }
 
     @Test
@@ -69,11 +69,11 @@ public class AutoComplete004Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("", page.output.getText());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(page, autoComplete.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("AutoComplete Config = " + cfg);
         Assertions.assertTrue(cfg.has("appendTo"));
     }

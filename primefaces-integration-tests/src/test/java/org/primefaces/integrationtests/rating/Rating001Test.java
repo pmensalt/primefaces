@@ -62,7 +62,7 @@ public class Rating001Test extends AbstractPrimePageTest {
         Assertions.assertNull(rating.getValue());
         Assertions.assertEquals("Cancel Event", messages.getMessage(0).getSummary());
         Assertions.assertEquals("Rate Reset", messages.getMessage(0).getDetail());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(page, rating.getWidgetConfiguration());
     }
 
     @Test
@@ -89,7 +89,7 @@ public class Rating001Test extends AbstractPrimePageTest {
         Assertions.assertNull(rating.getValue());
         Assertions.assertEquals("Cancel Event", messages.getMessage(0).getSummary());
         Assertions.assertEquals("Rate Reset", messages.getMessage(0).getDetail());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(page, rating.getWidgetConfiguration());
     }
 
     @Test
@@ -106,7 +106,7 @@ public class Rating001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals(3L, rating.getValue());
-        JSONObject cfg = assertConfiguration(rating.getWidgetConfiguration());
+        JSONObject cfg = assertConfiguration(page, rating.getWidgetConfiguration());
         Assertions.assertTrue(cfg.getBoolean("readonly"));
     }
 
@@ -124,7 +124,7 @@ public class Rating001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals(3L, rating.getValue());
-        JSONObject cfg = assertConfiguration(rating.getWidgetConfiguration());
+        JSONObject cfg = assertConfiguration(page, rating.getWidgetConfiguration());
         Assertions.assertTrue(cfg.getBoolean("disabled"));
     }
 
@@ -152,7 +152,7 @@ public class Rating001Test extends AbstractPrimePageTest {
         // Assert
         Assertions.assertTrue(rating.isDisabled());
         Assertions.assertEquals(5L, rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(page, rating.getWidgetConfiguration());
     }
 
     @Test
@@ -164,11 +164,11 @@ public class Rating001Test extends AbstractPrimePageTest {
         Assertions.assertEquals(2L, rating.getValue());
 
         // Act
-        PrimeSelenium.executeScript(rating.getWidgetByIdScript() + ".setValue('abc');");
+        page.executeScript(rating.getWidgetByIdScript() + ".setValue('abc');");
 
         // Assert
         Assertions.assertNull(rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(page, rating.getWidgetConfiguration());
     }
 
     @Test
@@ -184,7 +184,7 @@ public class Rating001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertNull(rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(page, rating.getWidgetConfiguration());
     }
 
     @Test
@@ -200,7 +200,7 @@ public class Rating001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals(8L, rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(page, rating.getWidgetConfiguration());
     }
 
     @Test
@@ -212,13 +212,13 @@ public class Rating001Test extends AbstractPrimePageTest {
         Assertions.assertEquals(2L, rating.getValue());
 
         // Act
-        PrimeSelenium.setHiddenInput(rating.getInput(), "-1");
+        page.setHiddenInput(rating.getInput(), "-1");
         Assertions.assertEquals("-1", rating.getInput().getAttribute("value"));
         page.submit.click();
 
         // Assert
         Assertions.assertEquals(2L, rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(page, rating.getWidgetConfiguration());
     }
 
     @Test
@@ -230,13 +230,13 @@ public class Rating001Test extends AbstractPrimePageTest {
         Assertions.assertEquals(2L, rating.getValue());
 
         // Act
-        PrimeSelenium.setHiddenInput(rating.getInput(), "14");
+        page.setHiddenInput(rating.getInput(), "14");
         Assertions.assertEquals("14", rating.getInput().getAttribute("value"));
         page.submit.click();
 
         // Assert
         Assertions.assertEquals(2L, rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(page, rating.getWidgetConfiguration());
     }
 
     @Test
@@ -248,7 +248,7 @@ public class Rating001Test extends AbstractPrimePageTest {
         Assertions.assertEquals(2L, rating.getValue());
 
         // Act
-        PrimeSelenium.setHiddenInput(rating.getInput(), "def");
+        page.setHiddenInput(rating.getInput(), "def");
         Assertions.assertEquals("def", rating.getInput().getAttribute("value"));
         page.submit.click();
 
@@ -256,8 +256,8 @@ public class Rating001Test extends AbstractPrimePageTest {
         Assertions.assertEquals("Error", page.getWebDriver().getTitle());
     }
 
-    private JSONObject assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private JSONObject assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("Rating Config = " + cfg);
         Assertions.assertTrue(cfg.has("id"));
         return cfg;

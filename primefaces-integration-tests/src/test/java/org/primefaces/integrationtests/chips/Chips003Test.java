@@ -67,11 +67,11 @@ public class Chips003Test extends AbstractPrimePageTest {
         Assertions.assertEquals("One", values.get(0));
         Assertions.assertEquals("Two", values.get(1));
         Assertions.assertEquals("Three", values.get(2));
-        assertConfiguration(chips.getWidgetConfiguration());
+        assertConfiguration(page, chips.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("Chips Config = " + cfg);
         Assertions.assertTrue(cfg.has("id"));
         Assertions.assertTrue(cfg.getBoolean("unique"));

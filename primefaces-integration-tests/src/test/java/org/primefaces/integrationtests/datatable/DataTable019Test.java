@@ -50,13 +50,13 @@ public class DataTable019Test extends AbstractDataTableTest {
         dataTable.sort("Name");
 
         // Act
-        filterGlobal(globalFilter, "Java");
+        filterGlobal(page, globalFilter, "Java");
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByName("Java");
         Assertions.assertEquals(2, langsFiltered.size());
         assertRows(dataTable, langsFiltered);
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -70,13 +70,13 @@ public class DataTable019Test extends AbstractDataTableTest {
         dataTable.sort("Type");
 
         // Act
-        filterGlobal(globalFilter, "COMPILED");
+        filterGlobal(page, globalFilter, "COMPILED");
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguage.ProgrammingLanguageType.COMPILED);
         Assertions.assertEquals(2, langsFiltered.size());
         assertRows(dataTable, langsFiltered);
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -90,13 +90,13 @@ public class DataTable019Test extends AbstractDataTableTest {
         dataTable.sort("Name");
 
         // Act
-        filterGlobal(globalFilter, "Clojure");
+        filterGlobal(page, globalFilter, "Clojure");
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByName("Clojure");
         Assertions.assertEquals(0, langsFiltered.size());
         assertRows(dataTable, langsFiltered);
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -108,11 +108,11 @@ public class DataTable019Test extends AbstractDataTableTest {
         DataTable dataTable = page.dataTable;
 
         // Act
-        PrimeSelenium.executeScript(true, "PF('wgtTable').clearFilters()");
+        page.executeScript(true, "PF('wgtTable').clearFilters()");
 
         // Assert
         Assertions.assertEquals(5, languages.size());
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -131,11 +131,11 @@ public class DataTable019Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguage.ProgrammingLanguageType.INTERPRETED);
         Assertions.assertEquals(3, langsFiltered.size());
         assertRows(dataTable, langsFiltered);
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("paginator"));
         Assertions.assertEquals("wgtTable", cfg.getString("widgetVar"));

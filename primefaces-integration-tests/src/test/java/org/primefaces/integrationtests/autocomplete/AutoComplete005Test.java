@@ -67,7 +67,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
 
         // Act - Chr(istoph) - not allowed
         autoComplete.setValueWithoutTab("Chr");
-        PrimeSelenium.guardAjax(autoComplete.getInput()).sendKeys(Keys.ENTER);
+        page.guardAjax(autoComplete.getInput()).sendKeys(Keys.ENTER);
 
         RealDriverService realDriverService = new RealDriverService();
         realDriverService.init();
@@ -89,7 +89,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max"));
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Lando"));
         Assertions.assertFalse(page.messages.getMessage(0).getDetail().contains("Chr"));
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(page, autoComplete.getWidgetConfiguration());
     }
 
     @Test

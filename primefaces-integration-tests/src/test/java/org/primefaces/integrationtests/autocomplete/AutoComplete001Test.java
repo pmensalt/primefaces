@@ -56,7 +56,7 @@ public class AutoComplete001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("hello", autoComplete.getValue());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(page, autoComplete.getWidgetConfiguration());
     }
 
     @Test
@@ -75,7 +75,7 @@ public class AutoComplete001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("bye0", autoComplete.getValue());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(page, autoComplete.getWidgetConfiguration());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class AutoComplete001Test extends AbstractPrimePageTest {
 
         // Assert - Part 2
         Assertions.assertEquals("Prime", autoComplete.getValue());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(page, autoComplete.getWidgetConfiguration());
     }
 
     @Test
@@ -125,8 +125,8 @@ public class AutoComplete001Test extends AbstractPrimePageTest {
         Assertions.assertEquals("abc9", itemValues.get(9));
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("AutoComplete Config = " + cfg);
         Assertions.assertTrue(cfg.has("appendTo"));
     }

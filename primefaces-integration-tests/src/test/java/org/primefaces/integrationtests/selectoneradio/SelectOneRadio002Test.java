@@ -58,11 +58,11 @@ public class SelectOneRadio002Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("Charles", selectOneRadio.getSelectedLabel());
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(page, selectOneRadio.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("SelectOneRadio Config = " + cfg);
         Assertions.assertTrue(cfg.getBoolean("unselectable"));
     }

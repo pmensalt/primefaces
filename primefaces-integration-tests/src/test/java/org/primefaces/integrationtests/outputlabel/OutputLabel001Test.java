@@ -218,7 +218,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     private void assertLabel(OutputLabel label, String text, boolean required) {
         Assertions.assertEquals(required, label.hasRequiredIndicator());
         Assertions.assertEquals(text, label.getText());
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(label.getWebDriver());
     }
 
     public static class Page extends AbstractPrimePage {

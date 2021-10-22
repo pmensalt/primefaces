@@ -55,7 +55,7 @@ public class ConfirmPopup001Test extends AbstractPrimePageTest {
         Assertions.assertTrue(popup.isVisible());
         Assertions.assertEquals("Are you sure you want to proceed?", popup.getMessage().getText());
         Assertions.assertEquals("ui-confirm-popup-icon pi pi-exclamation-triangle", popup.getIcon().getAttribute("class"));
-        assertConfiguration(popup.getWidgetConfiguration());
+        assertConfiguration(page, popup.getWidgetConfiguration());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class ConfirmPopup001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertFalse(popup.isVisible());
-        assertConfiguration(popup.getWidgetConfiguration());
+        assertConfiguration(page, popup.getWidgetConfiguration());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class ConfirmPopup001Test extends AbstractPrimePageTest {
         // Assert
         Assertions.assertFalse(popup.isVisible());
         Assertions.assertTrue(page.messages.isEmpty());
-        assertConfiguration(popup.getWidgetConfiguration());
+        assertConfiguration(page, popup.getWidgetConfiguration());
     }
 
     @Test
@@ -103,12 +103,12 @@ public class ConfirmPopup001Test extends AbstractPrimePageTest {
         page.confirm.click();
 
         // Act
-        PrimeSelenium.guardAjax(popup.getYesButton()).click();
+        page.guardAjax(popup.getYesButton()).click();
 
         // Assert
         Assertions.assertFalse(popup.isVisible());
         assertMessage(page, "You have accepted");
-        assertConfiguration(popup.getWidgetConfiguration());
+        assertConfiguration(page, popup.getWidgetConfiguration());
     }
 
     @Test
@@ -126,7 +126,7 @@ public class ConfirmPopup001Test extends AbstractPrimePageTest {
         // Assert
         Assertions.assertFalse(popup.isVisible());
         Assertions.assertTrue(page.messages.isEmpty());
-        assertConfiguration(popup.getWidgetConfiguration());
+        assertConfiguration(page, popup.getWidgetConfiguration());
     }
 
     @Test
@@ -139,23 +139,23 @@ public class ConfirmPopup001Test extends AbstractPrimePageTest {
         page.delete.click();
 
         // Act
-        PrimeSelenium.guardAjax(popup.getYesButton()).click();
+        page.guardAjax(popup.getYesButton()).click();
 
         // Assert
         Assertions.assertFalse(popup.isVisible());
         assertMessage(page, "Record deleted");
-        assertConfiguration(popup.getWidgetConfiguration());
+        assertConfiguration(page, popup.getWidgetConfiguration());
     }
 
     private void assertMessage(Page page, String message) {
         Messages messages = page.messages;
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(messages));
+        page.waitGui().until(PrimeExpectedConditions.visibleInViewport(messages));
         Msg msg = messages.getMessage(0);
         Assertions.assertEquals(message, msg.getDetail());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("ConfirmPopup Config = " + cfg);
         Assertions.assertTrue(cfg.getBoolean("global"));
         Assertions.assertTrue(cfg.getBoolean("dismissable"));
