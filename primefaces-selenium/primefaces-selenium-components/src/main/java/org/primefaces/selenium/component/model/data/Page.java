@@ -53,7 +53,7 @@ public class Page {
     public void setWebElement(WebElement webElement) {
         this.webElement = webElement;
     }
-    
+
     public WebDriver getWebDriver() {
         return driver;
     }
