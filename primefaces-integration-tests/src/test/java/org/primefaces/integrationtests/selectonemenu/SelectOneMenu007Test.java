@@ -58,7 +58,7 @@ public class SelectOneMenu007Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, 0, "Country", "Brazil");
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class SelectOneMenu007Test extends AbstractPrimePageTest {
         // Assert
         Assertions.assertEquals(selectOneMenu.getLabel().getText(), "<span>Turks &amp; Caicos<span>");
         assertMessage(page, 0, "Country", "Turks & Caicos");
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
     }
 
     private void assertItems(Page page, int itemCount, int groupCount) {
@@ -94,8 +94,8 @@ public class SelectOneMenu007Test extends AbstractPrimePageTest {
         Assertions.assertEquals(detail, message.getDetail());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("SelectOneMenu Config = " + cfg);
         Assertions.assertTrue(cfg.has("appendTo"));
         Assertions.assertTrue(cfg.getBoolean("autoWidth"));

@@ -130,20 +130,20 @@ public class ToggleSwitch001Test extends AbstractPrimePageTest {
         Assertions.assertFalse(toggleSwitch.isSelected());
 
         // Act
-        PrimeSelenium.guardAjax(label).click();
+        page.guardAjax(label).click();
 
         // Assert
         assertChecked(page, true);
 
         // Act
-        PrimeSelenium.guardAjax(label).click();
+        page.guardAjax(label).click();
 
         // Assert
         assertChecked(page, false);
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("ToggleSwitch Config = " + cfg);
     }
 
@@ -151,7 +151,7 @@ public class ToggleSwitch001Test extends AbstractPrimePageTest {
         Assertions.assertEquals(checked, page.toggleSwitch.isSelected());
         Msg message = page.messages.getMessage(0);
         Assertions.assertEquals(checked ? "Checked" : "Unchecked", message.getDetail());
-        assertConfiguration(page.toggleSwitch.getWidgetConfiguration());
+        assertConfiguration(page, page.toggleSwitch.getWidgetConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

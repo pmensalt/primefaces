@@ -65,7 +65,7 @@ public class SelectManyMenu003Test extends AbstractSelectManyMenuTest {
         filter.forEach(f -> {
             // Act
             selectManyMenu.getFilterInput().clear();
-            ComponentUtils.sendKeys(selectManyMenu.getFilterInput(),f);
+            ComponentUtils.sendKeys(page.getWebDriver(), selectManyMenu.getFilterInput(),f);
 
             // Assert
             Assertions.assertEquals(drivers.stream().filter(d -> d.getName().startsWith(f)).collect(Collectors.toList()).size(), selectManyMenu.getLabels().size());
@@ -80,11 +80,11 @@ public class SelectManyMenu003Test extends AbstractSelectManyMenuTest {
         Assertions.assertEquals(1, page.messages.getAllMessages().size());
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Lando"));
-        assertConfiguration(selectManyMenu.getWidgetConfiguration());
+        assertConfiguration(page, selectManyMenu.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("SelectManyMenu Config = " + cfg);
         Assertions.assertTrue(cfg.has("id"));
     }

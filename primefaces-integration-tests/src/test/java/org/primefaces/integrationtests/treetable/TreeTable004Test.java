@@ -64,12 +64,12 @@ public class TreeTable004Test extends AbstractTreeTableTest {
         // Assert
         assertMessage(page.messages, 0, "selected nodes", "Desktop,editor.app");
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
     }
 
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("TreeTable Config = " + cfg);
         Assertions.assertEquals("treeTable", cfg.getString("widgetVar"));
     }

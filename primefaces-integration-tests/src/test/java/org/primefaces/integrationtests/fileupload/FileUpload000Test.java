@@ -54,9 +54,9 @@ public class FileUpload000Test extends AbstractFileUploadTest {
         page.button.click();
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -73,7 +73,7 @@ public class FileUpload000Test extends AbstractFileUploadTest {
         page.button.click();
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1);
 
         // Act
@@ -83,9 +83,9 @@ public class FileUpload000Test extends AbstractFileUploadTest {
         page.button.click();
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1, file2);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -102,11 +102,11 @@ public class FileUpload000Test extends AbstractFileUploadTest {
         page.button.click();
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         // this error is raised by backing bean
         // Primefaces only limits upload size to sizeLimit if mode=simple skinSimple=false
         assertUploadErrors(page.uploadedFiles, "unexpected file size");
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -123,11 +123,11 @@ public class FileUpload000Test extends AbstractFileUploadTest {
         page.button.click();
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         // this error is raised by backing bean
         // Primefaces does not check allowTypes if mode=simple skinSimple=false
         assertUploadErrors(page.uploadedFiles, "unexpected file type");
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     private void assertUploadErrors(DataTable uploadedFiles, String... errors) {
@@ -143,7 +143,7 @@ public class FileUpload000Test extends AbstractFileUploadTest {
         }
     }
 
-    private void assertConfiguration(FileUpload fileUpload) {
+    private void assertConfiguration(AbstractPrimePage page, FileUpload fileUpload) {
         JSONObject cfg = fileUpload.getWidgetConfiguration();
         System.out.println("FileInput Config = " + cfg);
         Assertions.assertFalse(cfg.has("skinSimple"));

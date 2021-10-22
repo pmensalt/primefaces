@@ -70,7 +70,7 @@ public class SelectOneMenu009Test extends AbstractPrimePageTest {
         filter.forEach(f -> {
             // Act
             selectOneMenu.getFilterInput().clear();
-            ComponentUtils.sendKeys(selectOneMenu.getFilterInput(),f);
+            ComponentUtils.sendKeys(page.getWebDriver(), selectOneMenu.getFilterInput(),f);
 
             // Assert
             Assertions.assertEquals(drivers.stream().filter(d -> d.getName().startsWith(f)).collect(Collectors.toList()).size(), selectOneMenu.getLabels().size());
@@ -82,11 +82,11 @@ public class SelectOneMenu009Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("Charles", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("SelectOneMenu Config = " + cfg);
         Assertions.assertTrue(cfg.has("appendTo"));
         Assertions.assertTrue(cfg.getBoolean("autoWidth"));

@@ -60,7 +60,7 @@ public class DatePicker005Test extends AbstractDatePickerTest {
         // Assert Submit Value
         page.button.click();
         Assertions.assertEquals("08/20/2020 - 08/25/2020", page.messages.getMessage(0).getDetail());
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(page, datePicker.getWidgetConfiguration());
     }
 
     @Test
@@ -86,11 +86,11 @@ public class DatePicker005Test extends AbstractDatePickerTest {
         // Assert Submit Value
         page.button.click();
         Assertions.assertEquals("08/03/2020 - 08/05/2020", page.messages.getMessage(0).getDetail());
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(page, datePicker.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DatePicker Config = " + cfg);
         Assertions.assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
         Assertions.assertEquals("range", cfg.getString("selectionMode"));

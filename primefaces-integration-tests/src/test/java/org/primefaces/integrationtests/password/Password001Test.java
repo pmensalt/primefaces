@@ -50,7 +50,7 @@ public class Password001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("", password.getValue());
-        assertConfiguration(password.getWidgetConfiguration());
+        assertConfiguration(page, password.getWidgetConfiguration());
     }
 
     @Test
@@ -67,11 +67,11 @@ public class Password001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("encryptme!", password.getValue());
-        assertConfiguration(password.getWidgetConfiguration());
+        assertConfiguration(page, password.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("Password Config = " + cfg);
         Assertions.assertTrue(cfg.has("widgetVar"));
     }

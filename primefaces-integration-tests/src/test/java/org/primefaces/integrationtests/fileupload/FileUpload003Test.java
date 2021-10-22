@@ -50,9 +50,9 @@ public class FileUpload003Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class FileUpload003Test extends AbstractFileUploadTest {
         fileUpload.setValue(file1);
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1);
 
         // Act
@@ -75,9 +75,9 @@ public class FileUpload003Test extends AbstractFileUploadTest {
         fileUpload.setValue(file2);
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         assertUploadedFiles(page.uploadedFiles, file1, file2);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -97,10 +97,10 @@ public class FileUpload003Test extends AbstractFileUploadTest {
         Assertions.assertEquals("", fileUpload.getWidgetValue());
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
     @Test
@@ -120,13 +120,13 @@ public class FileUpload003Test extends AbstractFileUploadTest {
         Assertions.assertEquals("", fileUpload.getWidgetValue());
 
         // Assert
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
-        assertConfiguration(fileUpload);
+        assertConfiguration(page, fileUpload);
     }
 
-    private void assertConfiguration(FileUpload fileUpload) {
+    private void assertConfiguration(AbstractPrimePage page, FileUpload fileUpload) {
         JSONObject cfg = fileUpload.getWidgetConfiguration();
         System.out.println("FileInput Config = " + cfg);
         Assertions.assertEquals("{name} {size}", cfg.getString("messageTemplate"));

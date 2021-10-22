@@ -63,7 +63,7 @@ public class AutoComplete003Test extends AbstractPrimePageTest {
         Assertions.assertEquals("Ringo", values.get(0));
         Assertions.assertEquals("John", values.get(1));
         Assertions.assertEquals("George", values.get(2));
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(page, autoComplete.getWidgetConfiguration());
     }
 
     @Test
@@ -87,7 +87,7 @@ public class AutoComplete003Test extends AbstractPrimePageTest {
         values = autoComplete.getValues();
         Assertions.assertEquals(1, values.size());
         Assertions.assertEquals("Paul", values.get(0));
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(page, autoComplete.getWidgetConfiguration());
     }
 
     @Test
@@ -112,7 +112,7 @@ public class AutoComplete003Test extends AbstractPrimePageTest {
         values = autoComplete.getValues();
         Assertions.assertEquals(1, values.size());
         Assertions.assertEquals("Ringo", values.get(0));
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(page, autoComplete.getWidgetConfiguration());
     }
 
     @Test
@@ -140,11 +140,11 @@ public class AutoComplete003Test extends AbstractPrimePageTest {
         values = autoComplete.getValues();
         Assertions.assertEquals(1, values.size());
         Assertions.assertEquals("George", values.get(0));
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(page, autoComplete.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("AutoComplete Config = " + cfg);
         Assertions.assertTrue(cfg.getBoolean("multiple"));
         Assertions.assertTrue(cfg.getBoolean("unique"));

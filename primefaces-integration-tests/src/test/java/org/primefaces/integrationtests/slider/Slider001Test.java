@@ -55,7 +55,7 @@ public class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, inputText, 8);
-        assertIntConfiguration(slider.getWidgetConfiguration());
+        assertIntConfiguration(page, slider.getWidgetConfiguration());
     }
 
     @Test
@@ -75,7 +75,7 @@ public class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, inputText, 9.9f);
-        assertFloatConfiguration(slider.getWidgetConfiguration());
+        assertFloatConfiguration(page, slider.getWidgetConfiguration());
     }
 
     @Test
@@ -95,7 +95,7 @@ public class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, inputText, 7);
-        assertIntConfiguration(slider.getWidgetConfiguration());
+        assertIntConfiguration(page, slider.getWidgetConfiguration());
     }
 
     @Test
@@ -117,7 +117,7 @@ public class Slider001Test extends AbstractPrimePageTest {
         // Mojarra and MyFaces have slightly different behaviour - we check their common behaviour
         Assertions.assertEquals(1, page.messages.getAllMessages().size());
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Value is out of range."));
-        assertIntConfiguration(slider.getWidgetConfiguration());
+        assertIntConfiguration(page, slider.getWidgetConfiguration());
     }
 
     @Test
@@ -137,7 +137,7 @@ public class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, inputText, -3.87f);
-        assertFloatConfiguration(slider.getWidgetConfiguration());
+        assertFloatConfiguration(page, slider.getWidgetConfiguration());
     }
 
     @Test
@@ -157,7 +157,7 @@ public class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, inputText, -4.56f);
-        assertFloatConfiguration(slider.getWidgetConfiguration());
+        assertFloatConfiguration(page, slider.getWidgetConfiguration());
     }
 
     @Test
@@ -177,7 +177,7 @@ public class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, inputText, 2.98f);
-        assertFloatConfiguration(slider.getWidgetConfiguration());
+        assertFloatConfiguration(page, slider.getWidgetConfiguration());
     }
 
     @Test
@@ -196,7 +196,7 @@ public class Slider001Test extends AbstractPrimePageTest {
         // Mojarra and MyFaces have slightly different behaviour - we check their common behaviour
         Assertions.assertEquals(1, page.messages.getAllMessages().size());
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Value is out of range."));
-        assertFloatConfiguration(slider.getWidgetConfiguration());
+        assertFloatConfiguration(page, slider.getWidgetConfiguration());
     }
 
     @Test
@@ -215,7 +215,7 @@ public class Slider001Test extends AbstractPrimePageTest {
         // Mojarra and MyFaces have slightly different behaviour - we check their common behaviour
         Assertions.assertEquals(1, page.messages.getAllMessages().size());
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Value is out of range."));
-        assertFloatConfiguration(slider.getWidgetConfiguration());
+        assertFloatConfiguration(page, slider.getWidgetConfiguration());
     }
 
     private void assertValue(Slider slider, InputText inputText, Number value) {
@@ -228,22 +228,22 @@ public class Slider001Test extends AbstractPrimePageTest {
         Assertions.assertEquals(value.toString(), inputText.getValue());
     }
 
-    private void assertFloatConfiguration(JSONObject cfg) {
-        assertConfiguration(cfg);
+    private void assertFloatConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertConfiguration(page, cfg);
         Assertions.assertEquals(-10, cfg.getInt("min"));
         Assertions.assertEquals(10, cfg.getInt("max"));
         Assertions.assertEquals("0.01", cfg.get("step").toString());
     }
 
-    private void assertIntConfiguration(JSONObject cfg) {
-        assertConfiguration(cfg);
+    private void assertIntConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertConfiguration(page, cfg);
         Assertions.assertEquals(0, cfg.getInt("min"));
         Assertions.assertEquals(50, cfg.getInt("max"));
         Assertions.assertEquals(1, cfg.getInt("step"));
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("Slider Config = " + cfg);
         Assertions.assertTrue(cfg.has("id"));
         Assertions.assertTrue(cfg.getBoolean("animate"));

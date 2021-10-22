@@ -65,7 +65,7 @@ public class AccordionPanel001Test extends AbstractPrimePageTest {
         accordionPanel.toggleTab(2);
 
         // Assert - part 2
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
         Assertions.assertNotNull(accordionPanel.getSelectedTabs());
         Assertions.assertEquals(1, accordionPanel.getSelectedTabs().size());
         Assertions.assertEquals(2, accordionPanel.getSelectedTabs().get(0).getIndex());

@@ -55,7 +55,7 @@ public class DataTable014Test extends AbstractDataTableTest {
         Assertions.assertNotNull(dataTableWrapper);
 
         // Act
-        JavascriptExecutor js = (JavascriptExecutor) getWebDriver();
+        JavascriptExecutor js = (JavascriptExecutor) page.getWebDriver();
         int scrollDown = 2000;
         js.executeScript("window.scrollBy(0," + scrollDown + ")");
         TestUtils.wait(1000); //compensate weird Firefox (81) timing issue with assigning ui-sticky
@@ -66,7 +66,7 @@ public class DataTable014Test extends AbstractDataTableTest {
         Assertions.assertEquals(dataTableWidth, dataTableWrapper.getSize().getWidth());
         Assertions.assertEquals(dataTableLocationX, dataTableWrapper.getLocation().getX());
         Assertions.assertEquals(dataTable.getLocation().getY(), dataTableWrapper.getLocation().getY());
-        if (!PrimeSelenium.isSafari()) {
+        if (!page.isSafari()) {
             Assertions.assertEquals(scrollDown, dataTableSticky.getLocation().getY());
         }
 
@@ -77,11 +77,11 @@ public class DataTable014Test extends AbstractDataTableTest {
         // Assert
         Assertions.assertFalse(PrimeSelenium.hasCssClass(dataTableSticky, "ui-sticky"));
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("stickyHeader"));
     }

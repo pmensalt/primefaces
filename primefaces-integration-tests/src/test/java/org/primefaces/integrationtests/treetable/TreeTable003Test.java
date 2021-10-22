@@ -64,11 +64,11 @@ public class TreeTable003Test extends AbstractTreeTableTest {
         rootPage2.setChildren(root.getChildren().subList(0, 3));
         assertRows(treeTable, rootPage2);
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("TreeTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("paginator"));
         Assertions.assertEquals("wgtTreeTable", cfg.getString("widgetVar"));

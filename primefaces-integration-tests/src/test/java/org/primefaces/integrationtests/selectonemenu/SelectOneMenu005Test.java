@@ -60,11 +60,11 @@ public class SelectOneMenu005Test extends AbstractPrimePageTest {
         options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
         Assertions.assertEquals(4, options.size());
 
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("SelectOneMenu Config = " + cfg);
         Assertions.assertTrue(cfg.has("appendTo"));
     }

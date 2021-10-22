@@ -68,7 +68,7 @@ public class Chips004Test extends AbstractPrimePageTest {
         Assertions.assertEquals("orange", values.get(0));
         Assertions.assertEquals("banana", values.get(1));
         Assertions.assertEquals("apple", values.get(2));
-        assertConfiguration(chips.getWidgetConfiguration());
+        assertConfiguration(page, chips.getWidgetConfiguration());
     }
 
     @Test
@@ -102,11 +102,11 @@ public class Chips004Test extends AbstractPrimePageTest {
         Assertions.assertEquals("Excel", values.get(0));
         Assertions.assertEquals("Word", values.get(1));
         Assertions.assertEquals("Outlook", values.get(2));
-        assertConfiguration(chips.getWidgetConfiguration());
+        assertConfiguration(page, chips.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("Chips Config = " + cfg);
         Assertions.assertTrue(cfg.has("id"));
         Assertions.assertTrue(cfg.getBoolean("addOnPaste"));
