@@ -46,7 +46,7 @@ public class TextEditor001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("<p>hello!</p>", editor.getValue());
-        assertConfiguration(page, editor.getWidgetConfiguration());
+        assertConfiguration(editor.getWidgetConfiguration());
     }
 
     @Test
@@ -60,11 +60,11 @@ public class TextEditor001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("", editor.getEditorValue());
-        assertConfiguration(page, editor.getWidgetConfiguration());
+        assertConfiguration(editor.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("TextEditor Config = " + cfg);
         Assertions.assertTrue(cfg.getBoolean("toolbarVisible"));
         Assertions.assertEquals("snow", cfg.getString("theme"));

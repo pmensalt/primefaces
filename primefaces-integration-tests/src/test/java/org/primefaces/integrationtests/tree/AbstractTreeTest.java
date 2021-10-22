@@ -25,19 +25,18 @@ package org.primefaces.integrationtests.tree;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
-import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
 
 public abstract class AbstractTreeTest extends AbstractPrimePageTest {
 
-    protected void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
-        assertConfiguration(page, cfg, "tree");
+    protected void assertConfiguration(JSONObject cfg) {
+        assertConfiguration(cfg, "tree");
     }
 
-    protected void assertConfiguration(AbstractPrimePage page, JSONObject cfg, String widgetVar) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    protected void assertConfiguration(JSONObject cfg, String widgetVar) {
+        assertNoJavascriptErrors();
         System.out.println("Tree Config = " + cfg);
         Assertions.assertEquals(widgetVar, cfg.getString("widgetVar"));
     }

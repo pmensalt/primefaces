@@ -52,7 +52,7 @@ public class DatePicker007Test extends AbstractDatePickerTest {
 
         // Assert Panel (12:04 AM)
         Assertions.assertNotNull(panel);
-        assertTime(page, panel, "12", "04", null);
+        assertTime(panel, "12", "04", null);
         Assertions.assertTrue(panel.getText().contains("AM"));
 
         // Act (go down by 1 hour)
@@ -60,13 +60,13 @@ public class DatePicker007Test extends AbstractDatePickerTest {
         hourPicker.findElement(By.className("ui-picker-down")).click();
 
         // Assert (new time should be 11:04 PM)
-        assertTime(page, panel, "11", "04", null);
+        assertTime(panel, "11", "04", null);
         Assertions.assertTrue(panel.getText().contains("PM"));
-        assertConfiguration(page, datePicker.getWidgetConfiguration(), "12:04 AM");
+        assertConfiguration(datePicker.getWidgetConfiguration(), "12:04 AM");
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg, String defaultDate) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg, String defaultDate) {
+        assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
         Assertions.assertEquals(defaultDate, cfg.getString("defaultDate"));
         Assertions.assertEquals("single", cfg.getString("selectionMode"));

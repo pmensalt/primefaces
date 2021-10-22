@@ -63,20 +63,20 @@ public class Tree002Test extends AbstractTreeTest {
 
         // Assert
         assertMessage(page.messages, 0, "Selected", "Documents");
-        page.guardAjax(page.buttonShowSelectedNode).click();
+        PrimeSelenium.guardAjax(page.buttonShowSelectedNode).click();
         assertMessage(page.messages, 0, "Selected node", "Documents");
 
         // Act Pt. 2
         Actions actions = new Actions(page.getWebDriver());
         Action actionUnselect = actions.keyDown(Keys.META).click(first.getLabel()).keyUp(Keys.META).build();
-        page.guardAjax(actionUnselect).perform();
+        PrimeSelenium.guardAjax(actionUnselect).perform();
 
         // Assert Pt. 2
         assertMessage(page.messages, 0, "Unselected", "Documents");
-        page.guardAjax(page.buttonShowSelectedNode).click();
+        PrimeSelenium.guardAjax(page.buttonShowSelectedNode).click();
         assertMessage(page.messages, 0, "No node selected!", "");
 
-        assertConfiguration(page, tree.getWidgetConfiguration());
+        assertConfiguration(tree.getWidgetConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

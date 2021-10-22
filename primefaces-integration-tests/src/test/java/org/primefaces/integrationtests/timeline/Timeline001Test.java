@@ -53,7 +53,7 @@ public class Timeline001Test extends AbstractPrimePageTest {
         // Assert
         long eventCount = timeline.getNumberOfEvents();
         Assertions.assertEquals(15, eventCount);
-        assertConfiguration(page, timeline.getWidgetConfiguration());
+        assertConfiguration(timeline.getWidgetConfiguration());
     }
 
     @Test
@@ -67,9 +67,9 @@ public class Timeline001Test extends AbstractPrimePageTest {
         timeline.select("vis-item-content");
 
         // Assert
-        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.messages));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.messages));
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Selected event:"));
-        assertConfiguration(page, timeline.getWidgetConfiguration());
+        assertConfiguration(timeline.getWidgetConfiguration());
     }
 
     @Test
@@ -129,15 +129,15 @@ public class Timeline001Test extends AbstractPrimePageTest {
     }
 
     private void assertRangeChanged(Page page, String detail, String summary) {
-        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.messages));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.messages));
         Msg message = page.messages.getMessage(0);
         Assertions.assertEquals(detail, message.getSummary());
         Assertions.assertTrue(message.getDetail().contains(summary));
-        assertConfiguration(page, page.timeline.getWidgetConfiguration());
+        assertConfiguration(page.timeline.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("Timeline Config = " + cfg);
         Assertions.assertTrue(cfg.has("data"));
     }

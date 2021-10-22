@@ -38,6 +38,7 @@ import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.AutoComplete;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
@@ -66,7 +67,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
 
         // Act - Chr(istoph) - not allowed
         autoComplete.setValueWithoutTab("Chr");
-        page.guardAjax(autoComplete.getInput()).sendKeys(Keys.ENTER);
+        PrimeSelenium.guardAjax(autoComplete.getInput()).sendKeys(Keys.ENTER);
 
         RealDriverService realDriverService = new RealDriverService();
         realDriverService.init();
@@ -88,7 +89,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max"));
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Lando"));
         Assertions.assertFalse(page.messages.getMessage(0).getDetail().contains("Chr"));
-        assertConfiguration(page, autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
     @Test

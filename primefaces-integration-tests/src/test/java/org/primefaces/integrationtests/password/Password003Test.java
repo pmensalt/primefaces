@@ -50,7 +50,7 @@ public class Password003Test extends AbstractPrimePageTest {
         WebElement feedback = password.getFeedbackPanel();
         Assertions.assertEquals("block", feedback.getCssValue("display"));
         assertText(feedback, "Lütfen şifre giriniz");
-        assertConfiguration(page, password.getWidgetConfiguration());
+        assertConfiguration(password.getWidgetConfiguration());
     }
 
     @Test
@@ -67,7 +67,7 @@ public class Password003Test extends AbstractPrimePageTest {
         // Assert
         WebElement feedback = password.getFeedbackPanel();
         assertText(feedback, "Zayıf");
-        assertConfiguration(page, password.getWidgetConfiguration());
+        assertConfiguration(password.getWidgetConfiguration());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class Password003Test extends AbstractPrimePageTest {
         // Assert
         WebElement feedback = password.getFeedbackPanel();
         assertText(feedback, "Orta seviye");
-        assertConfiguration(page, password.getWidgetConfiguration());
+        assertConfiguration(password.getWidgetConfiguration());
     }
 
     @Test
@@ -101,11 +101,11 @@ public class Password003Test extends AbstractPrimePageTest {
         // Assert
         WebElement feedback = password.getFeedbackPanel();
         assertText(feedback, "Güçlü");
-        assertConfiguration(page, password.getWidgetConfiguration());
+        assertConfiguration(password.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("Password Config = " + cfg);
         Assertions.assertTrue(cfg.getBoolean("feedback"));
         Assertions.assertFalse(cfg.getBoolean("inline"));

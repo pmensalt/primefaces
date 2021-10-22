@@ -60,7 +60,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId()<5).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId()<=5).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -94,7 +94,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId()>5).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -111,7 +111,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId()>=5).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -128,7 +128,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId()==5).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -152,7 +152,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         employeesFiltered = employees.stream().filter(e -> e.getLastName().startsWith("Mas")).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -176,7 +176,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         employeesFiltered = employees.stream().filter(e -> e.getLastName().endsWith("yer")).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -200,7 +200,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         employeesFiltered = employees.stream().filter(e -> e.getLastName().contains("sh")).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -224,7 +224,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         employeesFiltered = employees.stream().filter(e -> e.getLastName().equalsIgnoreCase("Mayr")).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -236,7 +236,7 @@ public class DataTable026Test extends AbstractDataTableTest {
 
         // Act
         page.birthdateRangeFilter.getInput().sendKeys("1/1/1970 - 1/5/1970");
-        page.guardAjax(page.birthdateRangeFilter.getInput()).sendKeys(Keys.TAB);
+        PrimeSelenium.guardAjax(page.birthdateRangeFilter.getInput()).sendKeys(Keys.TAB);
 
         // Assert
         List<Employee> employeesFiltered = employees.stream()
@@ -245,7 +245,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         assertEmployeeRows(dataTable, employeesFiltered);
 
         // Setting range via Selenium (sendKeys) causes JS-errors. So we don´t check for them.
-//        assertConfiguration(page, dataTable.getWidgetConfiguration());
+//        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -257,7 +257,7 @@ public class DataTable026Test extends AbstractDataTableTest {
 
         // Act
         page.birthdateRangeFilter.getInput().sendKeys("12/25/1969 - 1/3/1970");
-        page.guardAjax(page.birthdateRangeFilter.getInput()).sendKeys(Keys.TAB);
+        PrimeSelenium.guardAjax(page.birthdateRangeFilter.getInput()).sendKeys(Keys.TAB);
 
         // Assert
         List<Employee> employeesFiltered = employeesFiltered = employees.stream()
@@ -266,7 +266,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         assertEmployeeRows(dataTable, employeesFiltered);
 
         // Setting range via Selenium (sendKeys) causes JS-errors. So we don´t check for them.
-//        assertConfiguration(page, dataTable.getWidgetConfiguration());
+//        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -298,11 +298,11 @@ public class DataTable026Test extends AbstractDataTableTest {
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertEquals("wgtTable", cfg.getString("widgetVar"));
         Assertions.assertEquals(0, cfg.getInt("tabindex"));

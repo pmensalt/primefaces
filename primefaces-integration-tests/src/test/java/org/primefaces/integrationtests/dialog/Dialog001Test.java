@@ -109,7 +109,7 @@ public class Dialog001Test extends AbstractPrimePageTest {
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Submit"));
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("text2: test123"));
         Assertions.assertEquals("test123", page.inputText2Readonly.getValue());
-        assertConfiguration(page, page.dialog.getWidgetConfiguration());
+        assertConfiguration(page.dialog.getWidgetConfiguration());
     }
 
     @Test
@@ -138,14 +138,14 @@ public class Dialog001Test extends AbstractPrimePageTest {
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Submit"));
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("text2: null"));
         Assertions.assertEquals("", page.inputText2Readonly.getValue());
-        assertConfiguration(page, page.dialog.getWidgetConfiguration());
+        assertConfiguration(page.dialog.getWidgetConfiguration());
     }
 
     private void assertDialog(Page page, boolean visible) {
         Dialog dialog = page.dialog;
         Assertions.assertEquals(visible, dialog.isVisible());
         Assertions.assertEquals(visible, dialog.isDisplayed());
-        assertConfiguration(page, dialog.getWidgetConfiguration());
+        assertConfiguration(dialog.getWidgetConfiguration());
 
         if (visible) {
             try {
@@ -165,8 +165,8 @@ public class Dialog001Test extends AbstractPrimePageTest {
         }
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("Dialog Config = " + cfg);
         Assertions.assertTrue(cfg.getBoolean("draggable"));
         Assertions.assertTrue(cfg.getBoolean("cache"));

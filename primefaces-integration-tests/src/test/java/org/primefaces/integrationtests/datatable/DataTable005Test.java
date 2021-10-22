@@ -82,7 +82,7 @@ public class DataTable005Test extends AbstractDataTableTest {
 
         // Assert
         dataTable = getDataTable();
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
         assertMessage("Selected ProgrammingLanguage(s)", "1,3,4,5");
 
         // Act
@@ -91,7 +91,7 @@ public class DataTable005Test extends AbstractDataTableTest {
 
         // Assert - selection must not be lost after update
         dataTable = getDataTable();
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
         assertMessage("Selected ProgrammingLanguage(s)", "1,3,4,5");
     }
 
@@ -114,7 +114,7 @@ public class DataTable005Test extends AbstractDataTableTest {
 
         // Assert
         dataTable = getDataTable();
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
         assertMessage("Selected ProgrammingLanguage(s)", "1,3,4,5");
 
         // Act - filter
@@ -124,7 +124,7 @@ public class DataTable005Test extends AbstractDataTableTest {
 
         // Assert - selection must not be lost after filter and update
         dataTable = getDataTable();
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
         assertMessage("Selected ProgrammingLanguage(s)", "1,3,4,5");
 
         // Act - clear filter
@@ -134,7 +134,7 @@ public class DataTable005Test extends AbstractDataTableTest {
 
         // Assert - selection must not be lost after filter and update
         dataTable = getDataTable();
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
         assertMessage("Selected ProgrammingLanguage(s)", "1,3,4,5");
     }
 
@@ -143,8 +143,8 @@ public class DataTable005Test extends AbstractDataTableTest {
         Assertions.assertTrue(getMessages().getMessage(0).getDetail().contains(detail));
     }
 
-    private void assertConfiguration(WebDriver driver, JSONObject cfg) {
-        assertNoJavascriptErrors(driver);
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("selectionMode"));
     }

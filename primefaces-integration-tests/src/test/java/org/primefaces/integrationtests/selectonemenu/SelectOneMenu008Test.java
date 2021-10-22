@@ -54,7 +54,7 @@ public class SelectOneMenu008Test extends AbstractPrimePageTest {
         Assertions.assertEquals(1, page.messages.getAllMessages().size());
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("selected driver"));
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max"));
-        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
 
         // Act
         selectOneMenu.select(4);
@@ -65,11 +65,11 @@ public class SelectOneMenu008Test extends AbstractPrimePageTest {
         Assertions.assertEquals(1, page.messages.getAllMessages().size());
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("selected driver"));
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Lando"));
-        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
         Assertions.assertTrue(cfg.has("appendTo"));
         Assertions.assertTrue(cfg.getBoolean("autoWidth"));

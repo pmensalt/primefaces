@@ -50,7 +50,7 @@ public class Password002Test extends AbstractPrimePageTest {
         WebElement feedback = password.getFeedbackPanel();
         Assertions.assertEquals("block", feedback.getCssValue("display"));
         assertText(feedback, "Please enter a password");
-        assertConfiguration(page, password.getWidgetConfiguration());
+        assertConfiguration(password.getWidgetConfiguration());
     }
 
     @Test
@@ -67,7 +67,7 @@ public class Password002Test extends AbstractPrimePageTest {
         // Assert
         WebElement feedback = password.getFeedbackPanel();
         Assertions.assertEquals("none", feedback.getCssValue("display"));
-        assertConfiguration(page, password.getWidgetConfiguration());
+        assertConfiguration(password.getWidgetConfiguration());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class Password002Test extends AbstractPrimePageTest {
         // Assert
         WebElement feedback = password.getFeedbackPanel();
         assertText(feedback, "Weak");
-        assertConfiguration(page, password.getWidgetConfiguration());
+        assertConfiguration(password.getWidgetConfiguration());
     }
 
     @Test
@@ -101,7 +101,7 @@ public class Password002Test extends AbstractPrimePageTest {
         // Assert
         WebElement feedback = password.getFeedbackPanel();
         assertText(feedback, "Good");
-        assertConfiguration(page, password.getWidgetConfiguration());
+        assertConfiguration(password.getWidgetConfiguration());
     }
 
     @Test
@@ -118,11 +118,11 @@ public class Password002Test extends AbstractPrimePageTest {
         // Assert
         WebElement feedback = password.getFeedbackPanel();
         assertText(feedback, "Strong");
-        assertConfiguration(page, password.getWidgetConfiguration());
+        assertConfiguration(password.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("Password Config = " + cfg);
         Assertions.assertTrue(cfg.getBoolean("feedback"));
         Assertions.assertFalse(cfg.getBoolean("inline"));

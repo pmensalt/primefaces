@@ -67,7 +67,7 @@ public class SelectOneMenu004Test extends AbstractPrimePageTest {
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
         Assertions.assertEquals(5, options.size());
 
-        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
@@ -84,11 +84,11 @@ public class SelectOneMenu004Test extends AbstractPrimePageTest {
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("console2"));
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("PS4"));
 
-        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
         Assertions.assertTrue(cfg.has("dynamic"));
     }

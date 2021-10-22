@@ -60,7 +60,7 @@ public class SelectOneMenu006Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, 0, "Console", "PS5");
-        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
@@ -78,7 +78,7 @@ public class SelectOneMenu006Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, 0, "Console", "Sega Genesis");
-        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     private void assertMessage(Page page, int index, String summary, String detail) {
@@ -87,8 +87,8 @@ public class SelectOneMenu006Test extends AbstractPrimePageTest {
         Assertions.assertEquals(detail, message.getDetail());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
         Assertions.assertTrue(cfg.has("appendTo"));
     }

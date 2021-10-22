@@ -55,10 +55,10 @@ public class DataTable014Test extends AbstractDataTableTest {
         Assertions.assertNotNull(dataTableWrapper);
 
         // Act
-        JavascriptExecutor js = (JavascriptExecutor) page.getWebDriver();
+        JavascriptExecutor js = (JavascriptExecutor) getWebDriver();
         int scrollDown = 2000;
         js.executeScript("window.scrollBy(0," + scrollDown + ")");
-        TestUtils.wait(1000); // compensate weird Firefox (81) timing issue with assigning ui-sticky
+        TestUtils.wait(1000); //compensate weird Firefox (81) timing issue with assigning ui-sticky
 
         // Assert
         Assertions.assertTrue(PrimeSelenium.hasCssClass(dataTableSticky, "ui-sticky"));
@@ -66,22 +66,22 @@ public class DataTable014Test extends AbstractDataTableTest {
         Assertions.assertEquals(dataTableWidth, dataTableWrapper.getSize().getWidth());
         Assertions.assertEquals(dataTableLocationX, dataTableWrapper.getLocation().getX());
         Assertions.assertEquals(dataTable.getLocation().getY(), dataTableWrapper.getLocation().getY());
-        if (!page.isSafari()) {
+        if (!PrimeSelenium.isSafari()) {
             Assertions.assertEquals(scrollDown, dataTableSticky.getLocation().getY());
         }
 
         // Act
         js.executeScript("window.scrollTo(0,0)");
-        TestUtils.wait(1000); // compensate weird Firefox (81) timing issue with removing ui-sticky
+        TestUtils.wait(1000); //compensate weird Firefox (81) timing issue with removing ui-sticky
 
         // Assert
         Assertions.assertFalse(PrimeSelenium.hasCssClass(dataTableSticky, "ui-sticky"));
 
-        assertConfiguration(page, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("stickyHeader"));
     }

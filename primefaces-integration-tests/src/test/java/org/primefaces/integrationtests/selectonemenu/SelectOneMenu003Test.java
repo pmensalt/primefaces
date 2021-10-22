@@ -55,11 +55,11 @@ public class SelectOneMenu003Test extends AbstractPrimePageTest {
         Assertions.assertEquals(null, options.get(2).getAttribute("disabled"));
         Assertions.assertEquals("true", options.get(3).getAttribute("disabled"));
 
-        assertConfiguration(page, selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
         Assertions.assertTrue(cfg.has("appendTo"));
     }

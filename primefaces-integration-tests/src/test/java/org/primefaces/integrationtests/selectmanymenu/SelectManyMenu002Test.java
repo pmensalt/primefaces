@@ -55,7 +55,7 @@ public class SelectManyMenu002Test extends AbstractSelectManyMenuTest {
         Assertions.assertEquals(1, page.messages.getAllMessages().size());
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Charles,Lando"));
-        assertConfiguration(page, selectManyMenu.getWidgetConfiguration());
+        assertConfiguration(selectManyMenu.getWidgetConfiguration());
 
         // Act
         selectManyMenu.toggleSelection( "Charles", false);
@@ -66,11 +66,11 @@ public class SelectManyMenu002Test extends AbstractSelectManyMenuTest {
         Assertions.assertEquals(1, page.messages.getAllMessages().size());
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Lando"));
-        assertConfiguration(page, selectManyMenu.getWidgetConfiguration());
+        assertConfiguration(selectManyMenu.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("SelectManyMenu Config = " + cfg);
         Assertions.assertTrue(cfg.has("id"));
     }

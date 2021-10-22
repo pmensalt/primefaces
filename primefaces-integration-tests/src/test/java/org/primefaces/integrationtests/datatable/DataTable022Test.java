@@ -58,7 +58,7 @@ public class DataTable022Test extends AbstractDataTableTest {
         // Assert
         assertRows(dataTable, languages);
 
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     @Test
@@ -81,7 +81,7 @@ public class DataTable022Test extends AbstractDataTableTest {
         // Assert
         assertRows(dataTable, languages);
 
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     public static class Page extends AbstractPrimePage {

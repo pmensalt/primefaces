@@ -115,7 +115,7 @@ public class DataTable001Test extends AbstractDataTableTest {
         Assertions.assertEquals(1, paginator.getPage(0).getNumber());
         Assertions.assertEquals(2, paginator.getPage(1).getNumber());
 
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
 
         // Act
         dataTable.selectPage(2);
@@ -125,7 +125,7 @@ public class DataTable001Test extends AbstractDataTableTest {
         Assertions.assertNotNull(rows);
         Assertions.assertEquals(2, rows.size());
 
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -159,7 +159,7 @@ public class DataTable001Test extends AbstractDataTableTest {
         // Assert - sort must not be lost after update
         assertRows(getDataTable(), langsSorted);
 
-        assertConfiguration(driver, getDataTable().getWidgetConfiguration());
+        assertConfiguration(getDataTable().getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -168,8 +168,8 @@ public class DataTable001Test extends AbstractDataTableTest {
     @DisplayName("DataTable: filter")
     public void testFilter(String xhtml) {
         // Arrange
-        driver.get(PrimeSelenium.getUrl(xhtml));
-        DataTable dataTable = getDataTable();
+        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        DataTable dataTable = getDataTable();;
         dataTable.selectPage(1);
         dataTable.sort("Name");
 
@@ -186,7 +186,7 @@ public class DataTable001Test extends AbstractDataTableTest {
         // Assert - filter must not be lost after update
         assertRows(getDataTable(), langsFiltered);
 
-        assertConfiguration(driver, getDataTable().getWidgetConfiguration());
+        assertConfiguration(getDataTable().getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -199,9 +199,8 @@ public class DataTable001Test extends AbstractDataTableTest {
         DataTable dataTable = getDataTable();
         dataTable.selectPage(1);
         dataTable.sort("Name");
-        Select selectRowsPerPage =
-                new Select(dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
-        PrimeSelenium.guardAjax(driver, selectRowsPerPage).selectByValue("2");
+        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
+        PrimeSelenium.guardAjax(selectRowsPerPage).selectByValue("2");
 
         // Act
         dataTable.filter("Name", "t");
@@ -219,7 +218,7 @@ public class DataTable001Test extends AbstractDataTableTest {
         // Assert - filter must not be lost after update
         assertRows(dataTable, langsFiltered.stream().skip(2).limit(2).collect(Collectors.toList()));
 
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -228,20 +227,20 @@ public class DataTable001Test extends AbstractDataTableTest {
     @DisplayName("DataTable: global filter with globalFilterOnly=false")
     public void testGlobalFilter(String xhtml) {
         // Arrange
-        driver.get(PrimeSelenium.getUrl(xhtml));
-        DataTable dataTable = getDataTable();
+        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        DataTable dataTable = getDataTable();;
         InputText globalFilter = getGlobalFilter();
         Assertions.assertNotNull(globalFilter);
         dataTable.selectPage(1);
         dataTable.sort("Name");
 
         // Act
-        filterGlobal(driver, globalFilter, "Python");
+        filterGlobal(globalFilter, "Python");
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByName("Python");
         assertRows(dataTable, langsFiltered);
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -259,12 +258,12 @@ public class DataTable001Test extends AbstractDataTableTest {
 
         // Act
         getButtonGlobalFilterOnly().click();
-        filterGlobal(driver, getGlobalFilter(), ProgrammingLanguageType.INTERPRETED.name());
+        filterGlobal(getGlobalFilter(), ProgrammingLanguageType.INTERPRETED.name());
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguageType.INTERPRETED);
         assertRows(getDataTable(), langsFiltered);
-        assertConfiguration(driver, getDataTable().getWidgetConfiguration());
+        assertConfiguration(getDataTable().getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -273,13 +272,12 @@ public class DataTable001Test extends AbstractDataTableTest {
     @DisplayName("DataTable: rows per driver & reset; includes https://github.com/primefaces/primefaces/issues/5465 & https://github.com/primefaces/primefaces/issues/5481")
     public void testRowsPerPageAndReset_5465_5481(String xhtml) {
         // Arrange
-        driver.get(PrimeSelenium.getUrl(xhtml));
-        DataTable dataTable = getDataTable();
+        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        DataTable dataTable = getDataTable();;
         Assertions.assertNotNull(dataTable);
 
         // Assert
-        Select selectRowsPerPage =
-                new Select(dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
+        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
         Assertions.assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
         Assertions.assertEquals(3, dataTable.getRows().size());
 
@@ -287,29 +285,26 @@ public class DataTable001Test extends AbstractDataTableTest {
         dataTable.selectPage(1);
         dataTable.sort("Name");
         selectRowsPerPage.selectByVisibleText("10");
-        PrimeSelenium.waitGui(driver).until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Assert
         Assertions.assertEquals(languages.size(), dataTable.getRows().size());
 
         // Act
         dataTable.filter("Name", "Java");
-        PrimeSelenium.guardAjax(driver, getButtonResetTable()).click();
+        PrimeSelenium.guardAjax(getButtonResetTable()).click();
 
         // Assert
-        selectRowsPerPage = new Select(
-                getDataTable().getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
+        selectRowsPerPage = new Select(getDataTable().getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
         Assertions.assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
         Assertions.assertEquals(3, getDataTable().getRows().size());
-        assertRows(getDataTable(), languages.stream().limit(3).collect(Collectors.toList())); // implicit checks
-                                                                                              // reset
-        // sort & filter
+        assertRows(getDataTable(), languages.stream().limit(3).collect(Collectors.toList())); //implicit checks reset sort & filter
 
-        assertConfiguration(driver, getDataTable().getWidgetConfiguration());
+        assertConfiguration(getDataTable().getWidgetConfiguration());
     }
 
-    private void assertConfiguration(WebDriver driver, JSONObject cfg) {
-        assertNoJavascriptErrors(driver);
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("paginator"));
         Assertions.assertEquals("wgtTable", cfg.getString("widgetVar"));
@@ -320,7 +315,7 @@ public class DataTable001Test extends AbstractDataTableTest {
         return Stream.of(
                 Arguments.of("datatable/dataTable001.xhtml"),
                 Arguments.of("datatable/dataTable001Dynamic.xhtml"),
-                // Arguments.of("datatable/dataTable001DynamicOtherSyntax.xhtml"),
+                //Arguments.of("datatable/dataTable001DynamicOtherSyntax.xhtml"),
                 Arguments.of("datatable/dataTable001DynamicOtherSyntax2.xhtml"),
                 Arguments.of("datatable/dataTable001DynamicOtherSyntax3.xhtml"));
     }

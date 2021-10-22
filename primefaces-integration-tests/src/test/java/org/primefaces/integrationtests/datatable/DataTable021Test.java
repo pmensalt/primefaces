@@ -32,6 +32,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
@@ -62,7 +63,7 @@ public class DataTable021Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsFiltered = filterByName("Java");
         assertRows(dataTable, langsFiltered);
 
-        for (int cnt = 0; cnt < 3; cnt++) {
+        for (int cnt=0; cnt<3; cnt++) {
             // Act
             int rows = dataTable.getRows().size();
             page.buttonAdd.click();
@@ -71,7 +72,7 @@ public class DataTable021Test extends AbstractDataTableTest {
             Assertions.assertEquals(rows + 1, dataTable.getRows().size());
         }
 
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     @Test
@@ -89,18 +90,17 @@ public class DataTable021Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
         assertRows(dataTable, langsFiltered);
 
-        for (int cnt = 0; cnt < 2; cnt++) {
+        for (int cnt=0; cnt<2; cnt++) {
             // Act
             int rows = dataTable.getRows().size();
-            WebElement removeButton =
-                    dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
-            page.guardAjax(removeButton).click();
+            WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
+            PrimeSelenium.guardAjax(removeButton).click();
 
             // Assert - one row less than before
             Assertions.assertEquals(rows - 1, dataTable.getRows().size());
         }
 
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     @Test
@@ -118,18 +118,17 @@ public class DataTable021Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
         assertRows(dataTable, langsFiltered);
 
-        for (int cnt = 0; cnt < 2; cnt++) {
+        for (int cnt=0; cnt<2; cnt++) {
             // Act
             int rows = dataTable.getRows().size();
-            WebElement removeButton =
-                    dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
-            page.guardAjax(removeButton).click();
+            WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
+            PrimeSelenium.guardAjax(removeButton).click();
 
             // Assert - one row less than before
             Assertions.assertEquals(rows - 1, dataTable.getRows().size());
         }
 
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     @Test
@@ -142,12 +141,12 @@ public class DataTable021Test extends AbstractDataTableTest {
 
         // Act
         WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
-        page.guardAjax(removeButton).click();
+        PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
         Assertions.assertEquals(rows - 1, dataTable.getRows().size());
 
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     @Test
@@ -160,12 +159,12 @@ public class DataTable021Test extends AbstractDataTableTest {
 
         // Act
         WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
-        page.guardAjax(removeButton).click();
+        PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
         Assertions.assertEquals(rows - 1, dataTable.getRows().size());
 
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     @Test
@@ -179,13 +178,14 @@ public class DataTable021Test extends AbstractDataTableTest {
 
         // Act
         WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
-        page.guardAjax(removeButton).click();
+        PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
         Assertions.assertEquals(rows - 1, dataTable.getRows().size());
 
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
+
 
     @Test
     @Order(7)
@@ -198,12 +198,12 @@ public class DataTable021Test extends AbstractDataTableTest {
 
         // Act
         WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
-        page.guardAjax(removeButton).click();
+        PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
         Assertions.assertEquals(rows - 1, dataTable.getRows().size());
 
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     @Test
@@ -220,7 +220,7 @@ public class DataTable021Test extends AbstractDataTableTest {
         // Assert - one row more than before
         Assertions.assertEquals(rows + 1, dataTable.getRows().size());
 
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     @Test
@@ -234,8 +234,8 @@ public class DataTable021Test extends AbstractDataTableTest {
         // Act
         WebElement globalFilterInput = page.globalFilter.getInput();
         globalFilterInput.clear();
-        ComponentUtils.sendKeys(page.getWebDriver(), globalFilterInput, "Script");
-        page.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
+        ComponentUtils.sendKeys(globalFilterInput, "Script");
+        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
@@ -244,7 +244,7 @@ public class DataTable021Test extends AbstractDataTableTest {
 
         // Act - remove one row
         WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
-        page.guardAjax(removeButton).click();
+        PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
         Assertions.assertEquals(rows - 1, dataTable.getRows().size());
@@ -252,24 +252,22 @@ public class DataTable021Test extends AbstractDataTableTest {
         // Act - remove another row
         rows = dataTable.getRows().size();
         removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
-        page.guardAjax(removeButton).click();
+        PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
         Assertions.assertEquals(rows - 1, dataTable.getRows().size());
 
         // Arrange (remove both removed script-languages from language-list)
-        List<ProgrammingLanguage> languagesWithoutScriptLangs =
-                languages.stream().filter(l -> !l.getName().contains("Script")).collect(Collectors.toList());
+        List<ProgrammingLanguage> languagesWithoutScriptLangs = languages.stream().filter(l -> !l.getName().contains("Script")).collect(Collectors.toList());
 
         // Act
         globalFilterInput = page.globalFilter.getInput();
         globalFilterInput.clear();
-        ComponentUtils.sendKeys(page.getWebDriver(), globalFilterInput, "Java");
-        page.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
+        ComponentUtils.sendKeys(globalFilterInput, "Java");
+        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
 
         // Assert
-        langsFiltered = languagesWithoutScriptLangs.stream().filter(l -> l.getName().contains("Java"))
-                .collect(Collectors.toList());
+        langsFiltered = languagesWithoutScriptLangs.stream().filter(l -> l.getName().contains("Java")).collect(Collectors.toList());
         assertRows(dataTable, langsFiltered);
         rows = dataTable.getRows().size();
 
@@ -279,7 +277,7 @@ public class DataTable021Test extends AbstractDataTableTest {
         // Assert - one row less than before
         Assertions.assertEquals(rows - 1, dataTable.getRows().size());
 
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     @Test
@@ -293,8 +291,8 @@ public class DataTable021Test extends AbstractDataTableTest {
         // Act
         WebElement globalFilterInput = page.globalFilter.getInput();
         globalFilterInput.clear();
-        ComponentUtils.sendKeys(page.getWebDriver(), globalFilterInput, "Script");
-        page.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
+        ComponentUtils.sendKeys(globalFilterInput, "Script");
+        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
@@ -303,7 +301,7 @@ public class DataTable021Test extends AbstractDataTableTest {
 
         // Act - remove one row
         WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
-        page.guardAjax(removeButton).click();
+        PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
         Assertions.assertEquals(rows - 1, dataTable.getRows().size());
@@ -311,24 +309,22 @@ public class DataTable021Test extends AbstractDataTableTest {
         // Act - remove another row
         rows = dataTable.getRows().size();
         removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
-        page.guardAjax(removeButton).click();
+        PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
         Assertions.assertEquals(rows - 1, dataTable.getRows().size());
 
         // Arrange (remove both removed script-languages from language-list)
-        List<ProgrammingLanguage> languagesWithoutScriptLangs =
-                languages.stream().filter(l -> !l.getName().contains("Script")).collect(Collectors.toList());
+        List<ProgrammingLanguage> languagesWithoutScriptLangs = languages.stream().filter(l -> !l.getName().contains("Script")).collect(Collectors.toList());
 
         // Act
         globalFilterInput = page.globalFilter.getInput();
         globalFilterInput.clear();
-        ComponentUtils.sendKeys(page.getWebDriver(), globalFilterInput, "Java");
-        page.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
+        ComponentUtils.sendKeys(globalFilterInput, "Java");
+        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
 
         // Assert
-        langsFiltered = languagesWithoutScriptLangs.stream().filter(l -> l.getName().contains("Java"))
-                .collect(Collectors.toList());
+        langsFiltered = languagesWithoutScriptLangs.stream().filter(l -> l.getName().contains("Java")).collect(Collectors.toList());
         assertRows(dataTable, langsFiltered);
         rows = dataTable.getRows().size();
 
@@ -338,7 +334,7 @@ public class DataTable021Test extends AbstractDataTableTest {
         // Assert - one row less than before
         Assertions.assertEquals(rows - 1, dataTable.getRows().size());
 
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     public List<ProgrammingLanguage> filterByNameContains(final String name) {

@@ -52,7 +52,7 @@ public class OverlayPanel002Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertTrue(overlayPanel.isDisplayed());
-        assertConfiguration(page, overlayPanel.getWidgetConfiguration(), "@(body)");
+        assertConfiguration(overlayPanel.getWidgetConfiguration(), "@(body)");
     }
 
     @Test
@@ -75,7 +75,7 @@ public class OverlayPanel002Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertFalse(overlayPanel.isDisplayed());
-        assertConfiguration(page, overlayPanel.getWidgetConfiguration(), "@(body)");
+        assertConfiguration(overlayPanel.getWidgetConfiguration(), "@(body)");
     }
 
     @Test
@@ -94,7 +94,7 @@ public class OverlayPanel002Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertFalse(overlayPanel.isDisplayed());
-        assertConfiguration(page, overlayPanel.getWidgetConfiguration(), "");
+        assertConfiguration(overlayPanel.getWidgetConfiguration(), "");
     }
 
     @Test
@@ -113,7 +113,7 @@ public class OverlayPanel002Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertFalse(overlayPanel.isDisplayed());
-        assertConfiguration(page, overlayPanel.getWidgetConfiguration(), "@(body)");
+        assertConfiguration(overlayPanel.getWidgetConfiguration(), "@(body)");
     }
 
     @Test
@@ -135,11 +135,11 @@ public class OverlayPanel002Test extends AbstractPrimePageTest {
         // Assert
         Assertions.assertTrue(page.dialog.isDisplayed());
         Assertions.assertTrue(overlayPanel.isDisplayed());
-        assertConfiguration(page, overlayPanel.getWidgetConfiguration(), "form:btnDestroy");
+        assertConfiguration(overlayPanel.getWidgetConfiguration(), "form:btnDestroy");
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg, String appendTo) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg, String appendTo) {
+        assertNoJavascriptErrors();
         System.out.println("OverlayPanel Config = " + cfg);
 
         if (cfg.has("appendTo")) {

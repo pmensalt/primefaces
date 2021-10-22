@@ -87,7 +87,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertEquals("1", firstRow.getCell(0).getText());
         Assertions.assertEquals("Language 1", firstRow.getCell(1).getText());
 
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
 
         // Act - second driver
         dataTable.selectPage(2);
@@ -101,7 +101,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertEquals("11", firstRow.getCell(0).getText());
         Assertions.assertEquals("Language 11", firstRow.getCell(1).getText());
 
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
 
         // Act - last driver
         dataTable.selectPage(8);
@@ -111,7 +111,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertNotNull(rows);
         Assertions.assertEquals(5, rows.size());
 
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -154,7 +154,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertEquals(langsDesc.get(1).getName(), rows.get(1).getCell(1).getText());
         Assertions.assertEquals(langsDesc.get(9).getName(), rows.get(9).getCell(1).getText());
 
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -182,7 +182,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertEquals(10, rows.size()); // one driver
         Assertions.assertEquals(langsFiltered.get(0).getName(), rows.get(0).getCell(1).getText());
         Assertions.assertEquals(langsFiltered.get(1).getName(), rows.get(1).getCell(1).getText());
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -196,7 +196,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertNotNull(dataTable);
 
         // Act
-        PrimeSelenium.guardAjax(driver, dataTable.getCell(3, 0).getWebElement()).click();
+        PrimeSelenium.guardAjax(dataTable.getCell(3, 0).getWebElement()).click();
 
         // Assert
         Assertions.assertEquals(1, getMessages().getAllMessages().size());
@@ -204,7 +204,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         String row3ProgLang = dataTable.getRow(3).getCell(0).getText() + " - " + dataTable.getCell(3, 1).getText();
         Assertions.assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
 
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -221,7 +221,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         dataTable.filter("First Appeared", "1998");
 
         // Act
-        PrimeSelenium.guardAjax(driver, dataTable.getCell(3, 0).getWebElement()).click();
+        PrimeSelenium.guardAjax(dataTable.getCell(3, 0).getWebElement()).click();
 
         // Assert
         Assertions.assertEquals(1, getMessages().getAllMessages().size());
@@ -229,7 +229,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         String row3ProgLang = dataTable.getRow(3).getCell(0).getText() + " - " + dataTable.getCell(3, 1).getText();
         Assertions.assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
 
-        assertConfiguration(driver, dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -246,7 +246,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         dataTable.filter("First Appeared", "1998");
 
         // Act
-        PrimeSelenium.guardAjax(driver, dataTable.getCell(3, 0).getWebElement()).click();
+        PrimeSelenium.guardAjax(dataTable.getCell(3, 0).getWebElement()).click();
         getButtonSubmit().click();
 
         // Assert
@@ -255,7 +255,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         String row3ProgLang = getDataTable().getRow(3).getCell(0).getText();
         Assertions.assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
 
-        assertConfiguration(driver, getDataTable().getWidgetConfiguration());
+        assertConfiguration(getDataTable().getWidgetConfiguration());
     }
 
     @ParameterizedTest
@@ -272,37 +272,36 @@ public class DataTable002Test extends AbstractDataTableTest {
         // Act & Assert
         for (int row = 5; row > 1; row--) {
             Assertions.assertEquals(row, getDataTable().getRows().size());
-            PrimeSelenium.guardAjax(driver, getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button")))
-                    .click();
+            PrimeSelenium.guardAjax(getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
             Assertions.assertEquals(8, getDataTable().getPaginator().getActivePage().getNumber());
         }
 
-        // Act & Assert - delete last row on driver 8
-        PrimeSelenium.guardAjax(driver, getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+        // Act & Assert - delete last row on page 8
+        PrimeSelenium.guardAjax(getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
         Assertions.assertEquals(7, getDataTable().getPaginator().getActivePage().getNumber());
         Assertions.assertEquals(10, getDataTable().getRows().size());
 
-        // Act & Assert - select first row on driver 7
-        PrimeSelenium.guardAjax(driver, getDataTable().getCell(0, 0).getWebElement()).click();
+        // Act & Assert - select first row on page 7
+        PrimeSelenium.guardAjax(getDataTable().getCell(0, 0).getWebElement()).click();
         Assertions.assertEquals(1, getMessages().getAllMessages().size());
         Assertions.assertEquals("ProgrammingLanguage Selected", getMessages().getMessage(0).getSummary());
         String row0ProgLang =
                 getDataTable().getRow(0).getCell(0).getText() + " - " + getDataTable().getCell(0, 1).getText();
         Assertions.assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());
 
-        // Act & Assert - delete first row on driver 7
-        PrimeSelenium.guardAjax(driver, getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+        // Act & Assert - delete first row on page 7
+        PrimeSelenium.guardAjax(getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
         Assertions.assertEquals(1, getMessages().getAllMessages().size());
         Assertions.assertEquals("ProgrammingLanguage Deleted", getMessages().getMessage(0).getSummary());
         Assertions.assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());
         Assertions.assertEquals(7, getDataTable().getPaginator().getActivePage().getNumber());
         Assertions.assertEquals(9, getDataTable().getRows().size());
 
-        assertConfiguration(driver, getDataTable().getWidgetConfiguration());
+        assertConfiguration(getDataTable().getWidgetConfiguration());
     }
 
-    private void assertConfiguration(WebDriver driver, JSONObject cfg) {
-        assertNoJavascriptErrors(driver);
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("paginator"));
     }

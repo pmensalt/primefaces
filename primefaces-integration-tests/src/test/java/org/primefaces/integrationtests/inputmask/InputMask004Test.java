@@ -50,7 +50,7 @@ public class InputMask004Test extends AbstractInputMaskTest {
         // Assert
         Assertions.assertEquals("1", inputMask.getValue());
         Assertions.assertEquals("1", inputMask.getWidgetValueUnmasked());
-        assertConfiguration(page, inputMask.getWidgetConfiguration(), "9[999]");
+        assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
     }
 
     @Test
@@ -68,7 +68,7 @@ public class InputMask004Test extends AbstractInputMaskTest {
         // Assert
         Assertions.assertEquals("12__", inputMask.getValue());
         Assertions.assertEquals("12", inputMask.getWidgetValueUnmasked());
-        assertConfiguration(page, inputMask.getWidgetConfiguration(), "9[999]");
+        assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
     }
 
     @Test
@@ -86,7 +86,7 @@ public class InputMask004Test extends AbstractInputMaskTest {
         // Assert
         Assertions.assertEquals("123_", inputMask.getValue());
         Assertions.assertEquals("123", inputMask.getWidgetValueUnmasked());
-        assertConfiguration(page, inputMask.getWidgetConfiguration(), "9[999]");
+        assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
     }
 
     @Test
@@ -104,11 +104,11 @@ public class InputMask004Test extends AbstractInputMaskTest {
         // Assert
         Assertions.assertEquals("1234", inputMask.getValue());
         Assertions.assertEquals("1234", inputMask.getWidgetValueUnmasked());
-        assertConfiguration(page, inputMask.getWidgetConfiguration(), "9[999]");
+        assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg, String mask) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg, String mask) {
+        assertNoJavascriptErrors();
         System.out.println("InputMask Config = " + cfg);
         Assertions.assertEquals(mask, cfg.getString("mask"));
         Assertions.assertFalse(cfg.has(AbstractInputMaskTest.AUTO_CLEAR));

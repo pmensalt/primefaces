@@ -214,10 +214,11 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
         assertLabel(label, "Read Only Not Skipped*", true);
     }
 
+
     private void assertLabel(OutputLabel label, String text, boolean required) {
         Assertions.assertEquals(required, label.hasRequiredIndicator());
         Assertions.assertEquals(text, label.getText());
-        assertNoJavascriptErrors(label.getWebDriver());
+        assertNoJavascriptErrors();
     }
 
     public static class Page extends AbstractPrimePage {

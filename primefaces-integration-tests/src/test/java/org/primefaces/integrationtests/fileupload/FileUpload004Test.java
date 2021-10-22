@@ -50,9 +50,9 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file);
-        assertConfiguration(page, fileUpload);
+        assertConfiguration(fileUpload);
     }
 
     @Test
@@ -68,9 +68,9 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         fileUpload.setValue(file1, file2);
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file1, file2);
-        assertConfiguration(page, fileUpload);
+        assertConfiguration(fileUpload);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         fileUpload.setValue(file1, file2);
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file1, file2);
 
         // Act
@@ -95,9 +95,9 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         fileUpload.setValue(file3, file4);
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file1, file2, file3, file4);
-        assertConfiguration(page, fileUpload);
+        assertConfiguration(fileUpload);
     }
 
     @Test
@@ -120,10 +120,10 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         Assertions.assertEquals("", fileUpload.getWidgetValue());
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
-        assertConfiguration(page, fileUpload);
+        assertConfiguration(fileUpload);
     }
 
     @Test
@@ -144,10 +144,10 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         Assertions.assertEquals("", fileUpload.getWidgetValue());
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
-        assertConfiguration(page, fileUpload);
+        assertConfiguration(fileUpload);
     }
 
     @Test
@@ -167,13 +167,13 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         Assertions.assertEquals("", fileUpload.getWidgetValue());
 
         // Assert
-        assertNoJavascriptErrors(page.getWebDriver());
+        assertNoJavascriptErrors();
         // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
-        assertConfiguration(page, fileUpload);
+        assertConfiguration(fileUpload);
     }
 
-    private void assertConfiguration(Page page, FileUpload fileUpload) {
+    private void assertConfiguration(FileUpload fileUpload) {
         JSONObject cfg = fileUpload.getWidgetConfiguration();
         System.out.println("FileInput Config = " + cfg);
         Assertions.assertTrue(cfg.getBoolean("skinSimple"));

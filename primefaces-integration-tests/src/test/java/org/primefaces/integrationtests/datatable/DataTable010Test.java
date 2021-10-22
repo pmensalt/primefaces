@@ -48,7 +48,7 @@ public class DataTable010Test extends AbstractDataTableTest {
         DataTable dataTable = page.dataTable;
         Assertions.assertNotNull(dataTable);
         Actions actions = new Actions(page.getWebDriver());
-        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Act
         dataTable.getCell(0, 0).getWebElement().click();
@@ -75,7 +75,7 @@ public class DataTable010Test extends AbstractDataTableTest {
         // Assert
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
         Assertions.assertEquals("1,2,5", page.messages.getMessage(0).getDetail());
-        assertConfiguration(page, page.dataTable.getWidgetConfiguration());
+        assertConfiguration(page.dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -119,7 +119,7 @@ public class DataTable010Test extends AbstractDataTableTest {
         // Assert
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
         Assertions.assertEquals("1,3,5", page.messages.getMessage(0).getDetail());
-        assertConfiguration(page, page.dataTable.getWidgetConfiguration());
+        assertConfiguration(page.dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -144,8 +144,8 @@ public class DataTable010Test extends AbstractDataTableTest {
         assertConfiguration(page.dataTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("selectionMode"));
     }

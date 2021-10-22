@@ -51,7 +51,7 @@ public class OverlayPanel001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertTrue(overlayPanel.isDisplayed());
-        assertConfiguration(page, overlayPanel.getWidgetConfiguration());
+        assertConfiguration(overlayPanel.getWidgetConfiguration());
     }
 
     @Test
@@ -73,7 +73,7 @@ public class OverlayPanel001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertFalse(overlayPanel.isDisplayed());
-        assertConfiguration(page, overlayPanel.getWidgetConfiguration());
+        assertConfiguration(overlayPanel.getWidgetConfiguration());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class OverlayPanel001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertFalse(overlayPanel.isDisplayed());
-        assertConfiguration(page, overlayPanel.getWidgetConfiguration());
+        assertConfiguration(overlayPanel.getWidgetConfiguration());
     }
 
     @Test
@@ -115,8 +115,8 @@ public class OverlayPanel001Test extends AbstractPrimePageTest {
         }
     }
 
-    private void assertConfiguration(Page page, JSONObject cfg) {
-        assertNoJavascriptErrors(page.getWebDriver());
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
         System.out.println("OverlayPanel Config = " + cfg);
         Assertions.assertTrue(cfg.has("widgetVar"));
         Assertions.assertFalse(cfg.has("appendTo"));
