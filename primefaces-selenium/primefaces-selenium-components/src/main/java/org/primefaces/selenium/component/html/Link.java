@@ -23,7 +23,6 @@
  */
 package org.primefaces.selenium.component.html;
 
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractComponent;
 
 public abstract class Link extends AbstractComponent {
