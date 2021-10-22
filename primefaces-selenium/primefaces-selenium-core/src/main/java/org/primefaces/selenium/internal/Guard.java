@@ -149,7 +149,7 @@ public class Guard {
             catch (InvocationTargetException e) {
                 if (e.getCause() instanceof WebDriverException) {
                     throw e.getCause();
-                } 
+                }
                 else {
                     throw e;
                 }
@@ -196,7 +196,7 @@ public class Guard {
             for (Class c : interfacesToImplement) {
                 if (methods == null) {
                     methods = ElementMatchers.isDeclaredBy(c);
-                } 
+                }
                 else {
                     methods = methods.or(ElementMatchers.isDeclaredBy(c));
                 }
