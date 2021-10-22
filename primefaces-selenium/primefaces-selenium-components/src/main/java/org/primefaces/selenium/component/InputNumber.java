@@ -26,7 +26,6 @@ package org.primefaces.selenium.component;
 import java.io.Serializable;
 
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.findby.FindByParentPartialId;
 
 /**

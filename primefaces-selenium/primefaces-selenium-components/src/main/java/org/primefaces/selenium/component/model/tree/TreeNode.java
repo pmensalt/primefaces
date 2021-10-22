@@ -42,7 +42,7 @@ public class TreeNode {
     private String childSelector;
 
     public TreeNode(WebDriver driver, WebElement webElement, String selector, Tree tree) {
-        this.driver =driver;
+        this.driver = driver;
         this.webElement = webElement;
         this.selector = selector;
         this.childSelector = selector + ">.ui-treenode-children>.ui-treenode";
@@ -50,7 +50,7 @@ public class TreeNode {
     }
 
     public TreeNode(WebDriver driver, WebElement webElement, String selector, TreeNode parent) {
-        this.driver =driver;
+        this.driver = driver;
         this.webElement = webElement;
         this.selector = selector;
         this.childSelector = selector + ">.ui-treenode-children>.ui-treenode";
@@ -83,7 +83,7 @@ public class TreeNode {
     }
 
     public void toggle() {
-       PrimeSelenium. guardAjax(getWebDriver(), getTreeToggler()).click();
+        PrimeSelenium.guardAjax(getWebDriver(), getTreeToggler()).click();
     }
 
     public void select() {
@@ -107,7 +107,7 @@ public class TreeNode {
         return webElement.findElements(By.cssSelector(childSelector)).stream().map(e -> new TreeNode(getWebDriver(), e, childSelector, this))
                     .collect(Collectors.toList());
     }
-    
+
     public WebDriver getWebDriver() {
         return driver;
     }

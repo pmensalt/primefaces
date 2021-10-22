@@ -73,7 +73,7 @@ public class Paginator {
         }
         return null;
     }
-    
+
     public WebDriver getWebDriver() {
         return driver;
     }

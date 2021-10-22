@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.model.data.Page;
 import org.primefaces.selenium.component.model.data.Paginator;
 

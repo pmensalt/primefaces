@@ -78,7 +78,7 @@ public abstract class FileUpload extends AbstractInputComponent {
         if (isAutoUpload()) {
             if (isAdvancedMode()) {
                 Runnable guarded = Guard.custom(
-                    getWebDriver(), 
+                    getWebDriver(),
                     runnable,
                     200,
                     ConfigProvider.getInstance().getTimeoutFileUpload(),
@@ -117,7 +117,7 @@ public abstract class FileUpload extends AbstractInputComponent {
         WebElement element = findElement(By.cssSelector(".ui-fileupload-buttonbar button.ui-fileupload-upload"));
 
         WebElement guarded = Guard.custom(
-            getWebDriver(), 
+            getWebDriver(),
             element,
             200,
             ConfigProvider.getInstance().getTimeoutFileUpload(),

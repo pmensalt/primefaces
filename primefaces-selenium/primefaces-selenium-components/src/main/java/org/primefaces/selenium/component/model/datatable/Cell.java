@@ -31,8 +31,8 @@ public class Cell {
     private final WebDriver driver;
     private WebElement webElement;
 
-    public Cell(WebDriver driver,WebElement webElement) {
-        this.driver =driver;
+    public Cell(WebDriver driver, WebElement webElement) {
+        this.driver = driver;
         this.webElement = webElement;
     }
 
@@ -50,7 +50,7 @@ public class Cell {
         }
         return null;
     }
-    
+
     public WebDriver getWebDriver() {
         return driver;
     }

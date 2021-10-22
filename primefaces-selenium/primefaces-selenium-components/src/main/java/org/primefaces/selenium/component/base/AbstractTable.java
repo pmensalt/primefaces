@@ -26,7 +26,6 @@ package org.primefaces.selenium.component.base;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.model.datatable.Cell;
 import org.primefaces.selenium.component.model.datatable.Header;
 import org.primefaces.selenium.component.model.datatable.HeaderCell;
