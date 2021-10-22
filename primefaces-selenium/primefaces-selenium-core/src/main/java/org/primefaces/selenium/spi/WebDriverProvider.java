@@ -81,7 +81,7 @@ public class WebDriverProvider {
         WebDriver driver = WEB_DRIVER_BEFORE_EACH.get();
         if (driver != null) {
             WEB_DRIVER_BEFORE_EACH.remove();
-        } 
+        }
         else {
             synchronized (WEB_DRIVER_POOL) {
                 if (!WEB_DRIVER_POOL.isEmpty()) {
