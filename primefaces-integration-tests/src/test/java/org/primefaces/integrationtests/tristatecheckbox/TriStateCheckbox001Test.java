@@ -49,21 +49,21 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("1", triStateCheckbox.getValue());
-        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+        assertConfiguration(page, triStateCheckbox.getWidgetConfiguration());
 
         // Act
         triStateCheckbox.click();
 
         // Assert
         Assertions.assertEquals("2", triStateCheckbox.getValue());
-        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+        assertConfiguration(page, triStateCheckbox.getWidgetConfiguration());
 
         // Act
         page.button.click();
 
         // Assert
         Assertions.assertEquals("2", triStateCheckbox.getValue());
-        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+        assertConfiguration(page, triStateCheckbox.getWidgetConfiguration());
     }
 
     @Test
@@ -79,21 +79,21 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("1", triStateCheckbox.getValue());
-        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+        assertConfiguration(page, triStateCheckbox.getWidgetConfiguration());
 
         // Act
         triStateCheckbox.toggle();
 
         // Assert
         Assertions.assertEquals("2", triStateCheckbox.getValue());
-        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+        assertConfiguration(page, triStateCheckbox.getWidgetConfiguration());
 
         // Act
         page.button.click();
 
         // Assert
         Assertions.assertEquals("2", triStateCheckbox.getValue());
-        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+        assertConfiguration(page, triStateCheckbox.getWidgetConfiguration());
     }
 
     @Test
@@ -104,14 +104,14 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
         TriStateCheckbox triStateCheckbox = page.triStateCheckbox;
         triStateCheckbox.setValue("1");
         Assertions.assertEquals("1", triStateCheckbox.getValue());
-        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+        assertConfiguration(page, triStateCheckbox.getWidgetConfiguration());
 
         // Act
         page.button.click();
 
         // Assert
         Assertions.assertEquals("1", triStateCheckbox.getValue());
-        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+        assertConfiguration(page, triStateCheckbox.getWidgetConfiguration());
     }
 
     @Test
@@ -132,7 +132,7 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
         Assertions.assertEquals("1", triStateCheckbox.getValue());
         Assertions.assertFalse(triStateCheckbox.isEnabled());
         assertCss(triStateCheckbox, "ui-state-disabled");
-        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+        assertConfiguration(page, triStateCheckbox.getWidgetConfiguration());
     }
 
     @Test
@@ -153,7 +153,7 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
         assertClickable(triStateCheckbox);
         Assertions.assertEquals("2", triStateCheckbox.getValue());
         Assertions.assertTrue(triStateCheckbox.isEnabled());
-        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+        assertConfiguration(page, triStateCheckbox.getWidgetConfiguration());
     }
 
     @Test
@@ -170,11 +170,11 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
         // Assert - value should not be accepted
         Assertions.assertEquals("0", triStateCheckbox.getValue());
         assertCss(triStateCheckbox.getBox(), "ui-chkbox-readonly");
-        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+        assertConfiguration(page, triStateCheckbox.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("TriStateCheckbox Config = " + cfg);
         Assertions.assertTrue(cfg.has("id"));
     }

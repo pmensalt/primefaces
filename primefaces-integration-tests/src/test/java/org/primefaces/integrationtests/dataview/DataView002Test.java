@@ -95,7 +95,7 @@ public class DataView002Test extends AbstractDataTableTest {
         Assertions.assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(72).getId().toString()));
         Assertions.assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(72).getName()));
 
-        assertConfiguration(dataView.getWidgetConfiguration());
+        assertConfiguration(page, dataView.getWidgetConfiguration());
     }
 
     @Test
@@ -110,22 +110,22 @@ public class DataView002Test extends AbstractDataTableTest {
         // Act & Assert
         for (int row=3; row>1; row--) {
             Assertions.assertEquals(row, dataView.getRowsWebElement().size());
-            PrimeSelenium.guardAjax(dataView.getRowWebElement(0).findElement(By.className("ui-button"))).click();
+            page.guardAjax(dataView.getRowWebElement(0).findElement(By.className("ui-button"))).click();
             Assertions.assertEquals(9, dataView.getPaginator().getActivePage().getNumber());
         }
 
         // Act - delete last row on page 9
-        PrimeSelenium.guardAjax(dataView.getRowWebElement(0).findElement(By.className("ui-button"))).click();
+        page.guardAjax(dataView.getRowWebElement(0).findElement(By.className("ui-button"))).click();
 
         // Assert
         Assertions.assertEquals(8, dataView.getPaginator().getActivePage().getNumber());
         Assertions.assertEquals(9, dataView.getRowsWebElement().size());
 
-        assertConfiguration(dataView.getWidgetConfiguration());
+        assertConfiguration(page, dataView.getWidgetConfiguration());
     }    
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DataView Config = " + cfg);
         Assertions.assertTrue(cfg.has("paginator"));
     }

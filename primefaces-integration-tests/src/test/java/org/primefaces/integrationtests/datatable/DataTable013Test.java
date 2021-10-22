@@ -50,11 +50,11 @@ public class DataTable013Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsSorted = sortByNoLimit(new ProgrammingLanguageSorterFirstAppearedDescNameAsc());
         assertRows(dataTable, langsSorted);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DataTable Config = " + cfg);
     }
 

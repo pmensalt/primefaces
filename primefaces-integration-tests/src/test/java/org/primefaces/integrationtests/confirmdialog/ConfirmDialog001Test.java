@@ -114,7 +114,7 @@ public class ConfirmDialog001Test extends AbstractPrimePageTest {
         Assertions.assertTrue(dialog.isVisible());
 
         // Act
-        PrimeSelenium.guardAjax(dialog.getYesButton()).click();
+        page.guardAjax(dialog.getYesButton()).click();
 
         // Assert
         Assertions.assertEquals("You have accepted", page.message.getMessage(0).getDetail());
@@ -148,7 +148,7 @@ public class ConfirmDialog001Test extends AbstractPrimePageTest {
         page.delete.click();
 
         // Act
-        PrimeSelenium.guardAjax(dialog.getYesButton()).click();
+        page.guardAjax(dialog.getYesButton()).click();
 
         // Assert
         Assertions.assertEquals("Record deleted", page.message.getMessage(0).getDetail());
@@ -175,11 +175,11 @@ public class ConfirmDialog001Test extends AbstractPrimePageTest {
             assertClickable(page.delete);
         }
 
-        assertConfiguration(dialog.getWidgetConfiguration());
+        assertConfiguration(page, dialog.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("ConfirmDialog Config = " + cfg);
         Assertions.assertTrue(cfg.getBoolean("global"));
         Assertions.assertTrue(cfg.getBoolean("cache"));

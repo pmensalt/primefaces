@@ -83,11 +83,11 @@ public class Chips001Test extends AbstractPrimePageTest {
         Assertions.assertEquals("Feature", values.get(0));
         Assertions.assertEquals("Question", values.get(1));
 
-        assertConfiguration(chips.getWidgetConfiguration());
+        assertConfiguration(page, chips.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("Chips Config = " + cfg);
         if (cfg.has("behaviors")) {
             JSONObject behaviors = cfg.getJSONObject("behaviors");

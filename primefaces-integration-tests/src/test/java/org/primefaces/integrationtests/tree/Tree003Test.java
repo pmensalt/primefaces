@@ -72,7 +72,7 @@ public class Tree003Test extends AbstractTreeTest {
         Assertions.assertTrue(secondChildren.get(1).getWebElement().isDisplayed());
         Assertions.assertTrue(secondChildren.get(2).getWebElement().isDisplayed());
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(page, tree.getWidgetConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

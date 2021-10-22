@@ -61,7 +61,7 @@ public class DataTable008Test extends AbstractDataTableTest {
                     .collect(Collectors.toList());
         assertRows(dataTable, langsFiltered);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
 
         // Act - reload page and go to page 2 (filter is visually removed but to some degree due to SessionScoped-bean still there)
         page.getWebDriver().navigate().refresh();
@@ -76,15 +76,15 @@ public class DataTable008Test extends AbstractDataTableTest {
                     .collect(Collectors.toList());
         assertRows(dataTable, langsUnfilteredPage2);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
     private static WebElement getFirstAppearedFilterElt(DataTable dataTable) {
         return dataTable.getHeader().getCell(2).getWebElement().findElement(By.tagName("input"));
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("paginator"));
     }

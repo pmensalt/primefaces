@@ -44,7 +44,7 @@ public class InputNumber005Test extends AbstractPrimePageTest {
     @Order(1)
     @DisplayName("InputNumber: dot as thousand separator - https://github.com/primefaces/primefaces/issues/7271")
     public void testThousandSeparatorDot(Page page) {
-        if (PrimeSelenium.isSafari()) {
+        if (page.isSafari()) {
             System.out.println(
                     "Test disabled on Safari because sendKeys has issues with Safari and there´s so alternative way to do this test.");
             return;
@@ -57,17 +57,17 @@ public class InputNumber005Test extends AbstractPrimePageTest {
         // Act
         WebElement input = inputNumber.getInput();
         input.clear();
-        ComponentUtils.sendKeys(input, "1234");
+        ComponentUtils.sendKeys(page.getWebDriver(), input, "1234");
         input.sendKeys(Keys.TAB);
         page.button.click();
 
         // Assert
         Assertions.assertEquals("1.234,00", inputNumber.getValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration());
+        assertConfiguration(page, inputNumber.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("InputNumber Config = " + cfg);
         Assertions.assertEquals("2", cfg.get("decimalPlaces"));
     }

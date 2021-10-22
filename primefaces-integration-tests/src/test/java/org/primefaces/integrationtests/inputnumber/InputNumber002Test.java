@@ -50,11 +50,11 @@ public class InputNumber002Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("88.76", inputNumber.getValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration());
+        assertConfiguration(page, inputNumber.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("InputNumber Config = " + cfg);
         Assertions.assertEquals("2", cfg.get("decimalPlaces"));
     }

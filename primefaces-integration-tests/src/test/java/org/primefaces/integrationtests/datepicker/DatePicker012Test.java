@@ -53,30 +53,30 @@ public class DatePicker012Test extends AbstractDatePickerTest {
         page.datePicker1.click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1.getPanel()));
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1.getPanel()));
         assertNoDisablebCalendarDates(page.datePicker1);
 
         // Act - 2nd show other panel
         page.datePicker2.click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker2.getPanel()));
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker2.getPanel()));
         assertNoDisablebCalendarDates(page.datePicker2);
 
         // Act - 3rd show panel and select 5th of current month
         page.datePicker1.click();
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1.getPanel()));
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1.getPanel()));
         page.datePicker1.getPanel().findElement(By.linkText("5")).click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1));
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1));
         Assertions.assertEquals(LocalDate.now().withDayOfMonth(5).atStartOfDay(), page.datePicker1.getValue());
 
         // Act - 4th show other panel
         page.datePicker2.click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker2.getPanel()));
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker2.getPanel()));
         assertDisabledCalendarDate(page.datePicker2, "5");
         JSONObject cfg2 = page.datePicker2.getWidgetConfiguration();
 
@@ -84,19 +84,19 @@ public class DatePicker012Test extends AbstractDatePickerTest {
         page.datePicker2.getPanel().findElement(By.linkText("6")).click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker2));
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker2));
         Assertions.assertEquals(LocalDate.now().withDayOfMonth(6).atStartOfDay(), page.datePicker2.getValue());
 
         // Act - 6th show panel
         page.datePicker1.click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1.getPanel()));
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1.getPanel()));
         assertDisabledCalendarDate(page.datePicker1, "6");
         JSONObject cfg1 = page.datePicker2.getWidgetConfiguration();
 
-        assertConfiguration(cfg1);
-        assertConfiguration(cfg2);
+        assertConfiguration(page, cfg1);
+        assertConfiguration(page, cfg2);
     }
 
     private void assertNoDisablebCalendarDates(DatePicker datePicker) {
@@ -113,8 +113,8 @@ public class DatePicker012Test extends AbstractDatePickerTest {
         Assertions.assertTrue(days.get(0).getAttribute("class").contains("ui-state-disabled"));
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DatePicker Config = " + cfg);
         Assertions.assertFalse(cfg.getBoolean("inline"));
         Assertions.assertTrue(cfg.getJSONObject("behaviors").getString("dateSelect").contains("dateSelect"),

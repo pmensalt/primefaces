@@ -82,7 +82,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         Assertions.assertTrue(firstRow.isToggleable());
         Assertions.assertEquals(1, firstRow.getLevel());
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
 
         // Act
         firstRow.toggle();
@@ -98,7 +98,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         root.getChildren().get(0).setExpanded(true);
         assertRows(treeTable, root);
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
 
         // Act
         firstRow.toggle();
@@ -111,7 +111,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         root.getChildren().get(0).setExpanded(false);
         assertRows(treeTable, root);
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
     }
 
     @Test
@@ -145,7 +145,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         // Assert - sort must not be lost after update
         assertRows(treeTable, treeSortedRev);
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
     }
 
     @Test
@@ -199,7 +199,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         Assertions.assertEquals(2, rows.get(1).getLevel());
         Assertions.assertEquals(2, rows.get(1).getLevel());
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
     }
 
     @Test
@@ -210,7 +210,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         treeTable.sort("Name");
 
         // Act (filter on L3)
-        filterGlobal(page.globalFilter, "mobi");
+        filterGlobal(page, page.globalFilter, "mobi");
 
         // Assert
         // we try to avoid duplicating logic from TreeTableRenderer#filter, so we take the simple/stupid way
@@ -225,7 +225,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         Assertions.assertEquals(3, rows.get(2).getLevel());
 
         // Act (filter on L1)
-        filterGlobal(page.globalFilter, "down");
+        filterGlobal(page, page.globalFilter, "down");
         treeTable.getRow(0).toggle();
 
         // Assert
@@ -240,7 +240,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         Assertions.assertEquals(2, rows.get(1).getLevel());
 
         // Act
-        PrimeSelenium.guardAjax(page.buttonUpdate).click();
+        page.guardAjax(page.buttonUpdate).click();
 
         // Assert - filter must not be lost after update
         rows = treeTable.getRows();
@@ -253,7 +253,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         Assertions.assertEquals(2, rows.get(1).getLevel());
         Assertions.assertEquals(2, rows.get(1).getLevel());
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
     }
 
     @Test
@@ -264,12 +264,12 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         treeTable.sort("Name");
 
         // Act
-        PrimeSelenium.guardAjax(treeTable.getRow(0).getCell(3).getWebElement().findElement(By.cssSelector("button"))).click();
+        page.guardAjax(treeTable.getRow(0).getCell(3).getWebElement().findElement(By.cssSelector("button"))).click();
 
         // Assert
         assertMessage(page.messages, 0, "selected document", "Applications");
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
     }
 
     @Test
@@ -280,13 +280,13 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         treeTable.sort("Name");
 
         // Act
-        PrimeSelenium.guardAjax(treeTable.getRow(0).getCell(1).getWebElement()).click();
+        page.guardAjax(treeTable.getRow(0).getCell(1).getWebElement()).click();
         page.buttonShowSelectedNode.click();
 
         // Assert
         assertMessage(page.messages, 0, "selected node", "Applications");
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
     }
 
     @Test
@@ -297,12 +297,12 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         treeTable.sort("Name");
 
         // Act
-        PrimeSelenium.guardAjax(treeTable.getRow(0).getCell(1).getWebElement()).click();
+        page.guardAjax(treeTable.getRow(0).getCell(1).getWebElement()).click();
 
         // Assert
         assertMessage(page.messages, 0, "select-event", "Applications");
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
     }
 
     @Test
@@ -313,19 +313,19 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         treeTable.sort("Name");
 
         // Act
-        PrimeSelenium.guardAjax(treeTable.getRow(0).getCell(1).getWebElement()).click(); //select
+        page.guardAjax(treeTable.getRow(0).getCell(1).getWebElement()).click(); //select
         Actions actions = new Actions(page.getWebDriver());
         Action actionUnselect = actions.keyDown(Keys.META).click(treeTable.getRow(0).getCell(1).getWebElement()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionUnselect).perform();
+        page.guardAjax(actionUnselect).perform();
 
         // Assert
         assertMessage(page.messages, 0, "unselect-event", "Applications");
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("TreeTable Config = " + cfg);
         Assertions.assertEquals("treeTable", cfg.getString("widgetVar"));
     }

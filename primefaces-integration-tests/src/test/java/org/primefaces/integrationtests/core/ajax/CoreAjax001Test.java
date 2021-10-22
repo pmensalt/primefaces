@@ -42,45 +42,46 @@ public class CoreAjax001Test extends AbstractPrimePageTest {
     @Order(1)
     @DisplayName("Core-AJAX: keep vertical scroll-position after ajax-update - https://github.com/primefaces/primefaces/issues/6700")
     public void testAjaxScrollPosition(Page page) {
-        if (PrimeSelenium.isSafari()) {
+        if (page.isSafari()) {
             System.out.println(
-                        "Test disabled on Safari until Safari fixes the bug: https://github.com/primefaces-extensions/primefaces-integration-tests/issues/100");
+                    "Test disabled on Safari until Safari fixes the bug: https://github.com/primefaces-extensions/primefaces-integration-tests/issues/100");
             return;
         }
         // Arrange
-        Long scrollTop = PrimeSelenium.executeScript("return $(document).scrollTop();");
+        Long scrollTop = page.executeScript("return $(document).scrollTop();");
         Assertions.assertEquals(0, scrollTop);
-        PrimeSelenium.executeScript("$(document).scrollTop(200);");
+        page.executeScript("$(document).scrollTop(200);");
 
         // Act
-        PrimeSelenium.disableAnimations();
+        page.disableAnimations();
         page.selectOneMenu.select(2);
 
         // Assert
-        scrollTop = PrimeSelenium.executeScript("return $(document).scrollTop();");
+        scrollTop = page.executeScript("return $(document).scrollTop();");
         Assertions.assertEquals(200, scrollTop);
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
 
         // Act
         page.button1.click();
 
         // Assert
-        scrollTop = PrimeSelenium.executeScript("return $(document).scrollTop();");
+        scrollTop = page.executeScript("return $(document).scrollTop();");
         Assertions.assertEquals(200, scrollTop);
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
 
         // Act
-        page.button2.click(); //does PrimeFaces.current().focus("form:inputtext"); --> vertical scroll position changes
+        page.button2.click(); // does PrimeFaces.current().focus("form:inputtext"); --> vertical scroll position changes
 
         // Assert
-        //PrimeFaces.focus() has a 50ms setTimeout() so we need to delay here
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.inputtext.getInput()));
+        // PrimeFaces.focus() has a 50ms setTimeout() so we need to delay here
+        page.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.inputtext.getInput()));
 
-        PrimeSelenium.enableAnimations();
-        Assertions.assertEquals(page.inputtext.getInput().getAttribute("id"), page.getWebDriver().switchTo().activeElement().getAttribute("id"));
-        scrollTop = PrimeSelenium.executeScript("return $(document).scrollTop();");
+        page.enableAnimations();
+        Assertions.assertEquals(page.inputtext.getInput().getAttribute("id"),
+                page.getWebDriver().switchTo().activeElement().getAttribute("id"));
+        scrollTop = page.executeScript("return $(document).scrollTop();");
         Assertions.assertTrue(scrollTop > 200);
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
     }
 
     public static class Page extends AbstractPrimePage {

@@ -53,7 +53,7 @@ public class SelectOneRadio001Test extends AbstractPrimePageTest {
 
         // Assert - part 1
         Assertions.assertEquals("Max", selectOneRadio.getSelectedLabel());
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(page, selectOneRadio.getWidgetConfiguration());
 
         // Act
         selectOneRadio.select(3);
@@ -61,7 +61,7 @@ public class SelectOneRadio001Test extends AbstractPrimePageTest {
 
         // Assert - part 2
         Assertions.assertEquals("Lando", selectOneRadio.getSelectedLabel());
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(page, selectOneRadio.getWidgetConfiguration());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class SelectOneRadio001Test extends AbstractPrimePageTest {
 
         // Assert
         Assertions.assertEquals("Lewis", selectOneRadio.getSelectedLabel());
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(page, selectOneRadio.getWidgetConfiguration());
     }
 
     @Test
@@ -97,7 +97,7 @@ public class SelectOneRadio001Test extends AbstractPrimePageTest {
         for (WebElement radioButton : selectOneRadio.getRadioButtons()) {
             assertNotClickable(radioButton.findElement(By.className("ui-radiobutton-box")));
         }
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(page, selectOneRadio.getWidgetConfiguration());
     }
 
     @Test
@@ -116,7 +116,7 @@ public class SelectOneRadio001Test extends AbstractPrimePageTest {
         for (WebElement radioButton : selectOneRadio.getRadioButtons()) {
             assertClickable(radioButton.findElement(By.className("ui-radiobutton-box")));
         }
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(page, selectOneRadio.getWidgetConfiguration());
     }
 
     @Test
@@ -134,7 +134,7 @@ public class SelectOneRadio001Test extends AbstractPrimePageTest {
 
         // Assert
         assertNotClickable(radioButton);
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(page, selectOneRadio.getWidgetConfiguration());
     }
 
     @Test
@@ -158,11 +158,11 @@ public class SelectOneRadio001Test extends AbstractPrimePageTest {
 
         // Assert
         assertClickable(radioButton);
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(page, selectOneRadio.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("SelectOneRadio Config = " + cfg);
         Assertions.assertFalse(cfg.getBoolean("unselectable"));
     }

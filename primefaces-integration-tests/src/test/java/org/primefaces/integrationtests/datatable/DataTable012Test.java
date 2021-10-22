@@ -63,7 +63,7 @@ public class DataTable012Test extends AbstractDataTableTest {
         Collections.reverse(langsSorted);
         assertRows(dataTable, langsSorted);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -73,7 +73,7 @@ public class DataTable012Test extends AbstractDataTableTest {
         // Arrange
         DataTable dataTable = page.dataTable2;
         Assertions.assertNotNull(dataTable);
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
+        page.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Act
 
@@ -82,18 +82,18 @@ public class DataTable012Test extends AbstractDataTableTest {
         assertRows(dataTable, langsSorted);
 
         // Act - descending
-        PrimeSelenium.guardAjax(Objects.requireNonNull(dataTable.getHeader().getCell("Name").orElse(null)).getWebElement()
+        page.guardAjax(Objects.requireNonNull(dataTable.getHeader().getCell("Name").orElse(null)).getWebElement()
                     .findElement(By.className("ui-column-title"))).click();
 
         // Assert - descending
         Collections.reverse(langsSorted);
         assertRows(dataTable, langsSorted);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DataTable Config = " + cfg);
     }
 

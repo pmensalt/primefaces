@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 
@@ -44,20 +45,20 @@ public class AbstractTableTest extends AbstractPrimePageTest {
             default:
                 break;
         }
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(header.findElement(By.className("ui-sortable-column-icon")), directionClass));
+        Assertions.assertTrue(
+                PrimeSelenium.hasCssClass(header.findElement(By.className("ui-sortable-column-icon")), directionClass));
         WebElement badge = header.findElement(By.className("ui-sortable-column-badge"));
         if (sortPriority > 0) {
             Assertions.assertEquals(sortPriority, Integer.parseInt(badge.getText()));
-        }
-        else {
+        } else {
             Assertions.assertEquals("", badge.getText());
         }
     }
 
-    protected void filterGlobal(WebElement inputGlobalFilter, String filter) {
+    protected void filterGlobal(AbstractPrimePage page, WebElement inputGlobalFilter, String filter) {
         // maybe we can move some of this to PF Selenium (InputText?, DataTable?)
         inputGlobalFilter.clear();
         inputGlobalFilter.sendKeys(filter);
-        PrimeSelenium.guardAjax(inputGlobalFilter).sendKeys(Keys.TAB);
+        page.guardAjax(inputGlobalFilter).sendKeys(Keys.TAB);
     }
 }

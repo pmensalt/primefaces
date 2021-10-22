@@ -65,7 +65,7 @@ public class Messages001Test extends AbstractPrimePageTest {
         Assertions.assertEquals("Action 1", messages.getMessage(0).getSummary());
         Assertions.assertEquals(Severity.INFO, messages.getMessage(0).getSeverity());
 
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class Messages001Test extends AbstractPrimePageTest {
         Assertions.assertEquals(Severity.INFO, messages.getMessage(0).getSeverity());
         Assertions.assertFalse(PrimeSelenium.hasCssClass(page.inputTextVal1, "ui-state-error"));
 
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
     }
 
     public static class Page extends AbstractPrimePage {
