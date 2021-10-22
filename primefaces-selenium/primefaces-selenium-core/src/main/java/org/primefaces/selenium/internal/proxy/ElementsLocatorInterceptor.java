@@ -40,9 +40,8 @@ public class ElementsLocatorInterceptor implements InvocationHandler {
     private final ElementLocator locator;
     private final Class<? extends WebElement> genericClass;
 
-    public ElementsLocatorInterceptor(WebDriver webDriver, ElementLocator locator,
-            Class<? extends WebElement> genericClass) {
-        this.webDriver =webDriver;
+    public ElementsLocatorInterceptor(WebDriver webDriver, ElementLocator locator, Class<? extends WebElement> genericClass) {
+        this.webDriver = webDriver;
         this.locator = locator;
         this.genericClass = genericClass;
     }
@@ -66,7 +65,8 @@ public class ElementsLocatorInterceptor implements InvocationHandler {
 
         try {
             return method.invoke(elements, objects);
-        } catch (InvocationTargetException e) {
+        }
+        catch (InvocationTargetException e) {
             // Unwrap the underlying exception
             throw e.getCause();
         }

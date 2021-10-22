@@ -55,7 +55,7 @@ public class WebDriverProvider {
             WEB_DRIVERS.remove();
         }
     }
-    
+
     private static void resetWebDriver(WebDriver webDriver) {
         if(webDriver != null) {
             webDriver.manage().deleteAllCookies();
@@ -70,7 +70,7 @@ public class WebDriverProvider {
         WEB_DRIVER_POOL.forEach(WebDriverProvider::closeWebDriver);
         WEB_DRIVER_POOL.clear();
     }
-    
+
     private static void closeWebDriver(WebDriver webDriver) {
         if(webDriver != null) {
             webDriver.quit();
@@ -136,7 +136,8 @@ public class WebDriverProvider {
              */
             try {
                 driver = adapter.createWebDriver();
-            } catch (WebDriverException ex) {
+            }
+            catch (WebDriverException ex) {
                 fails++;
                 if (fails >= CREATE_WEBDRIVER_RETRIES) {
                     throw ex;

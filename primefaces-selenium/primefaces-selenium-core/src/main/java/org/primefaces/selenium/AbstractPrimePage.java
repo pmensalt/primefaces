@@ -24,24 +24,14 @@
 package org.primefaces.selenium;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.html5.WebStorage;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.primefaces.selenium.internal.ConfigProvider;
-import org.primefaces.selenium.internal.Guard;
-import org.primefaces.selenium.spi.PrimePageFactory;
-import org.primefaces.selenium.spi.PrimePageFragmentFactory;
-import org.primefaces.selenium.spi.WebDriverProvider;
 
 public abstract class AbstractPrimePage {
-    
+
     private WebDriver webDriver;
 
     public String getBaseLocation() {
@@ -87,9 +77,7 @@ public abstract class AbstractPrimePage {
             return null;
         }
     }
-    
-    
-    
+
     /**
      * Creates the PrimeFaces Selenium component for the selector.
      *
@@ -124,7 +112,7 @@ public abstract class AbstractPrimePage {
     public <T extends AbstractPrimePage> T goTo(Class<T> pageClass) {
         return PrimeSelenium.goTo(webDriver, pageClass);
     }
-    
+
     public String getUrl() {
         return PrimeSelenium.getUrl(this);
     }
@@ -137,9 +125,9 @@ public abstract class AbstractPrimePage {
     public void goTo(AbstractPrimePage page) {
         PrimeSelenium.goTo(page);
     }
-    
-    
-    
+
+
+
     /**
      * Is the Element present on the page?
      *
@@ -279,7 +267,7 @@ public abstract class AbstractPrimePage {
      * @return the result of running the JavaScript
      */
     public <T> T executeScript(boolean isAjaxified, String script, Object... args) {
-        return PrimeSelenium.executeScript(webDriver,isAjaxified, script, args);
+        return PrimeSelenium.executeScript(webdriver, isAjaxified, script, args);
     }
 
     /**

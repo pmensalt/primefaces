@@ -58,7 +58,7 @@ public class PrimePageFragmentFactory {
     private PrimePageFragmentFactory() {
     }
 
-    public static <T extends WebElement> T create(WebDriver driver, Class<T> fragment,WebElement element) {
+    public static <T extends WebElement> T create(WebDriver driver, Class<T> fragment, WebElement element) {
         ElementLocator el;
         if (element instanceof AbstractPrimePageFragment) {
             el = ((AbstractPrimePageFragment) element).getElementLocator();

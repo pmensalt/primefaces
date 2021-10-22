@@ -122,7 +122,7 @@ public class DataView002Test extends AbstractDataTableTest {
         Assertions.assertEquals(9, dataView.getRowsWebElement().size());
 
         assertConfiguration(page, dataView.getWidgetConfiguration());
-    }    
+    }
 
     private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
         assertNoJavascriptErrors(page.getWebDriver());
