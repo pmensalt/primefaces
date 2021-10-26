@@ -54,8 +54,7 @@ public class ElementsLocatorInterceptor implements InvocationHandler {
             ArrayList<WebElement> fragments = new ArrayList<>();
 
             for (int i = 0; i < elements.size(); i++) {
-                WebElement fragment =
-                        PrimePageFragmentFactory.create(webDriver, genericClass, new IndexedElementLocator(locator, i));
+                WebElement fragment = PrimePageFragmentFactory.create(webDriver, genericClass, new IndexedElementLocator(locator, i));
 
                 fragments.add(fragment);
             }
