@@ -34,19 +34,8 @@ public class WebDriverExtension implements BeforeAllCallback, AfterEachCallback,
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
-//        WebDriverProvider.getWebDriverInitializationBeforeAll();
         context.getRoot().getStore(GLOBAL).getOrComputeIfAbsent("closeWebDrivers", k -> this);
     }
-
-//    @Override
-//    public void afterAll(ExtensionContext context) throws Exception {
-////        WebDriverProvider.closeAllWebDrivers();
-//    }
-//
-//    @Override
-//    public void beforeEach(ExtensionContext context) throws Exception {
-////        WebDriverProvider.getWebDriverInitializationBeforeEach();
-//    }
 
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
