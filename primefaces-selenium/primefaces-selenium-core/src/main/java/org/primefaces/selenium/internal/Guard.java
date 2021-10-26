@@ -81,8 +81,7 @@ public class Guard {
 
                 Object result = method.invoke(target, args);
 
-                WebDriverWait wait =
-                        new WebDriverWait(driver, ConfigProvider.getInstance().getTimeoutHttp(), 100);
+                WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getTimeoutHttp(), 100);
                 wait.until(ExpectedConditions.and(
                         PrimeExpectedConditions.documentLoaded(),
                         PrimeExpectedConditions.notNavigating(),
@@ -135,8 +134,7 @@ public class Guard {
                 }
 
                 waitUntilAjaxCompletes(driver);
-                // System.out.println("Guard#ajax; ajaxDebugInfo after methode.invoke and wait: " +
-                // getAjaxDebugInfo(executor));
+                // System.out.println("Guard#ajax; ajaxDebugInfo after methode.invoke and wait: " + getAjaxDebugInfo(executor));
 
                 return result;
             }
