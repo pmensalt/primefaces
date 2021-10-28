@@ -160,8 +160,7 @@ public class Guard {
                 "!window.jQuery=" + executor.executeScript("return !window.jQuery;") + ", " +
                 "jQuery.active=" + executor.executeScript("return jQuery.active;") + ", " +
                 "!window.PrimeFaces=" + executor.executeScript("return !window.PrimeFaces;") + ", " +
-                "PrimeFaces.ajax.Queue.isEmpty()=" + executor.executeScript("return PrimeFaces.ajax.Queue.isEmpty();")
-                + ", " +
+                "PrimeFaces.ajax.Queue.isEmpty()=" + executor.executeScript("return PrimeFaces.ajax.Queue.isEmpty();") + ", " +
                 "PrimeFaces.animationActive=" + executor.executeScript("return PrimeFaces.animationActive;") + ", " +
                 "!window.pfselenium=" + executor.executeScript("return !window.pfselenium;") + ", " +
                 "pfselenium.xhr=" + executor.executeScript("return pfselenium.xhr;") + ", " +

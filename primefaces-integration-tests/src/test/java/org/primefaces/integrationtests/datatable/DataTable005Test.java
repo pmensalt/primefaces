@@ -69,13 +69,13 @@ public class DataTable005Test extends AbstractDataTableTest {
     @DisplayName("DataTable: selection - multiple")
     public void testSelectionMultiple(String xhtml) {
         // Arrange
-        driver.get(PrimeSelenium.getUrl(xhtml));
+        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 
         // Act
         dataTable.getCell(0, 0).getWebElement().click();
-        Actions actions = new Actions(driver);
+        Actions actions = new Actions(getWebDriver());
         actions.keyDown(Keys.META).click(dataTable.getCell(2, 0).getWebElement()).keyUp(Keys.META).perform();
         actions.keyDown(Keys.SHIFT).click(dataTable.getCell(4, 0).getWebElement()).keyUp(Keys.SHIFT).perform();
         getButton().click();
@@ -101,13 +101,13 @@ public class DataTable005Test extends AbstractDataTableTest {
     @DisplayName("DataTable: GitHub #7368 Selection with filtering")
     public void testSelectionWithFilter(String xhtml) {
         // Arrange
-        driver.get(PrimeSelenium.getUrl(xhtml));
+        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 
         // Act
         dataTable.getCell(0, 0).getWebElement().click();
-        Actions actions = new Actions(driver);
+        Actions actions = new Actions(getWebDriver());
         actions.keyDown(Keys.META).click(dataTable.getCell(2, 0).getWebElement()).keyUp(Keys.META).perform();
         actions.keyDown(Keys.SHIFT).click(dataTable.getCell(4, 0).getWebElement()).keyUp(Keys.SHIFT).perform();
         getButton().click();
@@ -144,7 +144,7 @@ public class DataTable005Test extends AbstractDataTableTest {
     }
 
     private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors(driver);
+        assertNoJavascriptErrors(getWebDriver());
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("selectionMode"));
     }
@@ -156,18 +156,22 @@ public class DataTable005Test extends AbstractDataTableTest {
     }
 
     private Messages getMessages() {
-        return PrimeSelenium.createFragment(driver, Messages.class, By.id("form:msgs"));
+        return PrimeSelenium.createFragment(getWebDriver(), Messages.class, By.id("form:msgs"));
     }
 
     private DataTable getDataTable() {
-        return PrimeSelenium.createFragment(driver, DataTable.class, By.id("form:datatable"));
+        return PrimeSelenium.createFragment(getWebDriver(), DataTable.class, By.id("form:datatable"));
     }
 
     private CommandButton getButton() {
-        return PrimeSelenium.createFragment(driver, CommandButton.class, By.id("form:button"));
+        return PrimeSelenium.createFragment(getWebDriver(), CommandButton.class, By.id("form:button"));
     }
 
     private CommandButton getButtonUpdate() {
-        return PrimeSelenium.createFragment(driver, CommandButton.class, By.id("form:buttonUpdate"));
+        return PrimeSelenium.createFragment(getWebDriver(), CommandButton.class, By.id("form:buttonUpdate"));
+    }
+    
+    private WebDriver getWebDriver() {
+    	return driver;
     }
 }
