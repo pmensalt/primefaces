@@ -21,27 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.common;
+package org.primefaces.functional;
 
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import java.io.IOException;
+import java.util.Objects;
 
-@WebListener
-public class SetActiveViewMapsSizeSessionListener implements HttpSessionListener {
+@FunctionalInterface
+public interface IOBiConsumer<T, U> {
 
-    @Override
-    public void sessionCreated(HttpSessionEvent event) {
-        try {
-            // avoid issues with Mojarra + OWB (see class com.sun.faces.application.view.ViewScopeManager)
-            // TODO: may be removed after Mojarra 2.3.17-release (see https://github.com/eclipse-ee4j/mojarra/issues/4642)
-            event.getSession().setAttribute( "com.sun.faces.application.view.activeViewMapsSize", 100);
-        }
-        catch (Exception ex) {
-        }
+    void accept(T t, U u) throws IOException;
+
+    default IOBiConsumer<T, U> andThen(IOBiConsumer<? super T, ? super U> after) throws IOException {
+        Objects.requireNonNull(after);
+
+        return (l, r) -> {
+            accept(l, r);
+            after.accept(l, r);
+        };
     }
 
-    @Override
-    public void sessionDestroyed(HttpSessionEvent event) {
-        /* Session is destroyed. */
-    }
 }

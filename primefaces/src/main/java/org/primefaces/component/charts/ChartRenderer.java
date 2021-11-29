@@ -185,8 +185,8 @@ public class ChartRenderer extends CoreRenderer {
                 writer.write("\"scale\":{");
                 RadialScales rScales = (RadialScales) scales;
                 StringBuilder scaleAttrs = new StringBuilder(50);
-                if (rScales.getAngelLines() != null) {
-                    writeJsonAttribute(scaleAttrs, "angleLines", rScales.getAngelLines().encode());
+                if (rScales.getAngleLines() != null) {
+                    writeJsonAttribute(scaleAttrs, "angleLines", rScales.getAngleLines().encode());
                 }
 
                 if (rScales.getGridLines() != null) {
@@ -256,9 +256,13 @@ public class ChartRenderer extends CoreRenderer {
         }
 
         writer.write("\"plugins\":{");
-        encodeTitle(context, options.getTitle(), false);
-        encodeTooltip(context, options.getTooltip(), true);
-        encodeLegend(context, options.getLegend(), true);
+        Title title = options.getTitle();
+        Tooltip tooltip = options.getTooltip();
+        Legend legend = options.getLegend();
+
+        encodeTitle(context, title, false);
+        encodeTooltip(context, tooltip, title != null);
+        encodeLegend(context, legend, title != null || tooltip != null);
         writer.write("}");
     }
 
