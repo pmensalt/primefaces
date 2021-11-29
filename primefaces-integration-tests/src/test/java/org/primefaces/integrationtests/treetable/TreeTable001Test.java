@@ -342,7 +342,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         Assertions.assertNotNull(rows);
         Assertions.assertEquals(rootOtherDocument.getChildCount(), rows.size());
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
     }
 
     @Test
@@ -377,11 +377,11 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         Assertions.assertNotNull(rows);
         Assertions.assertEquals(rootOtherDocument.getChildren().stream().filter(n -> n.getData().getName().contains("B")).count(), rows.size());
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(page, treeTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page,JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("TreeTable Config = " + cfg);
         Assertions.assertEquals("treeTable", cfg.getString("widgetVar"));
     }

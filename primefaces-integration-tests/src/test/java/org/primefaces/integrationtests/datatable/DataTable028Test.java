@@ -23,23 +23,22 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.util.stream.Stream;
+
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.integrationtests.datatable.DataTable027Test.Page;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
-
-import java.util.stream.Stream;
 
 public class DataTable028Test extends AbstractDataTableTest {
 
@@ -47,185 +46,185 @@ public class DataTable028Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(1)
     @DisplayName("DataTable: filter + sort + edit with own inputs - wrong manipulation of list elements - https://github.com/primefaces/primefaces/issues/7999")
-    public void testFilterSortEdit(String xhtml) {
+    public void testFilterSortEdit(Page page, String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        getButtonSave().click();
+        page.getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        getButtonSave(page.getWebDriver()).click();
 
         // Assert
-        assertInitalState();
+        assertInitalState(page.getWebDriver());
 
         // Act 1 - filter on name with value BB2
-        getDataTable().filter("Name", "bb2");
+        getDataTable(page.getWebDriver()).filter("Name", "bb2");
 
         // Act 2 - change all BB2 row values to BB3, press Save
-        DataTable dataTable = getDataTable();
+        DataTable dataTable = getDataTable(page.getWebDriver());
         for (int row=0; row<=2; row++) {
             WebElement eltName = dataTable.getRow(row).getCell(3).getWebElement().findElement(By.tagName("input"));
             eltName.clear();
             eltName.sendKeys("BB3");
         }
-        getButtonSave().click();
+        getButtonSave(page.getWebDriver()).click();
 
         // Assert
-        assertAfterBb3Update();
+        assertAfterBb3Update(page.getWebDriver());
 
         // Act 3 - remove filter BB2, press Save
-        getDataTable().filter("Name", "");
-        getButtonSave().click();
+        getDataTable(page.getWebDriver()).filter("Name", "");
+        getButtonSave(page.getWebDriver()).click();
 
         // Assert
-        assertAfterBb3Update();
+        assertAfterBb3Update(page.getWebDriver());
 
         // Act 4 - sort on code, press Save
-        getDataTable().sort("Code");
-        getButtonSave().click();
+        getDataTable(page.getWebDriver()).sort("Code");
+        getButtonSave(page.getWebDriver()).click();
 
         // Assert
         if (xhtml.contains("Without")) {
-            assertAfterBb3UpdateSorted();
+            assertAfterBb3UpdateSorted(page.getWebDriver());
         }
         else {
-            assertAfterBb3Update();
+            assertAfterBb3Update(page.getWebDriver());
         }
 
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
     }
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(2)
     @DisplayName("DataTable: filter + sort + edit with own inputs - V2")
-    public void testFilterSortEditV2(String xhtml) {
+    public void testFilterSortEditV2(Page page, String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        getButtonSave().click();
+        page.getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        getButtonSave(page.getWebDriver()).click();
 
         // Assert
-        assertInitalState();
+        assertInitalState(page.getWebDriver());
 
         // Act 1 - sort on code, press Save
-        getDataTable().sort("Code");
-        getButtonSave().click();
+        getDataTable(page.getWebDriver()).sort("Code");
+        getButtonSave(page.getWebDriver()).click();
 
         // Act 2 - filter on name with value BB2
-        getDataTable().filter("Name", "bb2");
+        getDataTable(page.getWebDriver()).filter("Name", "bb2");
 
         // Act 3 - change all BB2 row values to BB3, press Save
-        DataTable dataTable = getDataTable();
+        DataTable dataTable = getDataTable(page.getWebDriver());
         for (int row=0; row<=2; row++) {
             WebElement eltName = dataTable.getRow(row).getCell(3).getWebElement().findElement(By.tagName("input"));
             eltName.clear();
             eltName.sendKeys("BB3");
         }
-        getButtonSave().click();
+        getButtonSave(page.getWebDriver()).click();
 
         // Assert
-        assertAfterBb3UpdateSorted();
+        assertAfterBb3UpdateSorted(page.getWebDriver());
 
         // Act 4 - remove filter BB2, press Save
-        getDataTable().filter("Name", "");
-        getButtonSave().click();
+        getDataTable(page.getWebDriver()).filter("Name", "");
+        getButtonSave(page.getWebDriver()).click();
 
         // Assert
-        assertAfterBb3UpdateSorted();
+        assertAfterBb3UpdateSorted(page.getWebDriver());
 
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
     }
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(10)
     @DisplayName("DataTable: sort + edit with own inputs")
-    public void testSortEdit(String xhtml) {
+    public void testSortEdit(Page page, String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        getButtonSave().click();
+        page.getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        getButtonSave(page.getWebDriver()).click();
 
         // Assert
-        assertInitalState();
+        assertInitalState(page.getWebDriver());
 
         // Act 1 - change all BB2 row values to BB3, press Save
-        DataTable dataTable = getDataTable();
+        DataTable dataTable = getDataTable(page.getWebDriver());
         for (int row=0; row<=2; row++) {
             WebElement eltName = dataTable.getRow(row).getCell(3).getWebElement().findElement(By.tagName("input"));
             eltName.clear();
             eltName.sendKeys("BB3");
         }
-        getButtonSave().click();
+        getButtonSave(page.getWebDriver()).click();
 
         // Assert
-        assertAfterBb3Update();
+        assertAfterBb3Update(page.getWebDriver());
 
         // Act 2 - sort on code, press Save
-        getDataTable().sort("Code");
-        getButtonSave().click();
+        getDataTable(page.getWebDriver()).sort("Code");
+        getButtonSave(page.getWebDriver()).click();
 
         // Assert
-        assertAfterBb3UpdateSorted();
+        assertAfterBb3UpdateSorted(page.getWebDriver());
 
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
     }
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(11)
     @DisplayName("DataTable: sort + edit with own inputs - V2")
-    public void testSortEditV2(String xhtml) {
+    public void testSortEditV2(Page page, String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        getButtonSave().click();
+        page.getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        getButtonSave(page.getWebDriver()).click();
 
         // Assert
-        assertInitalState();
+        assertInitalState(page.getWebDriver());
 
         // Act 1 - sort on code, press Save
-        getDataTable().sort("Code");
-        getButtonSave().click();
+        getDataTable(page.getWebDriver()).sort("Code");
+        getButtonSave(page.getWebDriver()).click();
 
         // Act 2 - change all BB2 row values to BB3, press Save
-        DataTable dataTable = getDataTable();
+        DataTable dataTable = getDataTable(page.getWebDriver());
         for (int row=2; row<=4; row++) {
             WebElement eltName = dataTable.getRow(row).getCell(3).getWebElement().findElement(By.tagName("input"));
             eltName.clear();
             eltName.sendKeys("BB3");
         }
-        getButtonSave().click();
+        getButtonSave(page.getWebDriver()).click();
 
         // Assert
-        assertAfterBb3UpdateSorted();
+        assertAfterBb3UpdateSorted(page.getWebDriver());
 
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
     }
 
-    private void assertInitalState() {
+    private void assertInitalState(WebDriver webDriver) {
         String expected = StringUtils.deleteWhitespace("Result:\n" +
                 "509, EUR, BB, BB2, A\n" +
                 "512, EUR, BB, BB2, B\n" +
                 "515, EUR, BB, BB2, C\n" +
                 "516, USA, AA, AA, D\n" +
                 "517, USA, AA, AA, E");
-        Assertions.assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
+        Assertions.assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual(webDriver).getText()));
     }
 
-    private void assertAfterBb3Update() {
+    private void assertAfterBb3Update(WebDriver webDriver) {
         String expected = StringUtils.deleteWhitespace("Result:\n" +
                     "509, EUR, BB, BB3, A\n" +
                     "512, EUR, BB, BB3, B\n" +
                     "515, EUR, BB, BB3, C\n" +
                     "516, USA, AA, AA, D\n" +
                     "517, USA, AA, AA, E");
-        Assertions.assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
+        Assertions.assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual(webDriver).getText()));
     }
 
-    private void assertAfterBb3UpdateSorted() {
+    private void assertAfterBb3UpdateSorted(WebDriver webDriver) {
         String expected = StringUtils.deleteWhitespace("Result:\n" +
                     "516, USA, AA, AA, D\n" +
                     "517, USA, AA, AA, E\n" +
                     "509, EUR, BB, BB3, A\n" +
                     "512, EUR, BB, BB3, B\n" +
                     "515, EUR, BB, BB3, C");
-        Assertions.assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
+        Assertions.assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual(webDriver).getText()));
     }
 
     private static Stream<Arguments> provideXhtmls() {
@@ -234,20 +233,20 @@ public class DataTable028Test extends AbstractDataTableTest {
                 Arguments.of("datatable/dataTable028WithoutFilteredValue.xhtml"));
     }
 
-    private DataTable getDataTable() {
-        return PrimeSelenium.createFragment(DataTable.class, By.id("form:referenceTable"));
+    private DataTable getDataTable(WebDriver webDriver) {
+        return PrimeSelenium.createFragment(webDriver, DataTable.class, By.id("form:referenceTable"));
     }
 
-    private CommandButton getButtonSave() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:cmdSave"));
+    private CommandButton getButtonSave(WebDriver webDriver) {
+        return PrimeSelenium.createFragment(webDriver, CommandButton.class, By.id("form:cmdSave"));
     }
 
-    private WebElement getEltDebugInital() {
-        return PrimeSelenium.createFragment(WebElement.class, By.id("debugInitial"));
+    private WebElement getEltDebugInital(WebDriver webDriver) {
+        return PrimeSelenium.createFragment(webDriver, WebElement.class, By.id("debugInitial"));
     }
 
-    private WebElement getEltDebugActual() {
-        return PrimeSelenium.createFragment(WebElement.class, By.id("debugActual"));
+    private WebElement getEltDebugActual(WebDriver webDriver) {
+        return PrimeSelenium.createFragment(webDriver, WebElement.class, By.id("debugActual"));
     }
 
 }

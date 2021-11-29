@@ -133,7 +133,7 @@ public class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,5");
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(page, dataTable.getWidgetConfiguration(), true);
 
         // Assert - row 0 and 2 on page 1 and row 1 on page 2 still selected
         Assertions.assertEquals(dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "true");

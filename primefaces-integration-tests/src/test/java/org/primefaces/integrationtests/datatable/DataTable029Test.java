@@ -53,7 +53,7 @@ public class DataTable029Test extends AbstractDataTableTest {
 
         // Assert
         assertSortOrder(dataTable);
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
     }
 
     private void assertSortOrder(DataTable dt) {
