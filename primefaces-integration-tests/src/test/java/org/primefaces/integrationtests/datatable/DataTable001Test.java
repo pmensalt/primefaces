@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -61,7 +62,7 @@ public class DataTable001Test extends AbstractDataTableTest {
 		driver = WebDriverProvider.getWebDriver();
 	}
 
-	@BeforeEach
+	@AfterEach
 	public void afterEach() {
 		WebDriverProvider.resetWebDrivers();
 	}

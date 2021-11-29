@@ -53,7 +53,7 @@ public class DataTable005Test extends AbstractDataTableTest {
         driver = WebDriverProvider.getWebDriver();
     }
 
-    @BeforeEach
+    @AfterEach
     public void afterEach() {
         WebDriverProvider.resetWebDrivers();
     }

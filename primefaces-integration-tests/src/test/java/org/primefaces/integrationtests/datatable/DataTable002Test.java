@@ -23,8 +23,14 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,11 +47,6 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.datatable.Row;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 public class DataTable002Test extends AbstractDataTableTest {
 
     private WebDriver driver;
@@ -55,7 +56,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         driver = WebDriverProvider.getWebDriver();
     }
 
-    @BeforeEach
+    @AfterEach
     public void afterEach() {
         WebDriverProvider.resetWebDrivers();
     }
