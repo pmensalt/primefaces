@@ -24,26 +24,45 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.json.JSONObject;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.spi.WebDriverProvider;
 
 import java.util.stream.Stream;
 
 public class DataTable005Test extends AbstractDataTableTest {
+
+    private WebDriver driver;
+
+    @BeforeEach
+    public void beforeEach() {
+        driver = WebDriverProvider.getWebDriver();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        WebDriverProvider.resetWebDrivers();
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        WebDriverProvider.closeAllWebDrivers();
+    }
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
@@ -126,7 +145,7 @@ public class DataTable005Test extends AbstractDataTableTest {
     }
 
     private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(getWebDriver());
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("selectionMode"));
     }
@@ -138,18 +157,22 @@ public class DataTable005Test extends AbstractDataTableTest {
     }
 
     private Messages getMessages() {
-        return PrimeSelenium.createFragment(Messages.class, By.id("form:msgs"));
+        return PrimeSelenium.createFragment(getWebDriver(), Messages.class, By.id("form:msgs"));
     }
 
     private DataTable getDataTable() {
-        return PrimeSelenium.createFragment(DataTable.class, By.id("form:datatable"));
+        return PrimeSelenium.createFragment(getWebDriver(), DataTable.class, By.id("form:datatable"));
     }
 
     private CommandButton getButton() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:button"));
+        return PrimeSelenium.createFragment(getWebDriver(), CommandButton.class, By.id("form:button"));
     }
 
     private CommandButton getButtonUpdate() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonUpdate"));
+        return PrimeSelenium.createFragment(getWebDriver(), CommandButton.class, By.id("form:buttonUpdate"));
+    }
+    
+    private WebDriver getWebDriver() {
+    	return driver;
     }
 }

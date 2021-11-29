@@ -24,7 +24,6 @@
 package org.primefaces.selenium.component;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.html.Link;
 
 /**
@@ -34,16 +33,16 @@ public abstract class CommandLink extends Link {
 
     @Override
     public void click() {
-        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(getRoot()));
+        waitGui().until(ExpectedConditions.elementToBeClickable(getRoot()));
 
         if (isAjaxified("onclick")) {
-            PrimeSelenium.guardAjax(getRoot()).click();
+            guardAjax(getRoot()).click();
         }
         else if ("_blank".equals(getRoot().getAttribute("target"))) {
             getRoot().click();
         }
         else {
-            PrimeSelenium.guardHttp(getRoot()).click();
+            guardHttp(getRoot()).click();
         }
     }
 }

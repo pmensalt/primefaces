@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.general.model.Driver;
@@ -67,7 +68,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
 
         // Act - Chr(istoph) - not allowed
         autoComplete.setValueWithoutTab("Chr");
-        PrimeSelenium.guardAjax(autoComplete.getInput()).sendKeys(Keys.ENTER);
+        page.guardAjax(autoComplete.getInput()).sendKeys(Keys.ENTER);
 
         RealDriverService realDriverService = new RealDriverService();
         realDriverService.init();
@@ -89,7 +90,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max"));
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Lando"));
         Assertions.assertFalse(page.messages.getMessage(0).getDetail().contains("Chr"));
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(page.getWebDriver(), autoComplete.getWidgetConfiguration());
     }
 
     @Test
@@ -130,7 +131,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
         Assertions.assertEquals(Integer.toString(driverLando.getId()), options.get(1).getAttribute("value"));
         Assertions.assertEquals("Chr", options.get(2).getAttribute("value"));
         
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(page.getWebDriver(), autoComplete.getWidgetConfiguration());
     }
     
     @Test
@@ -156,11 +157,11 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
 
         // Assert        
         Assertions.assertTrue(page.messages.getAllMessages().isEmpty());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(page.getWebDriver(), autoComplete.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(WebDriver webDriver, JSONObject cfg) {
+        assertNoJavascriptErrors(webDriver);
         System.out.println("AutoComplete Config = " + cfg);
         Assertions.assertTrue(cfg.has("appendTo"));
     }

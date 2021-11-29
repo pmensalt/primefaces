@@ -30,7 +30,6 @@ import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.component.model.Tab;
@@ -75,8 +74,8 @@ public abstract class TabView extends AbstractComponent {
         final JSONObject cfg = getWidgetConfiguration();
         final boolean isDynamic = cfg.has("dynamic") && cfg.getBoolean("dynamic");
 
-        if (isDynamic || ComponentUtils.hasAjaxBehavior(getRoot(), "tabChange")) {
-            PrimeSelenium.guardAjax(headers.get(index)).click();
+        if (isDynamic || ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "tabChange")) {
+            guardAjax(headers.get(index)).click();
         }
         else {
             headers.get(index).click();

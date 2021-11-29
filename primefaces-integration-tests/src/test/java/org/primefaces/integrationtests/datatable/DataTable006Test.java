@@ -69,7 +69,7 @@ public class DataTable006Test extends AbstractDataTableTest {
             cnt ++;
         }
 
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(page, dataTable.getWidgetConfiguration(), true);
 
         // Act - https://github.com/primefaces/primefaces/issues/7128
         page.buttonUnselect.click();
@@ -104,7 +104,7 @@ public class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3");
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(page, dataTable.getWidgetConfiguration(), true);
     }
 
     @Test
@@ -133,7 +133,7 @@ public class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,5");
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(page, dataTable.getWidgetConfiguration(), true);
 
         // Assert - row 0 and 2 on page 1 and row 1 on page 2 still selected
         Assertions.assertEquals(dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "true");
@@ -166,7 +166,7 @@ public class DataTable006Test extends AbstractDataTableTest {
 
         // Assert
         assertSelectAllCheckbox(dataTable, false);
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(page, dataTable.getWidgetConfiguration(), true);
         assertSelections(page.messages, "1,3");
     }
 
@@ -192,7 +192,7 @@ public class DataTable006Test extends AbstractDataTableTest {
 
         // Assert
         assertSelectAllCheckbox(dataTable, false);
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(page, dataTable.getWidgetConfiguration(), true);
         assertSelections(page.messages, "1,3");
     }
 
@@ -218,7 +218,7 @@ public class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelections(page.messages, "");
         assertSelectAllCheckbox(dataTable, false);
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(page, dataTable.getWidgetConfiguration(), true);
     }
 
     @Test
@@ -253,7 +253,7 @@ public class DataTable006Test extends AbstractDataTableTest {
 
         // Assert - only 1 record unselected should leave first page selections only
         assertSelections(page.messages, "2,3");
-        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+        assertConfiguration(page, dataTable.getWidgetConfiguration(), false);
     }
 
     @Test
@@ -290,7 +290,7 @@ public class DataTable006Test extends AbstractDataTableTest {
 
         // Assert - only 1 record unselected should leave first page selections only
         assertSelections(page.messages, "2,3");
-        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+        assertConfiguration(page, dataTable.getWidgetConfiguration(), false);
     }
 
     @Test
@@ -327,11 +327,11 @@ public class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,12");
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(page, dataTable.getWidgetConfiguration(), true);
     }
 
-    private void assertConfiguration(JSONObject cfg, boolean selectionPageOnly) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg, boolean selectionPageOnly) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertEquals("checkbox", cfg.get("selectionMode"));
         Assertions.assertEquals(selectionPageOnly, cfg.getBoolean("selectionPageOnly"));

@@ -50,11 +50,11 @@ public abstract class SelectManyCheckbox extends AbstractComponent {
     public void toggle(int... indexes) {
         for (int i : indexes) {
             WebElement checkbox = getCheckboxes().get(i);
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(checkbox));
+            waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(checkbox));
 
             WebElement input = checkbox.findElement(By.tagName("input"));
             if (isAjaxified(input, "onchange")) {
-                PrimeSelenium.guardAjax(checkbox).click();
+                guardAjax(checkbox).click();
             }
             else {
                 checkbox.click();

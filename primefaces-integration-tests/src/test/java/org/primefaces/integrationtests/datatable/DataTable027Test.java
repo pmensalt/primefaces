@@ -49,7 +49,7 @@ public class DataTable027Test extends AbstractDataTableTest {
         Assertions.assertEquals(page.aferCount.getText(), "75");
         assertCss(dataTable, "ui-datatable", "ui-widget", "ui-datatable-scrollable");
         Assertions.assertNotNull(dataTable.findElement(By.cssSelector(".ui-datatable-scrollable-body > .ui-datatable-virtualscroll-wrapper > .ui-datatable-virtualscroll-table")), "Datatable virtual scrolling CSS has changed!");
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
     }
 
     public static class Page extends AbstractPrimePage {
@@ -58,7 +58,7 @@ public class DataTable027Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:lblBefore")
         OutputLabel beforeCount;
-        
+
         @FindBy(id = "form:lblAfter")
         OutputLabel aferCount;
 

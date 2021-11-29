@@ -23,25 +23,44 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.util.stream.Stream;
+
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
-
-import java.util.stream.Stream;
+import org.primefaces.selenium.spi.WebDriverProvider;
 
 public class DataTable028Test extends AbstractDataTableTest {
+	
+	private WebDriver driver;
+
+	@BeforeEach
+	public void beforeEach() {
+		driver = WebDriverProvider.getWebDriver();
+	}
+
+	@AfterEach
+	public void afterEach() {
+		WebDriverProvider.resetWebDrivers();
+	}
+
+	@AfterAll
+	public static void afterAll() {
+		WebDriverProvider.closeAllWebDrivers();
+	}
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
@@ -49,7 +68,7 @@ public class DataTable028Test extends AbstractDataTableTest {
     @DisplayName("DataTable: filter + sort + edit with own inputs - wrong manipulation of list elements - https://github.com/primefaces/primefaces/issues/7999")
     public void testFilterSortEdit(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        driver.get(PrimeSelenium.getUrl(xhtml));
         getButtonSave().click();
 
         // Assert
@@ -89,7 +108,7 @@ public class DataTable028Test extends AbstractDataTableTest {
             assertAfterBb3Update();
         }
 
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(driver);
     }
 
     @ParameterizedTest
@@ -98,7 +117,7 @@ public class DataTable028Test extends AbstractDataTableTest {
     @DisplayName("DataTable: filter + sort + edit with own inputs - V2")
     public void testFilterSortEditV2(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        driver.get(PrimeSelenium.getUrl(xhtml));
         getButtonSave().click();
 
         // Assert
@@ -130,7 +149,7 @@ public class DataTable028Test extends AbstractDataTableTest {
         // Assert
         assertAfterBb3UpdateSorted();
 
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(driver);
     }
 
     @ParameterizedTest
@@ -139,7 +158,7 @@ public class DataTable028Test extends AbstractDataTableTest {
     @DisplayName("DataTable: sort + edit with own inputs")
     public void testSortEdit(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        driver.get(PrimeSelenium.getUrl(xhtml));
         getButtonSave().click();
 
         // Assert
@@ -164,7 +183,7 @@ public class DataTable028Test extends AbstractDataTableTest {
         // Assert
         assertAfterBb3UpdateSorted();
 
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(driver);
     }
 
     @ParameterizedTest
@@ -173,7 +192,7 @@ public class DataTable028Test extends AbstractDataTableTest {
     @DisplayName("DataTable: sort + edit with own inputs - V2")
     public void testSortEditV2(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        driver.get(PrimeSelenium.getUrl(xhtml));
         getButtonSave().click();
 
         // Assert
@@ -195,7 +214,7 @@ public class DataTable028Test extends AbstractDataTableTest {
         // Assert
         assertAfterBb3UpdateSorted();
 
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(driver);
     }
 
     private void assertInitalState() {
@@ -235,19 +254,19 @@ public class DataTable028Test extends AbstractDataTableTest {
     }
 
     private DataTable getDataTable() {
-        return PrimeSelenium.createFragment(DataTable.class, By.id("form:referenceTable"));
+        return PrimeSelenium.createFragment(driver, DataTable.class, By.id("form:referenceTable"));
     }
 
     private CommandButton getButtonSave() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:cmdSave"));
+        return PrimeSelenium.createFragment(driver, CommandButton.class, By.id("form:cmdSave"));
     }
 
     private WebElement getEltDebugInital() {
-        return PrimeSelenium.createFragment(WebElement.class, By.id("debugInitial"));
+        return PrimeSelenium.createFragment(driver, WebElement.class, By.id("debugInitial"));
     }
 
     private WebElement getEltDebugActual() {
-        return PrimeSelenium.createFragment(WebElement.class, By.id("debugActual"));
+        return PrimeSelenium.createFragment(driver, WebElement.class, By.id("debugActual"));
     }
 
 }

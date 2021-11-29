@@ -27,7 +27,6 @@ import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.findby.FindByParentPartialId;
@@ -55,7 +54,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
      * @return true if using AJAX for itemSelect
      */
     public boolean isItemSelectAjaxified() {
-        return ComponentUtils.hasAjaxBehavior(getRoot(), "itemSelect");
+        return ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "itemSelect");
     }
 
     /**
@@ -76,8 +75,8 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     public void show() {
         WebElement panel = getPanel();
         if (isEnabled() && !panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
+            executeScript(getWidgetByIdScript() + ".show();");
+            waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
         }
     }
 
@@ -87,8 +86,8 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     public void hide() {
         WebElement panel = getPanel();
         if (isEnabled() && panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
+            executeScript(getWidgetByIdScript() + ".hide();");
+            waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         }
     }
 
@@ -188,7 +187,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     public void selectByValue(String value) {
-        PrimeSelenium.executeScript(String.format("PrimeFaces.getWidgetById('%s').selectValue('%s');", getId(), value));
+        executeScript(String.format("PrimeFaces.getWidgetById('%s').selectValue('%s');", getId(), value));
     }
 
     public boolean isSelected(int index) {
@@ -222,7 +221,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
 
     protected void click(WebElement element) {
         if (isOnchangeAjaxified() || isItemSelectAjaxified()) {
-            PrimeSelenium.guardAjax(element).click();
+            guardAjax(element).click();
         }
         else {
             element.click();

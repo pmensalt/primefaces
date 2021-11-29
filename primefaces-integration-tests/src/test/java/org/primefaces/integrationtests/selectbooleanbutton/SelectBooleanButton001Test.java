@@ -116,7 +116,7 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
         // Assert
         assertChecked(page, true);
     }
-    
+
     @Test
     @Order(5)
     @DisplayName("SelectBooleanButton: GitHub #7963 icon only should have no default labels")
@@ -153,8 +153,8 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
         Assertions.assertTrue(selectBooleanButton.isSelected());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("SelectBooleanButton Config = " + cfg);
         Assertions.assertEquals("Yes", cfg.getString("onLabel"));
         Assertions.assertEquals("No", cfg.getString("offLabel"));
@@ -168,13 +168,13 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
         Msg message = page.messages.getMessage(0);
         Assertions.assertEquals(checked ? "Checked" : "Unchecked", message.getDetail());
         Assertions.assertEquals(checked ? "Yes" : "No", selectBooleanButton.getLabel());
-        assertConfiguration(selectBooleanButton.getWidgetConfiguration());
+        assertConfiguration(page, selectBooleanButton.getWidgetConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:selectBooleanButton")
         SelectBooleanButton selectBooleanButton;
-        
+
         @FindBy(id = "form:iconOnly")
         SelectBooleanButton iconOnly;
         

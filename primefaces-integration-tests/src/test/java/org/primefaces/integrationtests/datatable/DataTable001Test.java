@@ -23,14 +23,23 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.json.JSONObject;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguage.ProgrammingLanguageType;
@@ -42,280 +51,276 @@ import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.model.data.Paginator;
 import org.primefaces.selenium.component.model.datatable.Header;
 import org.primefaces.selenium.component.model.datatable.Row;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import org.primefaces.selenium.spi.WebDriverProvider;
 
 public class DataTable001Test extends AbstractDataTableTest {
 
-    @ParameterizedTest
-    @MethodSource("provideXhtmls")
-    @Order(1)
-    @DisplayName("DataTable: Basic & Paginator")
-    public void testBasicAndPaginator(String xhtml) {
-        // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+	private WebDriver driver;
 
-        // Act
-        //page.button.click();
+	@BeforeEach
+	public void beforeEach() {
+		driver = WebDriverProvider.getWebDriver();
+	}
 
-        // Assert
-        Assertions.assertNotNull(dataTable.getPaginatorWebElement());
-        Assertions.assertNotNull(dataTable.getHeaderWebElement());
+	@AfterEach
+	public void afterEach() {
+		WebDriverProvider.resetWebDrivers();
+	}
 
-        List<WebElement> rowElts = dataTable.getRowsWebElement();
-        Assertions.assertNotNull(rowElts);
-        Assertions.assertEquals(3, rowElts.size());
+	@AfterAll
+	public static void afterAll() {
+		WebDriverProvider.closeAllWebDrivers();
+	}
 
-        List<Row> rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(3, rows.size());
+	@ParameterizedTest @MethodSource("provideXhtmls") @Order(1) @DisplayName("DataTable: Basic & Paginator")
+	public void testBasicAndPaginator(String xhtml) {
+		// Arrange
+		driver.get(PrimeSelenium.getUrl(xhtml));
+		DataTable dataTable = getDataTable();
+		Assertions.assertNotNull(dataTable);
 
-        Row firstRow = dataTable.getRow(0);
-        Assertions.assertEquals("1", firstRow.getCell(0).getText());
-        Assertions.assertEquals("Java", firstRow.getCell(2).getText());
+		// Act
+		// driver.button.click();
 
-        Header header = dataTable.getHeader();
-        Assertions.assertNotNull(header);
-        Assertions.assertNotNull(header.getCells());
-        Assertions.assertEquals(4, header.getCells().size());
-        Assertions.assertEquals("ID", header.getCell(0).getColumnTitle().getText());
-        Assertions.assertEquals("Type", header.getCell(1).getColumnTitle().getText());
-        Assertions.assertEquals("Name", header.getCell(2).getColumnTitle().getText());
+		// Assert
+		Assertions.assertNotNull(dataTable.getPaginatorWebElement());
+		Assertions.assertNotNull(dataTable.getHeaderWebElement());
 
-        Paginator paginator = dataTable.getPaginator();
-        Assertions.assertNotNull(paginator);
-        Assertions.assertNotNull(paginator.getPages());
-        Assertions.assertEquals(2, paginator.getPages().size());
-        Assertions.assertEquals(1, paginator.getPage(0).getNumber());
-        Assertions.assertEquals(2, paginator.getPage(1).getNumber());
+		List<WebElement> rowElts = dataTable.getRowsWebElement();
+		Assertions.assertNotNull(rowElts);
+		Assertions.assertEquals(3, rowElts.size());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+		List<Row> rows = dataTable.getRows();
+		Assertions.assertNotNull(rows);
+		Assertions.assertEquals(3, rows.size());
 
-        // Act
-        dataTable.selectPage(2);
+		Row firstRow = dataTable.getRow(0);
+		Assertions.assertEquals("1", firstRow.getCell(0).getText());
+		Assertions.assertEquals("Java", firstRow.getCell(2).getText());
 
-        // Assert - Part 2
-        rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(2, rows.size());
+		Header header = dataTable.getHeader();
+		Assertions.assertNotNull(header);
+		Assertions.assertNotNull(header.getCells());
+		Assertions.assertEquals(4, header.getCells().size());
+		Assertions.assertEquals("ID", header.getCell(0).getColumnTitle().getText());
+		Assertions.assertEquals("Type", header.getCell(1).getColumnTitle().getText());
+		Assertions.assertEquals("Name", header.getCell(2).getColumnTitle().getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
-    }
+		Paginator paginator = dataTable.getPaginator();
+		Assertions.assertNotNull(paginator);
+		Assertions.assertNotNull(paginator.getPages());
+		Assertions.assertEquals(2, paginator.getPages().size());
+		Assertions.assertEquals(1, paginator.getPage(0).getNumber());
+		Assertions.assertEquals(2, paginator.getPage(1).getNumber());
 
-    @ParameterizedTest
-    @MethodSource("provideXhtmls")
-    @Order(2)
-    @DisplayName("DataTable: single sort")
-    public void testSortSingle(String xhtml) {
-        // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
-        dataTable.selectPage(1);
+		assertConfiguration(dataTable.getWidgetConfiguration());
 
-        // Act - ascending
-        dataTable.sort("Name");
+		// Act
+		dataTable.selectPage(2);
 
-        // Assert
-        List<ProgrammingLanguage> langsSorted = sortBy(Comparator.comparing(ProgrammingLanguage::getName));
-        assertRows(dataTable, langsSorted);
+		// Assert - Part 2
+		rows = dataTable.getRows();
+		Assertions.assertNotNull(rows);
+		Assertions.assertEquals(2, rows.size());
 
-        // Act - descending
-        dataTable.sort("Name");
+		assertConfiguration(dataTable.getWidgetConfiguration());
+	}
 
-        // Assert
-        langsSorted = sortBy(Comparator.comparing(ProgrammingLanguage::getName).reversed());
-        assertRows(getDataTable(), langsSorted);
+	@ParameterizedTest @MethodSource("provideXhtmls") @Order(2) @DisplayName("DataTable: single sort")
+	public void testSortSingle(String xhtml) {
+		// Arrange
+		driver.get(PrimeSelenium.getUrl(xhtml));
+		DataTable dataTable = getDataTable();
+		Assertions.assertNotNull(dataTable);
+		dataTable.selectPage(1);
 
-        // Act
-        getButtonUpdate().click();
+		// Act - ascending
+		dataTable.sort("Name");
 
-        // Assert - sort must not be lost after update
-        assertRows(getDataTable(), langsSorted);
+		// Assert
+		List<ProgrammingLanguage> langsSorted = sortBy(Comparator.comparing(ProgrammingLanguage::getName));
+		assertRows(dataTable, langsSorted);
 
-        assertConfiguration(getDataTable().getWidgetConfiguration());
-    }
+		// Act - descending
+		dataTable.sort("Name");
 
-    @ParameterizedTest
-    @MethodSource("provideXhtmls")
-    @Order(3)
-    @DisplayName("DataTable: filter")
-    public void testFilter(String xhtml) {
-        // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        DataTable dataTable = getDataTable();;
-        dataTable.selectPage(1);
-        dataTable.sort("Name");
+		// Assert
+		langsSorted = sortBy(Comparator.comparing(ProgrammingLanguage::getName).reversed());
+		assertRows(getDataTable(), langsSorted);
 
-        // Act
-        dataTable.filter("Name", "Java");
+		// Act
+		getButtonUpdate().click();
 
-        // Assert
-        List<ProgrammingLanguage> langsFiltered = filterByName("Java");
-        assertRows(dataTable, langsFiltered);
+		// Assert - sort must not be lost after update
+		assertRows(getDataTable(), langsSorted);
 
-        // Act
-        getButtonUpdate().click();
+		assertConfiguration(getDataTable().getWidgetConfiguration());
+	}
 
-        // Assert - filter must not be lost after update
-        assertRows(getDataTable(), langsFiltered);
+	@ParameterizedTest @MethodSource("provideXhtmls") @Order(3) @DisplayName("DataTable: filter")
+	public void testFilter(String xhtml) {
+		// Arrange
+		driver.get(PrimeSelenium.getUrl(xhtml));
+		DataTable dataTable = getDataTable();
+		;
+		dataTable.selectPage(1);
+		dataTable.sort("Name");
 
-        assertConfiguration(getDataTable().getWidgetConfiguration());
-    }
+		// Act
+		dataTable.filter("Name", "Java");
 
-    @ParameterizedTest
-    @MethodSource("provideXhtmls")
-    @Order(4)
-    @DisplayName("DataTable: filter plus paging")
-    public void testFilterPlusPaging(String xhtml) {
-        // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        DataTable dataTable = getDataTable();
-        dataTable.selectPage(1);
-        dataTable.sort("Name");
-        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
-        PrimeSelenium.guardAjax(selectRowsPerPage).selectByValue("2");
+		// Assert
+		List<ProgrammingLanguage> langsFiltered = filterByName("Java");
+		assertRows(dataTable, langsFiltered);
 
-        // Act
-        dataTable.filter("Name", "t");
+		// Act
+		getButtonUpdate().click();
 
-        // Assert
-        List<ProgrammingLanguage> langsFiltered = languages.stream()
-                .sorted(Comparator.comparing(ProgrammingLanguage::getName))
-                .filter(l -> l.getName().toLowerCase().contains("t"))
-                .collect(Collectors.toList());
-        assertRows(dataTable, langsFiltered.stream().limit(2).collect(Collectors.toList()));
+		// Assert - filter must not be lost after update
+		assertRows(getDataTable(), langsFiltered);
 
-        // Act
-        dataTable.selectPage(2);
+		assertConfiguration(getDataTable().getWidgetConfiguration());
+	}
 
-        // Assert - filter must not be lost after update
-        assertRows(dataTable, langsFiltered.stream().skip(2).limit(2).collect(Collectors.toList()));
+	@ParameterizedTest @MethodSource("provideXhtmls") @Order(4) @DisplayName("DataTable: filter plus paging")
+	public void testFilterPlusPaging(String xhtml) {
+		// Arrange
+		driver.get(PrimeSelenium.getUrl(xhtml));
+		DataTable dataTable = getDataTable();
+		dataTable.selectPage(1);
+		dataTable.sort("Name");
+		Select selectRowsPerPage = new Select(
+				dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
+		PrimeSelenium.guardAjax(driver, selectRowsPerPage).selectByValue("2");
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
-    }
+		// Act
+		dataTable.filter("Name", "t");
 
-    @ParameterizedTest
-    @MethodSource("provideXhtmls")
-    @Order(5)
-    @DisplayName("DataTable: global filter with globalFilterOnly=false")
-    public void testGlobalFilter(String xhtml) {
-        // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        DataTable dataTable = getDataTable();;
-        InputText globalFilter = getGlobalFilter();
-        Assertions.assertNotNull(globalFilter);
-        dataTable.selectPage(1);
-        dataTable.sort("Name");
+		// Assert
+		List<ProgrammingLanguage> langsFiltered = languages.stream()
+				.sorted(Comparator.comparing(ProgrammingLanguage::getName))
+				.filter(l -> l.getName().toLowerCase().contains("t")).collect(Collectors.toList());
+		assertRows(dataTable, langsFiltered.stream().limit(2).collect(Collectors.toList()));
 
-        // Act
-        filterGlobal(globalFilter, "Python");
+		// Act
+		dataTable.selectPage(2);
 
-        // Assert
-        List<ProgrammingLanguage> langsFiltered = filterByName("Python");
-        assertRows(dataTable, langsFiltered);
-        assertConfiguration(dataTable.getWidgetConfiguration());
-    }
+		// Assert - filter must not be lost after update
+		assertRows(dataTable, langsFiltered.stream().skip(2).limit(2).collect(Collectors.toList()));
 
-    @ParameterizedTest
-    @MethodSource("provideXhtmls")
-    @Order(6)
-    @DisplayName("DataTable: GitHub #7193 global filter with globalFilterOnly=true")
-    public void testGlobalFilterIncludeNotDisplayedFilter(String xhtml) {
-        // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        DataTable dataTable = getDataTable();
-        InputText globalFilter = getGlobalFilter();
-        Assertions.assertNotNull(globalFilter);
-        dataTable.selectPage(1);
-        dataTable.sort("Type");
+		assertConfiguration(dataTable.getWidgetConfiguration());
+	}
 
-        // Act
-        getButtonGlobalFilterOnly().click();
-        filterGlobal(getGlobalFilter(), ProgrammingLanguageType.INTERPRETED.name());
+	@ParameterizedTest @MethodSource("provideXhtmls") @Order(5) @DisplayName("DataTable: global filter with globalFilterOnly=false")
+	public void testGlobalFilter(String xhtml) {
+		// Arrange
+		driver.get(PrimeSelenium.getUrl(xhtml));
+		DataTable dataTable = getDataTable();
+		;
+		InputText globalFilter = getGlobalFilter();
+		Assertions.assertNotNull(globalFilter);
+		dataTable.selectPage(1);
+		dataTable.sort("Name");
 
-        // Assert
-        List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguageType.INTERPRETED);
-        assertRows(getDataTable(), langsFiltered);
-        assertConfiguration(getDataTable().getWidgetConfiguration());
-    }
+		// Act
+		filterGlobal(driver, globalFilter, "Python");
 
-    @ParameterizedTest
-    @MethodSource("provideXhtmls")
-    @Order(7)
-    @DisplayName("DataTable: rows per page & reset; includes https://github.com/primefaces/primefaces/issues/5465 & https://github.com/primefaces/primefaces/issues/5481")
-    public void testRowsPerPageAndReset_5465_5481(String xhtml) {
-        // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        DataTable dataTable = getDataTable();;
-        Assertions.assertNotNull(dataTable);
+		// Assert
+		List<ProgrammingLanguage> langsFiltered = filterByName("Python");
+		assertRows(dataTable, langsFiltered);
+		assertConfiguration(dataTable.getWidgetConfiguration());
+	}
 
-        // Assert
-        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
-        Assertions.assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
-        Assertions.assertEquals(3, dataTable.getRows().size());
+	@ParameterizedTest @MethodSource("provideXhtmls") @Order(6) @DisplayName("DataTable: GitHub #7193 global filter with globalFilterOnly=true")
+	public void testGlobalFilterIncludeNotDisplayedFilter(String xhtml) {
+		// Arrange
+		driver.get(PrimeSelenium.getUrl(xhtml));
+		DataTable dataTable = getDataTable();
+		InputText globalFilter = getGlobalFilter();
+		Assertions.assertNotNull(globalFilter);
+		dataTable.selectPage(1);
+		dataTable.sort("Type");
 
-        // Act
-        dataTable.selectPage(1);
-        dataTable.sort("Name");
-        selectRowsPerPage.selectByVisibleText("10");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
+		// Act
+		getButtonGlobalFilterOnly().click();
+		filterGlobal(driver, getGlobalFilter(), ProgrammingLanguageType.INTERPRETED.name());
 
-        // Assert
-        Assertions.assertEquals(languages.size(), dataTable.getRows().size());
+		// Assert
+		List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguageType.INTERPRETED);
+		assertRows(getDataTable(), langsFiltered);
+		assertConfiguration(getDataTable().getWidgetConfiguration());
+	}
 
-        // Act
-        dataTable.filter("Name", "Java");
-        PrimeSelenium.guardAjax(getButtonResetTable()).click();
+	@ParameterizedTest @MethodSource("provideXhtmls") @Order(7) @DisplayName("DataTable: rows per driver & reset; includes https://github.com/primefaces/primefaces/issues/5465 & https://github.com/primefaces/primefaces/issues/5481")
+	public void testRowsPerPageAndReset_5465_5481(String xhtml) {
+		// Arrange
+		driver.get(PrimeSelenium.getUrl(xhtml));
+		DataTable dataTable = getDataTable();
+		Assertions.assertNotNull(dataTable);
 
-        // Assert
-        selectRowsPerPage = new Select(getDataTable().getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
-        Assertions.assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
-        Assertions.assertEquals(3, getDataTable().getRows().size());
-        assertRows(getDataTable(), languages.stream().limit(3).collect(Collectors.toList())); //implicit checks reset sort & filter
+		// Assert
+		Select selectRowsPerPage = new Select(
+				dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
+		Assertions.assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
+		Assertions.assertEquals(3, dataTable.getRows().size());
 
-        assertConfiguration(getDataTable().getWidgetConfiguration());
-    }
+		// Act
+		dataTable.selectPage(1);
+		dataTable.sort("Name");
+		selectRowsPerPage.selectByVisibleText("10");
+		PrimeSelenium.waitGui(driver).until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
-        System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("paginator"));
-        Assertions.assertEquals("wgtTable", cfg.getString("widgetVar"));
-        Assertions.assertEquals(0, cfg.getInt("tabindex"));
-    }
+		// Assert
+		Assertions.assertEquals(languages.size(), dataTable.getRows().size());
 
-    private static Stream<Arguments> provideXhtmls() {
-        return Stream.of(
-                Arguments.of("datatable/dataTable001.xhtml"),
-                Arguments.of("datatable/dataTable001Dynamic.xhtml"),
-                //Arguments.of("datatable/dataTable001DynamicOtherSyntax.xhtml"),
-                Arguments.of("datatable/dataTable001DynamicOtherSyntax2.xhtml"),
-                Arguments.of("datatable/dataTable001DynamicOtherSyntax3.xhtml"));
-    }
+		// Act
+		dataTable.filter("Name", "Java");
+		PrimeSelenium.guardAjax(driver, getButtonResetTable()).click();
 
-    private DataTable getDataTable() {
-        return PrimeSelenium.createFragment(DataTable.class, By.id("form:datatable"));
-    }
+		// Assert
+		selectRowsPerPage = new Select(
+				getDataTable().getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
+		Assertions.assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
+		Assertions.assertEquals(3, getDataTable().getRows().size());
+		assertRows(getDataTable(), languages.stream().limit(3).collect(Collectors.toList())); // implicit checks reset
+																								// sort & filter
 
-    private CommandButton getButtonUpdate() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonUpdate"));
-    }
+		assertConfiguration(getDataTable().getWidgetConfiguration());
+	}
 
-    private CommandButton getButtonResetTable() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonResetTable"));
-    }
+	private void assertConfiguration(JSONObject cfg) {
+		assertNoJavascriptErrors(driver);
+		System.out.println("DataTable Config = " + cfg);
+		Assertions.assertTrue(cfg.has("paginator"));
+		Assertions.assertEquals("wgtTable", cfg.getString("widgetVar"));
+		Assertions.assertEquals(0, cfg.getInt("tabindex"));
+	}
 
-    private InputText getGlobalFilter() {
-        return PrimeSelenium.createFragment(InputText.class, By.id("form:datatable:globalFilter"));
-    }
+	private static Stream<Arguments> provideXhtmls() {
+		return Stream.of(Arguments.of("datatable/dataTable001.xhtml"),
+				Arguments.of("datatable/dataTable001Dynamic.xhtml"),
+				// Arguments.of("datatable/dataTable001DynamicOtherSyntax.xhtml"),
+				Arguments.of("datatable/dataTable001DynamicOtherSyntax2.xhtml"),
+				Arguments.of("datatable/dataTable001DynamicOtherSyntax3.xhtml"));
+	}
 
-    private CommandButton getButtonGlobalFilterOnly() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonGlobalFilterOnly"));
-    }
+	private DataTable getDataTable() {
+		return PrimeSelenium.createFragment(driver, DataTable.class, By.id("form:datatable"));
+	}
+
+	private CommandButton getButtonUpdate() {
+		return PrimeSelenium.createFragment(driver, CommandButton.class, By.id("form:buttonUpdate"));
+	}
+
+	private CommandButton getButtonResetTable() {
+		return PrimeSelenium.createFragment(driver, CommandButton.class, By.id("form:buttonResetTable"));
+	}
+
+	private InputText getGlobalFilter() {
+		return PrimeSelenium.createFragment(driver, InputText.class, By.id("form:datatable:globalFilter"));
+	}
+
+	private CommandButton getButtonGlobalFilterOnly() {
+		return PrimeSelenium.createFragment(driver, CommandButton.class, By.id("form:buttonGlobalFilterOnly"));
+	}
 }

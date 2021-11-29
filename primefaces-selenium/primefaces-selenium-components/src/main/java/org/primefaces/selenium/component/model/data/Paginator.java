@@ -27,15 +27,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
 
 public class Paginator {
 
+    private final WebDriver driver;
     private WebElement webElement;
     private List<Page> pages;
 
-    public Paginator(WebElement webElement) {
+    public Paginator(WebDriver driver, WebElement webElement) {
+        this.driver = driver;
         this.webElement = webElement;
     }
 
@@ -51,7 +54,7 @@ public class Paginator {
         if (pages == null) {
             pages = webElement.findElements(By.className("ui-paginator-page")).stream().map(pageElt -> {
                 int number = Integer.parseInt(pageElt.getText());
-                return new Page(number, pageElt);
+                return new Page(getWebDriver(), number, pageElt);
             }).collect(Collectors.toList());
         }
         return pages;
@@ -69,5 +72,9 @@ public class Paginator {
             }
         }
         return null;
+    }
+
+    public WebDriver getWebDriver() {
+        return driver;
     }
 }

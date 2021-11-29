@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.component.model.Tab;
@@ -86,8 +85,8 @@ public abstract class AccordionPanel extends AbstractComponent {
      * @param index the index of the tab to expand
      */
     public void toggleTab(int index) {
-        if (ComponentUtils.hasAjaxBehavior(getRoot(), "tabChange")) {
-            PrimeSelenium.guardAjax(getHeaders().get(index)).click();
+        if (ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "tabChange")) {
+            guardAjax(getHeaders().get(index)).click();
         }
         else {
             getHeaders().get(index).click();

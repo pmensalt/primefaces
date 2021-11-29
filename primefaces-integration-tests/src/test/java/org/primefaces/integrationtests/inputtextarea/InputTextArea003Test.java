@@ -53,7 +53,7 @@ public class InputTextArea003Test extends AbstractPrimePageTest {
         Assertions.assertEquals("MaxLength Counter", inputText.getAssignedLabelText());
         Assertions.assertEquals("four", inputText.getValue());
         Assertions.assertEquals("6 characters remaining.", page.display.getText());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(page, inputText.getWidgetConfiguration());
     }
 
     @Test
@@ -72,11 +72,11 @@ public class InputTextArea003Test extends AbstractPrimePageTest {
         Assertions.assertEquals("MaxLength Counter", inputText.getAssignedLabelText());
         Assertions.assertEquals("1234567890", inputText.getValue());
         Assertions.assertEquals("0 characters remaining.", page.display.getText());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(page, inputText.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("InputTextarea Config = " + cfg);
         Assertions.assertTrue(cfg.getBoolean("autoResize"));
         Assertions.assertEquals(10, cfg.getInt("maxlength"));

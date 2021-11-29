@@ -26,7 +26,6 @@ package org.primefaces.selenium.component;
 import java.io.Serializable;
 
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:inputMask}.
@@ -46,10 +45,10 @@ public abstract class InputMask extends InputText {
      * @param value the value to set the input to
      */
     public void setWidgetValue(Serializable value) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue('" + value + "');");
+        executeScript(getWidgetByIdScript() + ".setValue('" + value + "');");
         boolean isAjaxified = isOnchangeAjaxified();
         if (isAjaxified) {
-            PrimeSelenium.executeScript(isAjaxified, getWidgetByIdScript() + ".jq.trigger('change');");
+            executeScript(isAjaxified, getWidgetByIdScript() + ".jq.trigger('change');");
         }
     }
 
@@ -59,7 +58,7 @@ public abstract class InputMask extends InputText {
      * @return the current value
      */
     public String getWidgetValue() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
+        return executeScript("return " + getWidgetByIdScript() + ".getValue();");
     }
 
     /**
@@ -69,6 +68,6 @@ public abstract class InputMask extends InputText {
      * @since 9.0
      */
     public String getWidgetValueUnmasked() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValueUnmasked();");
+        return executeScript("return " + getWidgetByIdScript() + ".getValueUnmasked();");
     }
 }

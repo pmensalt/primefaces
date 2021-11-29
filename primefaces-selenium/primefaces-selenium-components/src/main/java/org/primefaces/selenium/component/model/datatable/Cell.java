@@ -23,13 +23,16 @@
  */
 package org.primefaces.selenium.component.model.datatable;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class Cell {
 
+    private final WebDriver driver;
     private WebElement webElement;
 
-    public Cell(WebElement webElement) {
+    public Cell(WebDriver driver, WebElement webElement) {
+        this.driver = driver;
         this.webElement = webElement;
     }
 
@@ -46,5 +49,9 @@ public class Cell {
             return webElement.getText();
         }
         return null;
+    }
+
+    public WebDriver getWebDriver() {
+        return driver;
     }
 }

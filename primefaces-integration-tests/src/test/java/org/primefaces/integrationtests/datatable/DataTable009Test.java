@@ -85,7 +85,7 @@ public class DataTable009Test extends AbstractDataTableTest {
         Assertions.assertEquals("FilteredValue(s)", page.messages.getMessage(0).getSummary());
         Assertions.assertEquals("JavaScript", page.messages.getMessage(0).getDetail());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -136,7 +136,7 @@ public class DataTable009Test extends AbstractDataTableTest {
         Assertions.assertEquals("FilteredValue(s)", page.messages.getMessage(0).getSummary());
         Assertions.assertEquals("Java,JavaScript", page.messages.getMessage(0).getDetail());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -155,7 +155,7 @@ public class DataTable009Test extends AbstractDataTableTest {
 
         // Assert
         Assertions.assertEquals("C#", dataTable.getRow(0).getCell(1).getText());
-        SelectOneMenu firstAppeared = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:0:firstAppeared"));
+        SelectOneMenu firstAppeared = page.createFragment(SelectOneMenu.class, By.id("form:datatable:0:firstAppeared"));
         Assertions.assertEquals("2000", firstAppeared.getSelectedLabel());
 
         // Act
@@ -165,10 +165,10 @@ public class DataTable009Test extends AbstractDataTableTest {
 
         // Assert
         Assertions.assertEquals("C#", dataTable.getRow(0).getCell(1).getText());
-        firstAppeared = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:0:firstAppeared"));
+        firstAppeared = page.createFragment(SelectOneMenu.class, By.id("form:datatable:0:firstAppeared"));
         Assertions.assertEquals("2020", firstAppeared.getSelectedLabel());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(page, dataTable.getWidgetConfiguration());
     }
 
 
@@ -178,14 +178,14 @@ public class DataTable009Test extends AbstractDataTableTest {
         int rowNumber = 0;
         for (Row row : dataTable.getRows()) {
         	Assertions.assertNotNull(row);
-            SelectOneMenu firstAppeared = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:" + rowNumber + ":firstAppeared"));
+            SelectOneMenu firstAppeared = PrimeSelenium.createFragment(dataTable.getWebDriver(), SelectOneMenu.class, By.id("form:datatable:" + rowNumber + ":firstAppeared"));
             Assertions.assertEquals(firstAppearedExpected, firstAppeared.getSelectedLabel());
             rowNumber++;
         }
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("filter"));
     }

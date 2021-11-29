@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
@@ -36,8 +37,8 @@ import org.primefaces.selenium.component.base.ComponentUtils;
 
 public class HeaderCell extends Cell {
 
-    public HeaderCell(WebElement webElement) {
-        super(webElement);
+    public HeaderCell(WebDriver driver, WebElement webElement) {
+        super(driver, webElement);
     }
 
     /**
@@ -107,7 +108,7 @@ public class HeaderCell extends Cell {
             case "keypress":
             case "input":
                 if (filterDelay == 0) {
-                    columnFilter = PrimeSelenium.guardAjax(columnFilter);
+                    columnFilter = PrimeSelenium.guardAjax(getWebDriver(), columnFilter);
                 }
                 break;
             case "enter":
@@ -122,7 +123,7 @@ public class HeaderCell extends Cell {
         }
 
         if (filterValue != null) {
-            ComponentUtils.sendKeys(columnFilter, filterValue);
+            ComponentUtils.sendKeys(getWebDriver(), columnFilter, filterValue);
         }
         else {
             // null filter press backspace to trigger the re-filtering
@@ -130,7 +131,7 @@ public class HeaderCell extends Cell {
         }
 
         if (triggerKey != null) {
-            PrimeSelenium.guardAjax(columnFilter).sendKeys(triggerKey);
+            PrimeSelenium.guardAjax(getWebDriver(), columnFilter).sendKeys(triggerKey);
         }
         else if (filterDelay > 0) {
             try {
@@ -142,7 +143,7 @@ public class HeaderCell extends Cell {
                 // Restore interrupted state...
                 Thread.currentThread().interrupt();
             }
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.animationNotActive());
+            PrimeSelenium.waitGui(getWebDriver()).until(PrimeExpectedConditions.animationNotActive());
         }
     }
 

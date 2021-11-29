@@ -26,7 +26,9 @@ package org.primefaces.integrationtests;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 
@@ -54,10 +56,14 @@ public class AbstractTableTest extends AbstractPrimePageTest {
         }
     }
 
-    protected void filterGlobal(WebElement inputGlobalFilter, String filter) {
+    protected void filterGlobal(AbstractPrimePage page, WebElement inputGlobalFilter, String filter) {
+        filterGlobal(page.getWebDriver(), inputGlobalFilter, filter);
+    }
+
+    protected void filterGlobal(WebDriver driver, WebElement inputGlobalFilter, String filter) {
         // maybe we can move some of this to PF Selenium (InputText?, DataTable?)
         inputGlobalFilter.clear();
         inputGlobalFilter.sendKeys(filter);
-        PrimeSelenium.guardAjax(inputGlobalFilter).sendKeys(Keys.TAB);
+        PrimeSelenium.guardAjax(driver, inputGlobalFilter).sendKeys(Keys.TAB);
     }
 }

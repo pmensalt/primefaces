@@ -23,30 +23,34 @@
  */
 package org.primefaces.selenium.component.model.tree;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Tree;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class TreeNode {
 
+    private final WebDriver driver;
     private WebElement webElement;
     private TreeNode parent;
     private Tree tree;
     private String selector;
     private String childSelector;
 
-    public TreeNode(WebElement webElement, String selector, Tree tree) {
+    public TreeNode(WebDriver driver, WebElement webElement, String selector, Tree tree) {
+        this.driver = driver;
         this.webElement = webElement;
         this.selector = selector;
         this.childSelector = selector + ">.ui-treenode-children>.ui-treenode";
         this.tree = tree;
     }
 
-    public TreeNode(WebElement webElement, String selector, TreeNode parent) {
+    public TreeNode(WebDriver driver, WebElement webElement, String selector, TreeNode parent) {
+        this.driver = driver;
         this.webElement = webElement;
         this.selector = selector;
         this.childSelector = selector + ">.ui-treenode-children>.ui-treenode";
@@ -79,12 +83,12 @@ public class TreeNode {
     }
 
     public void toggle() {
-        PrimeSelenium.guardAjax(getTreeToggler()).click();
+        PrimeSelenium.guardAjax(getWebDriver(), getTreeToggler()).click();
     }
 
     public void select() {
         // TODO: we are only allowed to guardAjax if select/unselect is ajaxified!
-        PrimeSelenium.guardAjax(getLabel()).click();
+        PrimeSelenium.guardAjax(getWebDriver(), getLabel()).click();
     }
 
     public WebElement getTreeToggler() {
@@ -100,8 +104,12 @@ public class TreeNode {
     }
 
     public List<TreeNode> getChildren() {
-        return webElement.findElements(By.cssSelector(childSelector)).stream().map(e -> new TreeNode(e, childSelector, this))
+        return webElement.findElements(By.cssSelector(childSelector)).stream().map(e -> new TreeNode(getWebDriver(), e, childSelector, this))
                     .collect(Collectors.toList());
+    }
+
+    public WebDriver getWebDriver() {
+        return driver;
     }
 
 }

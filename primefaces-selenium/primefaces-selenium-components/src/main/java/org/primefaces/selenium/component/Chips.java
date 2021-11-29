@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.findby.FindByParentPartialId;
@@ -61,8 +60,8 @@ public abstract class Chips extends AbstractInputComponent {
     public void addValue(String value) {
         WebElement chipsInput = getInput();
         chipsInput.sendKeys(value);
-        if (ComponentUtils.hasAjaxBehavior(getRoot(), "itemSelect")) {
-            PrimeSelenium.guardAjax(chipsInput).sendKeys(Keys.ENTER);
+        if (ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "itemSelect")) {
+            guardAjax(chipsInput).sendKeys(Keys.ENTER);
         }
         else {
             chipsInput.sendKeys(Keys.ENTER);
@@ -73,8 +72,8 @@ public abstract class Chips extends AbstractInputComponent {
         for (WebElement chipToken : getChipTokens()) {
             if (chipToken.findElement(By.className("ui-chips-token-label")).getText().equals(value)) {
                 WebElement closeIcon = chipToken.findElement(By.className("ui-icon-close"));
-                if (ComponentUtils.hasAjaxBehavior(getRoot(), "itemUnselect")) {
-                    PrimeSelenium.guardAjax(closeIcon).click();
+                if (ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "itemUnselect")) {
+                    guardAjax(closeIcon).click();
                 }
                 else {
                     closeIcon.click();
@@ -88,6 +87,6 @@ public abstract class Chips extends AbstractInputComponent {
      * values back into chips.
      */
     public void toggleEditor() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggleEditor();");
+        executeScript(getWidgetByIdScript() + ".toggleEditor();");
     }
 }

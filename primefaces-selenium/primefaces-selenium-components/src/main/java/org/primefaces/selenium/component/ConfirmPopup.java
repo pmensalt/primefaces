@@ -26,7 +26,6 @@ package org.primefaces.selenium.component;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractComponent;
 
 /**
@@ -68,7 +67,7 @@ public abstract class ConfirmPopup extends AbstractComponent {
      * @return true if visible false if not
      */
     public boolean isVisible() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isVisible();");
+        return executeScript("return " + getWidgetByIdScript() + ".isVisible();");
     }
 
     /**
@@ -76,8 +75,8 @@ public abstract class ConfirmPopup extends AbstractComponent {
      */
     public void hidePopup() {
         if (isEnabled() && isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
+            executeScript(getWidgetByIdScript() + ".hide();");
+            waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
         }
     }
 

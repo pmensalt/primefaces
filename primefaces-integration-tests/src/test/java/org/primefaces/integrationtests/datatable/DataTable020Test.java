@@ -46,7 +46,7 @@ public class DataTable020Test extends AbstractDataTableTest {
         Assertions.assertNotEquals("Error", page.getWebDriver().getTitle());
         Assertions.assertTrue(PrimeSelenium.isElementPresent(page.button));
         Assertions.assertFalse(PrimeSelenium.isElementPresent(dataTable));
-        assertNoJavascriptErrors();
+        assertNoJavascriptErrors(page.getWebDriver());
     }
 
      public static class Page extends AbstractPrimePage {

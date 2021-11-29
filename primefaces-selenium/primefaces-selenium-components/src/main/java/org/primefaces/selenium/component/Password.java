@@ -26,7 +26,6 @@ package org.primefaces.selenium.component;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:password}.
@@ -46,15 +45,15 @@ public abstract class Password extends InputText {
      * Brings up the panel with the password strength indicator.
      */
     public void showFeedback() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getFeedbackPanel()));
+        executeScript(getWidgetByIdScript() + ".show();");
+        waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getFeedbackPanel()));
     }
 
     /**
      * Hides the panel with the password strength indicator.
      */
     public void hideFeedback() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+        executeScript(getWidgetByIdScript() + ".hide();");
     }
 
 }

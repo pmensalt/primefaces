@@ -26,7 +26,6 @@ package org.primefaces.selenium.component.base;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.model.datatable.Cell;
 import org.primefaces.selenium.component.model.datatable.Header;
 import org.primefaces.selenium.component.model.datatable.HeaderCell;
@@ -71,9 +70,9 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
 
     public Header getHeader() {
         List<HeaderCell> cells = getHeaderWebElement().findElements(By.tagName("th")).stream()
-                .map(HeaderCell::new)
+                .map(elem -> new HeaderCell(getWebDriver(), elem))
                 .collect(Collectors.toList());
-        return new Header(getHeaderWebElement(), cells);
+        return new Header(getWebDriver(), getHeaderWebElement(), cells);
     }
 
     /**
@@ -84,7 +83,7 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
     public void sort(String headerText) {
         Optional<HeaderCell> cell = getHeader().getCell(headerText);
         if (cell.isPresent()) {
-            PrimeSelenium.guardAjax(cell.get().getWebElement().findElement(By.className("ui-sortable-column-icon"))).click();
+            guardAjax(cell.get().getWebElement().findElement(By.className("ui-sortable-column-icon"))).click();
         }
         else {
             System.err.println("Header Cell '" + headerText + "' not found.");
@@ -99,7 +98,7 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
     public void sort(int index) {
         HeaderCell cell = getHeader().getCell(index);
         if (cell != null) {
-            PrimeSelenium.guardAjax(cell.getWebElement().findElement(By.className("ui-sortable-column-icon"))).click();
+            guardAjax(cell.getWebElement().findElement(By.className("ui-sortable-column-icon"))).click();
         }
         else {
             System.err.println("Header Cell '" + index + "' not found.");
@@ -169,8 +168,8 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
      */
     public void toggleSelectAllCheckBox() {
         WebElement checkboxAll = getSelectAllCheckBox();
-        if (ComponentUtils.hasBehavior(this, "rowSelect") || ComponentUtils.hasBehavior(this, "rowUnselect")) {
-            PrimeSelenium.guardAjax(checkboxAll).click();
+        if (ComponentUtils.hasBehavior(getWebDriver(), this, "rowSelect") || ComponentUtils.hasBehavior(getWebDriver(), this, "rowUnselect")) {
+            guardAjax(checkboxAll).click();
         }
         else {
             checkboxAll.click();

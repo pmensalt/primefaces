@@ -23,14 +23,17 @@
  */
 package org.primefaces.selenium.component.model.data;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class Page {
 
+    private final WebDriver driver;
     private WebElement webElement;
     private int number;
 
-    public Page(int number, WebElement webElement) {
+    public Page(WebDriver driver, int number, WebElement webElement) {
+        this.driver = driver;
         this.number = number;
         this.webElement = webElement;
     }
@@ -49,6 +52,10 @@ public class Page {
 
     public void setWebElement(WebElement webElement) {
         this.webElement = webElement;
+    }
+
+    public WebDriver getWebDriver() {
+        return driver;
     }
 
 }

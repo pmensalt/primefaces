@@ -26,7 +26,6 @@ package org.primefaces.selenium.component.base;
 import org.json.JSONObject;
 import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.AbstractPrimePageFragment;
-import org.primefaces.selenium.PrimeSelenium;
 
 public abstract class AbstractComponent extends AbstractPrimePageFragment {
 
@@ -50,7 +49,7 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
      * @return the String representation of the widget configuration
      */
     public String getWidgetConfigurationAsString() {
-        return ComponentUtils.getWidgetConfiguration(getRoot());
+        return ComponentUtils.getWidgetConfiguration(getWebDriver(), getRoot());
     }
 
     /**
@@ -97,6 +96,6 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
         // now check for CSP events
         String id = element.getAttribute("id");
         String cspScript = String.format(CSP_SCRIPT, id, event);
-        return PrimeSelenium.executeScript(cspScript);
+        return executeScript(cspScript);
     }
 }

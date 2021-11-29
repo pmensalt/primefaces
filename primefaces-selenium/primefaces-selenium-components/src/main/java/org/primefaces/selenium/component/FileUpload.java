@@ -65,7 +65,7 @@ public abstract class FileUpload extends AbstractInputComponent {
      */
     public void setValue(Serializable value) {
         Runnable runnable = () -> {
-            if (getInput() != this && !PrimeSelenium.isChrome()) {
+            if (getInput() != this && !PrimeSelenium.isChrome(getWebDriver())) {
                 // input file cannot be cleared if skinSimple=false or in Chrome
                 getInput().clear();
             }
@@ -78,6 +78,7 @@ public abstract class FileUpload extends AbstractInputComponent {
         if (isAutoUpload()) {
             if (isAdvancedMode()) {
                 Runnable guarded = Guard.custom(
+                    getWebDriver(),
                     runnable,
                     200,
                     ConfigProvider.getInstance().getTimeoutFileUpload(),
@@ -86,7 +87,7 @@ public abstract class FileUpload extends AbstractInputComponent {
                 guarded.run();
             }
             else {
-                PrimeSelenium.guardAjax(runnable).run();
+                guardAjax(runnable).run();
             }
         }
         else {
@@ -116,6 +117,7 @@ public abstract class FileUpload extends AbstractInputComponent {
         WebElement element = findElement(By.cssSelector(".ui-fileupload-buttonbar button.ui-fileupload-upload"));
 
         WebElement guarded = Guard.custom(
+            getWebDriver(),
             element,
             200,
             ConfigProvider.getInstance().getTimeoutFileUpload(),

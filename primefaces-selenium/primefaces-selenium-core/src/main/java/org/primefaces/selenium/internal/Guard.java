@@ -30,7 +30,6 @@ import net.bytebuddy.matcher.ElementMatchers;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.spi.WebDriverProvider;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
@@ -46,12 +45,12 @@ public class Guard {
 
     }
 
-    public static <T> T custom(T target, int timeout, ExpectedCondition... expectedConditions) {
-        return custom(target, 0, timeout, expectedConditions);
+    public static <T> T custom(WebDriver driver, T target, int timeout, ExpectedCondition... expectedConditions) {
+        return custom(driver, target, 0, timeout, expectedConditions);
     }
 
-    public static <T> T custom(T target, int delay, int timeout, ExpectedCondition... expectedConditions) {
-        OnloadScripts.execute();
+    public static <T> T custom(WebDriver driver, T target, int delay, int timeout, ExpectedCondition... expectedConditions) {
+        OnloadScripts.execute(driver);
 
         return proxy(target, (Object p, Method method, Object[] args) -> {
             try {
@@ -61,8 +60,6 @@ public class Guard {
                 if (delay > 0) {
                     Thread.sleep(delay);
                 }
-
-                WebDriver driver = WebDriverProvider.get();
 
                 WebDriverWait wait = new WebDriverWait(driver, timeout, 100);
                 wait.until(ExpectedConditions.and(expectedConditions));
@@ -75,16 +72,14 @@ public class Guard {
         });
     }
 
-    public static <T> T http(T target) {
-        OnloadScripts.execute();
+    public static <T> T http(WebDriver driver, T target) {
+        OnloadScripts.execute(driver);
 
         return proxy(target, (Object p, Method method, Object[] args) -> {
             try {
-                PrimeSelenium.executeScript("pfselenium.submitting = true;");
+                PrimeSelenium.executeScript(driver, "pfselenium.submitting = true;");
 
                 Object result = method.invoke(target, args);
-
-                WebDriver driver = WebDriverProvider.get();
 
                 WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getTimeoutHttp(), 100);
                 wait.until(ExpectedConditions.and(
@@ -100,10 +95,9 @@ public class Guard {
         });
     }
 
-    public static <T> T ajax(String script, Object... args) {
-        OnloadScripts.execute();
+    public static <T> T ajax(WebDriver driver, String script, Object... args) {
+        OnloadScripts.execute(driver);
 
-        WebDriver driver = WebDriverProvider.get();
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         try {
             executor.executeScript("pfselenium.xhr = 'somethingJustNotNull';");
@@ -119,15 +113,14 @@ public class Guard {
         }
     }
 
-    public static <T> T ajax(T target) {
-        return ajax(target, 0);
+    public static <T> T ajax(WebDriver webDriver, T target) {
+        return ajax(webDriver, target, 0);
     }
 
-    public static <T> T ajax(T target, int delay) {
-        OnloadScripts.execute();
+    public static <T> T ajax(WebDriver driver, T target, int delay) {
+        OnloadScripts.execute(driver);
 
         return proxy(target, (Object p, Method method, Object[] args) -> {
-            WebDriver driver = WebDriverProvider.get();
             JavascriptExecutor executor = (JavascriptExecutor) driver;
             try {
                 executor.executeScript("pfselenium.xhr = 'somethingJustNotNull';");
@@ -164,25 +157,25 @@ public class Guard {
 
     private static String getAjaxDebugInfo(JavascriptExecutor executor) {
         return "document.readyState=" + executor.executeScript("return document.readyState;") + ", " +
-                    "!window.jQuery=" + executor.executeScript("return !window.jQuery;") + ", " +
-                    "jQuery.active=" + executor.executeScript("return jQuery.active;") + ", " +
-                    "!window.PrimeFaces=" + executor.executeScript("return !window.PrimeFaces;") + ", " +
-                    "PrimeFaces.ajax.Queue.isEmpty()=" + executor.executeScript("return PrimeFaces.ajax.Queue.isEmpty();") + ", " +
-                    "PrimeFaces.animationActive=" + executor.executeScript("return PrimeFaces.animationActive;") + ", " +
-                    "!window.pfselenium=" + executor.executeScript("return !window.pfselenium;") + ", " +
-                    "pfselenium.xhr=" + executor.executeScript("return pfselenium.xhr;") + ", " +
-                    "pfselenium.anyXhrStarted=" + executor.executeScript("return pfselenium.anyXhrStarted;") + ", " +
-                    "pfselenium.navigating=" + executor.executeScript("return pfselenium.navigating;");
+                "!window.jQuery=" + executor.executeScript("return !window.jQuery;") + ", " +
+                "jQuery.active=" + executor.executeScript("return jQuery.active;") + ", " +
+                "!window.PrimeFaces=" + executor.executeScript("return !window.PrimeFaces;") + ", " +
+                "PrimeFaces.ajax.Queue.isEmpty()=" + executor.executeScript("return PrimeFaces.ajax.Queue.isEmpty();") + ", " +
+                "PrimeFaces.animationActive=" + executor.executeScript("return PrimeFaces.animationActive;") + ", " +
+                "!window.pfselenium=" + executor.executeScript("return !window.pfselenium;") + ", " +
+                "pfselenium.xhr=" + executor.executeScript("return pfselenium.xhr;") + ", " +
+                "pfselenium.anyXhrStarted=" + executor.executeScript("return pfselenium.anyXhrStarted;") + ", " +
+                "pfselenium.navigating=" + executor.executeScript("return pfselenium.navigating;");
     }
 
     private static void waitUntilAjaxCompletes(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getTimeoutAjax(), 50);
         wait.until(d -> {
             return (Boolean) ((JavascriptExecutor) driver)
-                        .executeScript("return document.readyState === 'complete'"
-                                    + " && (!window.jQuery || jQuery.active == 0)"
-                                    + " && (!window.PrimeFaces || (PrimeFaces.ajax.Queue.isEmpty() && PrimeFaces.animationActive === false))"
-                                    + " && (!window.pfselenium || (pfselenium.xhr == null && pfselenium.navigating === false));");
+                    .executeScript("return document.readyState === 'complete'"
+                            + " && (!window.jQuery || jQuery.active == 0)"
+                            + " && (!window.PrimeFaces || (PrimeFaces.ajax.Queue.isEmpty() && PrimeFaces.animationActive === false))"
+                            + " && (!window.pfselenium || (pfselenium.xhr == null && pfselenium.navigating === false));");
         });
     }
 

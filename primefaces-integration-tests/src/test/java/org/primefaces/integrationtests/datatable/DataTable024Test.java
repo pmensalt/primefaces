@@ -46,7 +46,7 @@ public class DataTable024Test extends AbstractDataTableTest {
         Assertions.assertNotNull(dataTable);
 
         // Act
-        CommandButton button = PrimeSelenium.createFragment(CommandButton.class, By.id("form:datatable:0:select"));
+        CommandButton button = page.createFragment(CommandButton.class, By.id("form:datatable:0:select"));
         button.click();
 
         // Assert
@@ -55,7 +55,7 @@ public class DataTable024Test extends AbstractDataTableTest {
         // Act
         // Act - do some filtering
         dataTable.filter("Id", "2");
-        button = PrimeSelenium.createFragment(CommandButton.class, By.id("form:datatable:0:select"));
+        button = page.createFragment(CommandButton.class, By.id("form:datatable:0:select"));
         button.click();
 
         // Assert

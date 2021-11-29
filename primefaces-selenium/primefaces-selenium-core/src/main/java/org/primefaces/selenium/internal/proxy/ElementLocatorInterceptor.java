@@ -27,19 +27,22 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
+import org.primefaces.selenium.internal.OnloadScripts;
 
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.Origin;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
-import org.primefaces.selenium.internal.OnloadScripts;
 
 public class ElementLocatorInterceptor {
 
+    private final WebDriver driver;
     private final ElementLocator locator;
 
-    public ElementLocatorInterceptor(ElementLocator locator) {
+    public ElementLocatorInterceptor(WebDriver driver, ElementLocator locator) {
+        this.driver = driver;
         this.locator = locator;
     }
 
@@ -63,7 +66,7 @@ public class ElementLocatorInterceptor {
             return located.equals(args[0]);
         }
 
-        OnloadScripts.execute();
+        OnloadScripts.execute(driver);
 
         try {
             return method.invoke(located, args);

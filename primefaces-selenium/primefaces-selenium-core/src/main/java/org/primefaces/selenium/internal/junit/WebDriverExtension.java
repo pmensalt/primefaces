@@ -23,25 +23,28 @@
  */
 package org.primefaces.selenium.internal.junit;
 
-import org.junit.jupiter.api.extension.AfterAllCallback;
+import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
+import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.openqa.selenium.WebDriver;
+import org.junit.jupiter.api.extension.ExtensionContext.Store.CloseableResource;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
-public class WebDriverExtension implements BeforeAllCallback, AfterAllCallback {
+public class WebDriverExtension implements BeforeAllCallback, AfterEachCallback, CloseableResource {
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
-        WebDriverProvider.get(true);
+        context.getRoot().getStore(GLOBAL).getOrComputeIfAbsent("closeWebDrivers", k -> this);
     }
 
     @Override
-    public void afterAll(ExtensionContext context) throws Exception {
-        WebDriver webDriver = WebDriverProvider.get();
-        if (webDriver != null) {
-            webDriver.quit();
-        }
-        WebDriverProvider.set(null);
+    public void afterEach(ExtensionContext context) throws Exception {
+        WebDriverProvider.resetWebDrivers();
     }
+
+    @Override
+    public void close() throws Throwable {
+        WebDriverProvider.closeAllWebDrivers();
+    }
+
 }

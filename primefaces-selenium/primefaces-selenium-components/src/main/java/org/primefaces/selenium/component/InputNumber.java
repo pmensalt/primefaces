@@ -26,7 +26,6 @@ package org.primefaces.selenium.component;
 import java.io.Serializable;
 
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.findby.FindByParentPartialId;
 
 /**
@@ -55,12 +54,12 @@ public abstract class InputNumber extends InputText {
             value = "\"\"";
         }
 
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value.toString() + ")");
-        PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".input.trigger('change')");
+        executeScript(getWidgetByIdScript() + ".setValue(" + value.toString() + ")");
+        executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".input.trigger('change')");
     }
 
     public Double getValueToRender() {
-        return Double.valueOf(PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".valueToRender;"));
+        return Double.valueOf(executeScript("return " + getWidgetByIdScript() + ".valueToRender;"));
     }
 
     /**
@@ -69,6 +68,6 @@ public abstract class InputNumber extends InputText {
      * @return the widget's value
      */
     public String getWidgetValue() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
+        return executeScript("return " + getWidgetByIdScript() + ".getValue();");
     }
 }

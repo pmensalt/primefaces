@@ -26,7 +26,6 @@ package org.primefaces.selenium.component;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.findby.FindByParentPartialId;
@@ -43,14 +42,14 @@ public abstract class Panel extends AbstractComponent {
     private WebElement content;
 
     public void toggle() {
-        if (ComponentUtils.hasAjaxBehavior(getRoot(), "toggle")) {
-            PrimeSelenium.guardAjax(toggler).click();
+        if (ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "toggle")) {
+            guardAjax(toggler).click();
         }
         else {
             toggler.click();
         }
 
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(content));
+        waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(content));
     }
 
     public WebElement getToggler() {

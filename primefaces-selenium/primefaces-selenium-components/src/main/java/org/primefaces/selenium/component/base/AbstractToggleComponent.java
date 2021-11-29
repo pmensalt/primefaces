@@ -26,7 +26,6 @@ package org.primefaces.selenium.component.base;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.findby.FindByParentPartialId;
 
 /**
@@ -49,11 +48,11 @@ public abstract class AbstractToggleComponent extends AbstractInputComponent {
 
     @Override
     public void click() {
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getRoot()));
-        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(getRoot()));
+        waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getRoot()));
+        waitGui().until(ExpectedConditions.elementToBeClickable(getRoot()));
 
         if (isOnChangeAjaxified()) {
-            PrimeSelenium.guardAjax(getRoot()).click();
+            guardAjax(getRoot()).click();
         }
         else {
             getRoot().click();
@@ -66,7 +65,7 @@ public abstract class AbstractToggleComponent extends AbstractInputComponent {
      * @return true if AJAX enabled false if not
      */
     public boolean isOnChangeAjaxified() {
-        return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "change");
+        return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getWebDriver(), getRoot(), "change");
     }
 
     /**
@@ -93,21 +92,21 @@ public abstract class AbstractToggleComponent extends AbstractInputComponent {
      * Turns this switch in case it is off, or turns of off in case it is on.
      */
     public void toggle() {
-        PrimeSelenium.executeScript(isOnChangeAjaxified(), getWidgetByIdScript() + ".toggle();");
+        executeScript(isOnChangeAjaxified(), getWidgetByIdScript() + ".toggle();");
     }
 
     /**
      * Turns this switch on if it is not already turned on.
      */
     public void check() {
-        PrimeSelenium.executeScript(isOnChangeAjaxified(), getWidgetByIdScript() + ".check();");
+        executeScript(isOnChangeAjaxified(), getWidgetByIdScript() + ".check();");
     }
 
     /**
      * Turns this switch off if it is not already turned of.
      */
     public void uncheck() {
-        PrimeSelenium.executeScript(isOnChangeAjaxified(), getWidgetByIdScript() + ".uncheck();");
+        executeScript(isOnChangeAjaxified(), getWidgetByIdScript() + ".uncheck();");
     }
 
 }

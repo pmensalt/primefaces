@@ -49,7 +49,7 @@ public class InputMask002Test extends AbstractInputMaskTest {
 
         // Assert
         Assertions.assertEquals("", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration());
+        assertConfiguration(page, inputMask.getWidgetConfiguration());
     }
 
     @Test
@@ -66,11 +66,11 @@ public class InputMask002Test extends AbstractInputMaskTest {
 
         // Assert
         Assertions.assertEquals("222-22-2222", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration());
+        assertConfiguration(page, inputMask.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(AbstractPrimePage page, JSONObject cfg) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("InputMask Config = " + cfg);
         Assertions.assertEquals("999-99-9999", cfg.getString("mask"));
         Assertions.assertEquals("*", cfg.getString("placeholder"));

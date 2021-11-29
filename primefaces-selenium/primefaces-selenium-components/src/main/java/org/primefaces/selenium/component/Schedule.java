@@ -25,7 +25,6 @@ package org.primefaces.selenium.component;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractComponent;
 
 /**
@@ -40,14 +39,14 @@ public abstract class Schedule extends AbstractComponent {
      */
     public void select(String cssClass) {
         WebElement element = findElement(By.className(cssClass));
-        PrimeSelenium.guardAjax(element).click();
+        guardAjax(element).click();
     }
 
     /**
      * Updates and refreshes the schedule view refetching all events
      */
     public void update() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".update();");
+        executeScript(getWidgetByIdScript() + ".update();");
     }
 
     public WebElement getTodayButton() {

@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.model.data.Page;
 import org.primefaces.selenium.component.model.data.Paginator;
 
@@ -43,7 +42,7 @@ public abstract class AbstractPageableData extends AbstractComponent {
     }
 
     public Paginator getPaginator() {
-        return new Paginator(getPaginatorWebElement());
+        return new Paginator(getWebDriver(), getPaginatorWebElement());
     }
 
     public void selectPage(Page page) {
@@ -53,7 +52,7 @@ public abstract class AbstractPageableData extends AbstractComponent {
             // we are already on the right page
         }
         else {
-            PrimeSelenium.guardAjax(page.getWebElement()).click();
+            guardAjax(page.getWebElement()).click();
         }
     }
 

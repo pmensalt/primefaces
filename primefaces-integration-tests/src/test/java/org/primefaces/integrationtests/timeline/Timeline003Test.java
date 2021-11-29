@@ -58,7 +58,7 @@ public class Timeline003Test extends AbstractPrimePageTest {
         assertMonth(timeline, "October", "Oct");
         assertMonth(timeline, "January", "Jan");
         assertMonth(timeline, "April", "Apr");
-        assertConfiguration(timeline.getWidgetConfiguration(), "en");
+        assertConfiguration(page, timeline.getWidgetConfiguration(), "en");
     }
 
     @Test
@@ -76,11 +76,11 @@ public class Timeline003Test extends AbstractPrimePageTest {
         assertMonth(timeline, "October", "oct.");
         assertMonth(timeline, "January", "janv.");
         assertMonth(timeline, "April", "avr.");
-        assertConfiguration(timeline.getWidgetConfiguration(), "fr");
+        assertConfiguration(page, timeline.getWidgetConfiguration(), "fr");
     }
 
-    private void assertConfiguration(JSONObject cfg, String locale) {
-        assertNoJavascriptErrors();
+    private void assertConfiguration(Page page, JSONObject cfg, String locale) {
+        assertNoJavascriptErrors(page.getWebDriver());
         System.out.println("Timeline Config = " + cfg);
         Assertions.assertTrue(cfg.has("data"));
 
